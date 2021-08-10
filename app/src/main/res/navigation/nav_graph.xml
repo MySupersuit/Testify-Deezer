@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.tom.spotifygamev3.home.HomeFragment"
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_albumGameFragment"
+            app:destination="@id/albumGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/albumGameFragment"
+        android:name="com.tom.spotifygamev3.album_game.AlbumGameFragment"
+        android:label="album_game_fragment"
+        tools:layout="@layout/album_game_fragment">
+        <action
+            android:id="@+id/action_albumGameFragment_to_albumGameScoreFragment"
+            app:destination="@id/albumGameScoreFragment"
+            app:popUpTo="@id/albumGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/albumGameScoreFragment"
+        android:name="com.tom.spotifygamev3.album_game.AlbumGameScoreFragment"
+        android:label="album_game_score_fragment"
+        tools:layout="@layout/album_game_score_fragment">
+        <argument
+            android:name="score"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_albumGame_restart"
+            app:destination="@id/albumGameFragment" />
+        <action
+            android:id="@+id/action_album_game_go_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
+</navigation>

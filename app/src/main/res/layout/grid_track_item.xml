@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="playlist"
+            type="com.tom.spotifygamev3.models.Items" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:background="@color/purple_200">
+
+        <ImageView
+            android:id="@+id/album_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:imageUrl="@{playlist.track.album.images.get(0).url}"
+            tools:src="@tools:sample/backgrounds/scenic"/>
+<!--        app:imageUrl="@{playlist.track.album.images.get(0).url}"-->
+
+        <TextView
+            android:id="@+id/track_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:alpha="0.8"
+            android:background="#AAAAAA"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@{playlist.track.name}"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:text="This Must Be The Place (Naive Melody)" />
+
+    </FrameLayout>
+
+</layout>
