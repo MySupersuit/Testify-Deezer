@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         val req = AuthorizationRequest.Builder(
             CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI
         )
-            .setScopes(arrayOf("streaming"))
+            .setScopes(arrayOf("streaming","playlist-read-private"))
             .build()
 
         AuthorizationClient.openLoginActivity(this, REQUEST_CODE, req)

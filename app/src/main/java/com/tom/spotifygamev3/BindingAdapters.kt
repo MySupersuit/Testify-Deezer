@@ -3,17 +3,15 @@ package com.tom.spotifygamev3
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.tom.spotifygamev3.album_game.SpotifyApiStatus
-import com.tom.spotifygamev3.home.TrackAdapter
-import com.tom.spotifygamev3.models.Items
-import com.tom.spotifygamev3.models.SpotifyPlaylistResponse
+import com.tom.spotifygamev3.Utils.Utils
+import com.tom.spotifygamev3.album_game.game.SpotifyApiStatus
+import com.tom.spotifygamev3.models.spotify_models.Images
 
 const val TAG = "BindingAdapter"
 
@@ -32,10 +30,10 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
     }
 }
 
-@BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<Items>?) {
-    val adapter = recyclerView.adapter as TrackAdapter
-    adapter.submitList(data)
+@BindingAdapter("showImageLoadingAnim")
+fun bindImageLoadingAnim(imgView: ImageView, images: List<Images>) {
+    Utils.glideShowImageLoadAnim(images, imgView.context, imgView)
+
 }
 
 @BindingAdapter("spotifyApiStatus")
@@ -75,6 +73,18 @@ fun showAlbumQuiz(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) 
         }
         SpotifyApiStatus.DONE -> {
             constraintLayout.visibility = View.VISIBLE
+        }
+    }
+}
+
+@BindingAdapter("showPlaylistPicker")
+fun showPlaylistPicker(recyclerView: RecyclerView, status: SpotifyApiStatus) {
+    when (status) {
+        SpotifyApiStatus.LOADING -> {
+            recyclerView.visibility = View.GONE
+        }
+        SpotifyApiStatus.DONE -> {
+            recyclerView.visibility = View.VISIBLE
         }
     }
 }

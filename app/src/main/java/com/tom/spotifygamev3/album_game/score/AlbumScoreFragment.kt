@@ -1,27 +1,24 @@
-package com.tom.spotifygamev3.album_game
+package com.tom.spotifygamev3.album_game.score
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.databinding.AlbumGameScoreFragmentBinding
 
-class AlbumGameScoreFragment : Fragment() {
+class AlbumScoreFragment : Fragment() {
 
-    private val viewModel: AlbumGameScoreViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(AlbumGameScoreViewModel::class.java)
+    private val viewModel: AlbumScoreViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(AlbumScoreViewModel::class.java)
     }
 
-    private lateinit var viewModelFactory: AlbumGameScoreViewModelFactory
+    private lateinit var viewModelFactory: AlbumScoreViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +26,7 @@ class AlbumGameScoreFragment : Fragment() {
     ): View? {
         val binding = AlbumGameScoreFragmentBinding.inflate(inflater)
         viewModelFactory =
-            AlbumGameScoreViewModelFactory(AlbumGameScoreFragmentArgs.fromBundle(requireArguments()).score)
+            AlbumScoreViewModelFactory(AlbumScoreFragmentArgs.fromBundle(requireArguments()).score)
 
         binding.lifecycleOwner = this
 
@@ -40,14 +37,14 @@ class AlbumGameScoreFragment : Fragment() {
 
         viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain ->
             if (playAgain) {
-                findNavController().navigate(AlbumGameScoreFragmentDirections.actionAlbumGameRestart())
+                findNavController().navigate(AlbumScoreFragmentDirections.actionAlbumGameRestart())
                 viewModel.onPlayAgainComplete()
             }
         })
 
         viewModel.eventGoHome.observe(viewLifecycleOwner, Observer { goHome ->
             if (goHome) {
-                findNavController().navigate(AlbumGameScoreFragmentDirections.actionAlbumGameGoHome())
+                findNavController().navigate(AlbumScoreFragmentDirections.actionAlbumGameGoHome())
                 viewModel.onGoHomeComplete()
             }
         })

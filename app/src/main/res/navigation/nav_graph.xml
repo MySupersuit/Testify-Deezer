@@ -10,22 +10,27 @@
         android:name="com.tom.spotifygamev3.home.HomeFragment"
         android:label="HomeFragment">
         <action
-            android:id="@+id/action_homeFragment_to_albumGameFragment"
-            app:destination="@id/albumGameFragment" />
+            android:id="@+id/action_homeFragment_to_playlistPickerFragment"
+            app:destination="@id/playlistPickerFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumGameFragment"
-        android:name="com.tom.spotifygamev3.album_game.AlbumGameFragment"
+        android:name="com.tom.spotifygamev3.album_game.game.AlbumGameFragment"
         android:label="album_game_fragment"
         tools:layout="@layout/album_game_fragment">
+        <argument
+            android:name="playlist_id"
+            android:defaultValue="1ocd7l0Q4L97N3JHNdMUfD"
+            app:argType="string" />
         <action
             android:id="@+id/action_albumGameFragment_to_albumGameScoreFragment"
             app:destination="@id/albumGameScoreFragment"
-            app:popUpTo="@id/albumGameFragment" />
+            app:popUpTo="@id/albumGameFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/albumGameScoreFragment"
-        android:name="com.tom.spotifygamev3.album_game.AlbumGameScoreFragment"
+        android:name="com.tom.spotifygamev3.album_game.score.AlbumScoreFragment"
         android:label="album_game_score_fragment"
         tools:layout="@layout/album_game_score_fragment">
         <argument
@@ -34,9 +39,18 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_albumGame_restart"
-            app:destination="@id/albumGameFragment" />
+            app:destination="@id/playlistPickerFragment" />
         <action
             android:id="@+id/action_album_game_go_home"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistPickerFragment"
+        android:name="com.tom.spotifygamev3.album_game.playlist_picker.PlaylistPickerFragment"
+        android:label="playlist_picker_fragment"
+        tools:layout="@layout/playlist_picker_fragment" >
+        <action
+            android:id="@+id/action_playlistPickerFragment_to_albumGameFragment"
+            app:destination="@id/albumGameFragment" />
     </fragment>
 </navigation>
