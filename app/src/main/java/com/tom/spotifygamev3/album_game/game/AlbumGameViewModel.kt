@@ -1,13 +1,13 @@
-package com.tom.spotifygamev3.album_game
+package com.tom.spotifygamev3.album_game.game
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.tom.spotifygamev3.Utils.Constants
-import com.tom.spotifygamev3.models.Album
+import com.tom.spotifygamev3.Utils.Utils.cleanedString
+import com.tom.spotifygamev3.models.spotify_models.Album
 import com.tom.spotifygamev3.models.AlbumQuestion
-import com.tom.spotifygamev3.models.Items
+import com.tom.spotifygamev3.models.spotify_models.Items
 import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.*
 import kotlin.math.min
@@ -17,7 +17,7 @@ import kotlin.collections.HashMap
 
 enum class SpotifyApiStatus { LOADING, ERROR, DONE }
 
-class AlbumGameViewModel(application: Application) : AndroidViewModel(application) {
+class AlbumGameViewModel(application: Application, playlist_id: String) : AndroidViewModel(application) {
 
     // TODO figure out best way to get questions / data structures
 
@@ -47,9 +47,12 @@ class AlbumGameViewModel(application: Application) : AndroidViewModel(applicatio
     val score: LiveData<Int>
         get() = _score
 
+    private var _numWrong = MutableLiveData<Int>()
+    val numWrong: LiveData<Int>
+        get() = _numWrong
+
     private var questionIndex = 0
     private var numQuestions = -1
-//    private var score = 0
 
     private var initialItems = listOf<Items>()
 
@@ -65,9 +68,8 @@ class AlbumGameViewModel(application: Application) : AndroidViewModel(applicatio
         _numAlbumsLoaded.value = 0
         runBlocking {
             _status.value = SpotifyApiStatus.LOADING
-            fetchData()
+            fetchData(playlist_id)
         }
-
     }
 
     private fun startQuiz() {
@@ -75,12 +77,6 @@ class AlbumGameViewModel(application: Application) : AndroidViewModel(applicatio
         questionIndex = 0
         setQuestion()
     }
-
-//    private fun preloadAlbumArt() {
-//        for (item in questions) {
-//
-//        }
-//    }
 
     private fun setQuestion() {
         // If index blah blah blah
@@ -95,6 +91,8 @@ class AlbumGameViewModel(application: Application) : AndroidViewModel(applicatio
 
         if (chosenAnswer == correctAnswer) {
             _score.value = (_score.value)?.plus(1)
+        } else {
+            _numWrong.value = (_numWrong.value)?.plus(1)
         }
 
         // Then move on to next question if there is another question
@@ -148,13 +146,13 @@ class AlbumGameViewModel(application: Application) : AndroidViewModel(applicatio
         Log.d(TAG, "=================")
     }
 
-    private suspend fun fetchData() {
+    private suspend fun fetchData(playlist_id: String) {
 
         viewModelScope.launch {
             Log.d(TAG, "Fetching data")
 
             // Fetch the 10 base tracks
-            val job = fetchPlaylistTracks()
+            val job = fetchPlaylistTracks(playlist_id)
             job.join()  // wait for it to be finished
             Log.d(TAG, "Initial tracks fetched")
 
@@ -172,20 +170,18 @@ class AlbumGameViewModel(application: Application) : AndroidViewModel(applicatio
                 removeIfPresent(correctAlbumName, artistId, artistIdToOtherAlbums[artistId])
                 val albums = artistIdToOtherAlbums[artistId]
 
-                // TODO preload all images with Glide
-                // https://stackoverflow.com/questions/62562877/glide-how-to-preload-images-and-get-confirmation-that-it-is-stored-in-cache
                 // TODO avoid repeat questions in some way etc
                 // TODO prioritise album names rather than singles/eps?
 
                 makeAnswerOptionsV2(correctAlbum, albums)
 
             }
-            _status.value = SpotifyApiStatus.DONE
+            _nextQuestion.value = questions[0]
             numQuestions = initialItems.size
+            _status.value = SpotifyApiStatus.DONE
             startQuiz()
         }
     }
-
 
     private fun makeAnswerOptionsV2(correctAlbum: Album, otherAlbums: MutableList<Album>?) {
         val correctAlbumName = correctAlbum.name
@@ -204,10 +200,6 @@ class AlbumGameViewModel(application: Application) : AndroidViewModel(applicatio
         val incorrectAnswers = otherAlbums.map { album ->
             album.name
         }
-//        Log.d(TAG, "correct $correctAlbumName")
-//        for (i in incorrectAnswers) {
-//            Log.d(TAG, "incorrect: $i")
-//        }
 
         val question = AlbumQuestion(correctAlbum.images, correctAlbumName, incorrectAnswers)
         questions.add(question)
@@ -260,11 +252,11 @@ class AlbumGameViewModel(application: Application) : AndroidViewModel(applicatio
                 artistAlbums.forEach { Log.d(TAG, "preDistinct ${it.name}") }
                 val subList =
                     artistAlbums.slice(0..min(20, artistAlbums.size - 1)).distinctBy {
-                        regexedString(it.name.toLowerCase(Locale.ROOT), Constants.ALPHANUM_REGEX)
+//                        regexedString(it.name.toLowerCase(Locale.ROOT), Constants.ALPHANUM_REGEX)
+                        cleanedString(it.name.toLowerCase(Locale.ROOT))
                     }.toList()
                 subList.forEach { Log.d(TAG, "postDistinct ${it.name}") }
                 _numAlbumsLoaded.value = _numAlbumsLoaded.value?.plus(1)
-
 
                 artistIdToOtherAlbums[artist_id] = subList.toMutableList()
 

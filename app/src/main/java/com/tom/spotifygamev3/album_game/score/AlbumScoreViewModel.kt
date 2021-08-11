@@ -1,11 +1,11 @@
-package com.tom.spotifygamev3.album_game
+package com.tom.spotifygamev3.album_game.score
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class AlbumGameScoreViewModel(finalScore: Int) : ViewModel() {
+class AlbumScoreViewModel(finalScore: Int) : ViewModel() {
     private val TAG = "AlbumGameScoreViewModel"
 
     private val _score = MutableLiveData<Int>()

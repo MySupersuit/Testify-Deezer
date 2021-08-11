@@ -30,14 +30,11 @@ class HomeFragment : Fragment() {
         viewModel.navigateToAlbumGame.observe(viewLifecycleOwner, Observer<Boolean> {navigate ->
             if (navigate) {
                 val navController = findNavController()
-                navController.navigate(R.id.action_homeFragment_to_albumGameFragment)
+//                navController.navigate(R.id.action_homeFragment_to_albumGameFragment)
+                navController.navigate(R.id.action_homeFragment_to_playlistPickerFragment)
                 viewModel.onNavigateToAlbumGame()
             }
         })
-
-        binding.albumGameButton.setOnClickListener {
-
-        }
 
         return binding.root
 

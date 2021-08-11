@@ -7,5 +7,7 @@ object Constants {
     const val BICEP_URI = "73A3bLnfnz5BoQjb4gNCga"
     const val ALBUM_GAME_NUM_QUESTIONS = 10
 
+    const val PLAYLISTS_URL_PARAMS = "limit=10"
+
     val ALPHANUM_REGEX = "[^A-Za-z0-9 ]".toRegex()
 }
