@@ -2,12 +2,17 @@ package com.tom.spotifygamev3.Utils
 
 object Constants {
     const val BASE_URL = "https://api.spotify.com/v1/"
+    const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
+    const val LASTFM_API_KEY = "f504a46e92218226ee4517f47f04d7db"
+
     const val TEST_PLAYLIST_URI = "1ocd7l0Q4L97N3JHNdMUfD"
     const val TRACKS_URL_PARAMS = "fields=href,next,items(track(album(id,images,name,uri,album_type),artists(id,name,uri),id,name,preview_url,uri))&market=IE"
     const val BICEP_URI = "73A3bLnfnz5BoQjb4gNCga"
     const val ALBUM_GAME_NUM_QUESTIONS = 10
+    const val SMALL_IMAGE_SIZE = 60
+    const val TOP_50_IRL_URI = "37i9dQZEVXbKM896FDX8L1"
 
-    const val PLAYLISTS_URL_PARAMS = "limit=10"
+    const val PLAYLISTS_URL_PARAMS = "limit=30"
 
     val ALPHANUM_REGEX = "[^A-Za-z0-9 ]".toRegex()
 }

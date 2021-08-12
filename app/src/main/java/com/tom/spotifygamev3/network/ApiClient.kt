@@ -1,20 +1,24 @@
 package com.tom.spotifygamev3.network
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.tom.spotifygamev3.Utils.Constants
+import com.tom.spotifygamev3.network.lastfm.LastFmApiService
+import com.tom.spotifygamev3.network.spotify.ApiService
+import com.tom.spotifygamev3.network.spotify.AuthInterceptor
 import retrofit2.Retrofit
 import okhttp3.OkHttpClient
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class ApiClient {
     private lateinit var apiService: ApiService
+    private lateinit var lastFmApiService: LastFmApiService
 
     fun getApiService(context: Context): ApiService {
         if (!::apiService.isInitialized) {
             val retrofit = Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
-//                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okhttpClient(context))
                 .build()
@@ -22,6 +26,22 @@ class ApiClient {
             apiService = retrofit.create(ApiService::class.java)
         }
         return apiService
+    }
+
+//    val gson: Gson = GsonBuilder()
+//        .setLenient()
+//        .create()
+    
+    fun getLastFmApiService(context: Context): LastFmApiService {
+        if (!::lastFmApiService.isInitialized) {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(Constants.LASTFM_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            lastFmApiService = retrofit.create(LastFmApiService::class.java)
+        }
+        return lastFmApiService
     }
 
     private fun okhttpClient(context: Context) : OkHttpClient {

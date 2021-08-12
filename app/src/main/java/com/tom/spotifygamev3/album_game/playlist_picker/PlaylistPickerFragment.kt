@@ -37,7 +37,6 @@ class PlaylistPickerFragment : Fragment() {
         binding.viewModel = viewModel
 
         val adapter = PlaylistAdapter(PlaylistListener { playlistId ->
-            Toast.makeText(context, "${playlistId} clicked", Toast.LENGTH_SHORT).show()
             // navigate to game fragment
             viewModel.onPlaylistChosen(playlistId)
         })

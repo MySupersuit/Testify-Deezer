@@ -27,8 +27,6 @@ class PlaylistPickerViewModel(application: Application) : AndroidViewModel(appli
         get() = _navigateToGame
 
 
-//    private var playlists = listOf<Playlist>()
-
     private var apiClient: ApiClient = ApiClient()
 
     init {
