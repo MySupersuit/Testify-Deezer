@@ -8,10 +8,14 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.tom.spotifygamev3.home.HomeFragment"
+        tools:layout="@layout/home_fragment"
         android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_playlistPickerFragment"
             app:destination="@id/playlistPickerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_sourcePickerFragment"
+            app:destination="@id/sourcePickerFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumGameFragment"
@@ -53,4 +57,18 @@
             android:id="@+id/action_playlistPickerFragment_to_albumGameFragment"
             app:destination="@id/albumGameFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/sourcePickerFragment"
+        android:name="com.tom.spotifygamev3.higher_lower_game.playlist_picker.SourcePickerFragment"
+        android:label="source_picker_fragment"
+        tools:layout="@layout/source_picker_fragment" >
+        <action
+            android:id="@+id/action_sourcePickerFragment_to_highLowGameFragment"
+            app:destination="@id/highLowGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/highLowGameFragment"
+        android:name="com.tom.spotifygamev3.higher_lower_game.game.HighLowGameFragment"
+        android:label="high_low_game_fragment"
+        tools:layout="@layout/high_low_game_fragment" />
 </navigation>

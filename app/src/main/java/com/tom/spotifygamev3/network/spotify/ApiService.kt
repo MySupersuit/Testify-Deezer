@@ -1,4 +1,4 @@
-package com.tom.spotifygamev3.network
+package com.tom.spotifygamev3.network.spotify
 
 import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.models.spotify_models.Artists
