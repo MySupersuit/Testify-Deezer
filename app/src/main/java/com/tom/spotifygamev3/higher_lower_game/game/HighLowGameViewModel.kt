@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 
-class HighLowGameViewModel(application: Application) : AndroidViewModel(application) {
+class HighLowGameViewModel(application: Application, playlist_id: String) :
+    AndroidViewModel(application) {
 
     private val TAG = "HighLowGameViewModel"
 
@@ -31,15 +32,15 @@ class HighLowGameViewModel(application: Application) : AndroidViewModel(applicat
     init {
         runBlocking {
             _status.value = SpotifyApiStatus.LOADING
-            fetchData()
+            fetchData(playlist_id)
         }
     }
 
-    private suspend fun fetchData() {
+    private suspend fun fetchData(playlistId: String) {
         viewModelScope.launch {
             Log.d(TAG, "fetching data")
 
-            val job = fetchTracks()
+            val job = fetchTracks(playlistId)
             job.join()
             Log.d(TAG, "initialTracks fetched")
 
@@ -54,7 +55,7 @@ class HighLowGameViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    private fun fetchTracks(playlist_id: String = Constants.TOP_50_IRL_URI): Job {
+    private fun fetchTracks(playlist_id: String = Constants.TOP_50_IRL): Job {
         val job = viewModelScope.launch {
             try {
                 val localItems =

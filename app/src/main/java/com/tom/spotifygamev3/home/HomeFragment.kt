@@ -1,15 +1,14 @@
 package com.tom.spotifygamev3.home
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.tom.spotifygamev3.R
+import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.databinding.HomeFragmentBinding
 
 class HomeFragment : Fragment() {
@@ -28,18 +27,19 @@ class HomeFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.navigateToAlbumGame.observe(viewLifecycleOwner, Observer<Boolean> {navigate ->
+        viewModel.navigateToAlbumGame.observe(viewLifecycleOwner, Observer {navigate ->
             if (navigate) {
-                val navController = findNavController()
-                navController.navigate(R.id.action_homeFragment_to_playlistPickerFragment)
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPlaylistPickerFragment(
+                    Constants.ALBUM_GAME_TYPE))
                 viewModel.onNavigateToAlbumGame()
             }
         })
 
-        viewModel.navigateToHighLow.observe(viewLifecycleOwner, Observer<Boolean> { navigate ->
+        viewModel.navigateToHighLow.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
-                val navController = findNavController()
-                navController.navigate(R.id.action_homeFragment_to_sourcePickerFragment)
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPlaylistPickerFragment(
+                    Constants.HIGH_LOW_GAME_TYPE
+                ))
                 viewModel.onNavigateToHighLow()
             }
         })

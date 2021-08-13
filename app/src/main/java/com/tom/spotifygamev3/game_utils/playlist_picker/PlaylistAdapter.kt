@@ -1,4 +1,4 @@
-package com.tom.spotifygamev3.album_game.playlist_picker
+package com.tom.spotifygamev3.game_utils.playlist_picker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
