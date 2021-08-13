@@ -78,13 +78,13 @@ fun showAlbumQuiz(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) 
 }
 
 @BindingAdapter("showPlaylistPicker")
-fun showPlaylistPicker(recyclerView: RecyclerView, status: SpotifyApiStatus) {
+fun showPlaylistPicker(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) {
     when (status) {
         SpotifyApiStatus.LOADING -> {
-            recyclerView.visibility = View.GONE
+            constraintLayout.visibility = View.GONE
         }
         SpotifyApiStatus.DONE -> {
-            recyclerView.visibility = View.VISIBLE
+            constraintLayout.visibility = View.VISIBLE
         }
     }
 }

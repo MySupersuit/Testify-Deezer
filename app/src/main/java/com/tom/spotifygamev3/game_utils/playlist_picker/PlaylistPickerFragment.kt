@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
+import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.databinding.PlaylistPickerFragmentBinding
 import java.lang.IllegalArgumentException
@@ -53,7 +54,7 @@ class PlaylistPickerFragment : Fragment() {
                 val action = when (viewModel.gameType.value) {
                     Constants.ALBUM_GAME_TYPE ->
                         PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToAlbumGameFragment(
-                            playlistId = playlistId
+                            playlistId
                         )
                     Constants.HIGH_LOW_GAME_TYPE ->
                         PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToHighLowGameFragment(
@@ -69,11 +70,31 @@ class PlaylistPickerFragment : Fragment() {
         binding.playlistRv.adapter = adapter
 
         viewModel.userPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
-            adapter.submitPlaylist(playlists)
+            if (viewModel.showUserPlaylists.value == true) {
+                adapter.submitPlaylist(playlists)
+                binding.playlistTitle.text = getString(R.string.your_playlists)
+            }
+        })
+
+        viewModel.commonPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
+            if (viewModel.showUserPlaylists.value == false) {
+                adapter.submitPlaylist(playlists)
+                binding.playlistTitle.text = getString(R.string.top_playlists)
+            }
+        })
+
+        viewModel.showUserPlaylists.observe(viewLifecycleOwner, Observer { showUserPlaylists ->
+            if (showUserPlaylists) {
+                Log.d(TAG, "fab clicked")
+                viewModel.userPlaylists.value?.let { adapter.submitPlaylist(it) }
+                binding.playlistTitle.text = getString(R.string.your_playlists)
+            } else {
+                viewModel.commonPlaylists.value?.let { adapter.submitPlaylist(it) }
+                binding.playlistTitle.text = getString(R.string.top_playlists)
+            }
         })
 
         return binding.root
     }
-
 
 }

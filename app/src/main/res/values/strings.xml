@@ -4,4 +4,8 @@
     <string name="loading_prog_message">%1$d/%2$d loaded</string>
     <string name="you_scored">You scored</string>
     <string name="loading_playlists">Loading playlists…</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="your_playlists">Your Playlists</string>
+    <string name="top_playlists">Top Playlists</string>
 </resources>

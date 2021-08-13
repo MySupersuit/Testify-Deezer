@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_playlistPickerFragment"
             app:destination="@id/playlistPickerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_playlistPickerFragment2"
+            app:destination="@id/playlistPickerFragment2" />
     </fragment>
     <fragment
         android:id="@+id/albumGameFragment"
@@ -68,6 +71,14 @@
         <argument
             android:name="playlist_id"
             android:defaultValue="1ocd7l0Q4L97N3JHNdMUfD"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistPickerFragment2"
+        android:name="com.tom.spotifygamev3.game_utils.playlist_picker.v2.PlaylistPickerFragment2"
+        android:label="PlaylistPickerFragment2" >
+        <argument
+            android:name="gameType"
             app:argType="string" />
     </fragment>
 </navigation>

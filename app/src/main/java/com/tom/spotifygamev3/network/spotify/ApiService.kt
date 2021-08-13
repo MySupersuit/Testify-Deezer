@@ -29,7 +29,7 @@ interface ApiService {
     @GET("playlists/{playlist_id}?${Constants.SIMPLE_PLAYLIST_PARAMS}")
     suspend fun getPlaylist(
         @Path(value="playlist_id") playlist_id: String
-    ) : SimplePlaylistResponse
+    ) : SimplePlaylist
 
 }
 

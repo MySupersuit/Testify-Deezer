@@ -33,7 +33,8 @@ object Constants {
     const val HIGH_LOW_GAME_TYPE = "highlow"
 
     const val USER_PLAYLISTS_URL_PARAMS = "limit=30"
-    const val SIMPLE_PLAYLIST_PARAMS = "fields=name"
+    const val SIMPLE_PLAYLIST_PARAMS = "fields=id,images,owner,name"
+    const val FULL_PLAYLISTS_PARAMS = "fields=id,images,owner,name,tracks"
 
     val ALPHANUM_REGEX = "[^A-Za-z0-9 ]".toRegex()
 }

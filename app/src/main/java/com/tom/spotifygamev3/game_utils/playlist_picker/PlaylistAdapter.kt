@@ -7,18 +7,19 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tom.spotifygamev3.databinding.PlaylistItemBinding
 import com.tom.spotifygamev3.models.spotify_models.Playlist
+import com.tom.spotifygamev3.models.spotify_models.SimplePlaylist
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PlaylistAdapter(val clickListener: PlaylistListener) :
-    ListAdapter<Playlist, RecyclerView.ViewHolder>(PlaylistDiffCallback()) {
+    ListAdapter<SimplePlaylist, RecyclerView.ViewHolder>(PlaylistDiffCallback()) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                val playlistItem = getItem(position) as Playlist
+                val playlistItem = getItem(position) as SimplePlaylist
                 holder.bind(playlistItem, clickListener)
             }
         }
@@ -28,7 +29,7 @@ class PlaylistAdapter(val clickListener: PlaylistListener) :
         return ViewHolder.from(parent)
     }
 
-    fun submitPlaylist(list : List<Playlist>) {
+    fun submitPlaylist(list : List<SimplePlaylist>) {
         adapterScope.launch {
             withContext(Dispatchers.Main) {
                 submitList(list)
@@ -36,10 +37,14 @@ class PlaylistAdapter(val clickListener: PlaylistListener) :
         }
     }
 
+//    override fun submitList(list: List<SimplePlaylist>?) {
+//        super.submitList(list?.let {ArrayList(it)})
+//    }
+
     class ViewHolder private constructor(val binding: PlaylistItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Playlist, clickListener: PlaylistListener) {
+        fun bind(item: SimplePlaylist, clickListener: PlaylistListener) {
             binding.playlist = item
             binding.executePendingBindings()
             binding.clickListener = clickListener
@@ -55,18 +60,18 @@ class PlaylistAdapter(val clickListener: PlaylistListener) :
     }
 }
 
-class PlaylistDiffCallback : DiffUtil.ItemCallback<Playlist>() {
-    override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
+class PlaylistDiffCallback : DiffUtil.ItemCallback<SimplePlaylist>() {
+    override fun areItemsTheSame(oldItem: SimplePlaylist, newItem: SimplePlaylist): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
+    override fun areContentsTheSame(oldItem: SimplePlaylist, newItem: SimplePlaylist): Boolean {
         return oldItem == newItem
     }
 }
 
 class PlaylistListener(val clickListener: (playlistId: String) -> Unit) {
-    fun onClick(playlist: Playlist) = clickListener(playlist.id)
+    fun onClick(playlist: SimplePlaylist) = clickListener(playlist.id)
 }
 
 private val adapterScope = CoroutineScope(Dispatchers.Default)
