@@ -23,7 +23,7 @@ import com.tom.spotifygamev3.models.spotify_models.Images
 class AlbumGameFragment : Fragment() {
 
     private val viewModel: AlbumGameViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(AlbumGameViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[AlbumGameViewModel::class.java]
     }
 
     private lateinit var viewModelFactory: AlbumGameViewModelFactory

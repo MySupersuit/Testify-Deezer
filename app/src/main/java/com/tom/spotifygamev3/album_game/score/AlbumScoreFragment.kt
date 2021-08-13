@@ -37,7 +37,7 @@ class AlbumScoreFragment : Fragment() {
 
         viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain ->
             if (playAgain) {
-                findNavController().navigate(AlbumScoreFragmentDirections.actionAlbumGameRestart())
+                findNavController().navigate(AlbumScoreFragmentDirections.actionAlbumGameRestart(Constants.ALBUM_GAME_TYPE))
                 viewModel.onPlayAgainComplete()
             }
         })

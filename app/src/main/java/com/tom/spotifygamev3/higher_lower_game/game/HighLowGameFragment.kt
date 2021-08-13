@@ -13,14 +13,21 @@ import com.tom.spotifygamev3.databinding.HighLowGameFragmentBinding
 class HighLowGameFragment : Fragment() {
 
     private val viewModel: HighLowGameViewModel by lazy {
-        ViewModelProvider(this).get(HighLowGameViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[HighLowGameViewModel::class.java]
     }
+
+    private lateinit var viewModelFactory: HighLowGameViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = HighLowGameFragmentBinding.inflate(inflater)
+        viewModelFactory =
+            HighLowGameViewModelFactory(
+                requireActivity().application,
+                HighLowGameFragmentArgs.fromBundle(requireArguments()).playlistId
+            )
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 

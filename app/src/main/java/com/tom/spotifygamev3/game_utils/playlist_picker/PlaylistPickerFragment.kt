@@ -1,4 +1,4 @@
-package com.tom.spotifygamev3.album_game.playlist_picker
+package com.tom.spotifygamev3.game_utils.playlist_picker
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,22 +7,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.tom.spotifygamev3.R
-import com.tom.spotifygamev3.album_game.game.AlbumGameViewModel
+import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.databinding.PlaylistPickerFragmentBinding
+import java.lang.IllegalArgumentException
 
 class PlaylistPickerFragment : Fragment() {
 
     private val TAG = "PlaylistPickerFragment"
 
     private val viewModel: PlaylistPickerViewModel by lazy {
-        ViewModelProvider(this)[PlaylistPickerViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[PlaylistPickerViewModel::class.java]
     }
+
+    private lateinit var viewModelFactory: PlaylistPickerViewModelFactory
 
 //    val adapter = PlaylistRecyclerAdapter()
 
@@ -33,6 +32,12 @@ class PlaylistPickerFragment : Fragment() {
 
         val binding = PlaylistPickerFragmentBinding.inflate(inflater)
 
+        viewModelFactory =
+            PlaylistPickerViewModelFactory(
+                requireActivity().application,
+                PlaylistPickerFragmentArgs.fromBundle(requireArguments()).gameType
+            )
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -42,12 +47,20 @@ class PlaylistPickerFragment : Fragment() {
         })
 
         viewModel.navigateToGame.observe(viewLifecycleOwner, Observer { playlistId ->
-            Log.d(TAG, playlistId?:"nulled")
+            Log.d(TAG, playlistId ?: "nulled")
             playlistId?.let {
-                val action =
-                    PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToAlbumGameFragment(
-                        playlistId = playlistId
-                    )
+
+                val action = when (viewModel.gameType.value) {
+                    Constants.ALBUM_GAME_TYPE ->
+                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToAlbumGameFragment(
+                            playlistId = playlistId
+                        )
+                    Constants.HIGH_LOW_GAME_TYPE ->
+                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToHighLowGameFragment(
+                            playlistId
+                        )
+                    else -> throw IllegalArgumentException("Unknown Game Type")
+                }
                 NavHostFragment.findNavController(this).navigate(action)
                 viewModel.onNavigationToGame()
             }
@@ -55,7 +68,7 @@ class PlaylistPickerFragment : Fragment() {
 
         binding.playlistRv.adapter = adapter
 
-        viewModel.playlists.observe(viewLifecycleOwner, Observer { playlists ->
+        viewModel.userPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
             adapter.submitPlaylist(playlists)
         })
 

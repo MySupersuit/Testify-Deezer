@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_homeFragment_to_playlistPickerFragment"
             app:destination="@id/playlistPickerFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_sourcePickerFragment"
-            app:destination="@id/sourcePickerFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumGameFragment"
@@ -50,25 +47,27 @@
     </fragment>
     <fragment
         android:id="@+id/playlistPickerFragment"
-        android:name="com.tom.spotifygamev3.album_game.playlist_picker.PlaylistPickerFragment"
+        android:name="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerFragment"
         android:label="playlist_picker_fragment"
         tools:layout="@layout/playlist_picker_fragment" >
         <action
             android:id="@+id/action_playlistPickerFragment_to_albumGameFragment"
             app:destination="@id/albumGameFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/sourcePickerFragment"
-        android:name="com.tom.spotifygamev3.higher_lower_game.playlist_picker.SourcePickerFragment"
-        android:label="source_picker_fragment"
-        tools:layout="@layout/source_picker_fragment" >
+        <argument
+            android:name="gameType"
+            app:argType="string" />
         <action
-            android:id="@+id/action_sourcePickerFragment_to_highLowGameFragment"
+            android:id="@+id/action_playlistPickerFragment_to_highLowGameFragment"
             app:destination="@id/highLowGameFragment" />
     </fragment>
     <fragment
         android:id="@+id/highLowGameFragment"
         android:name="com.tom.spotifygamev3.higher_lower_game.game.HighLowGameFragment"
         android:label="high_low_game_fragment"
-        tools:layout="@layout/high_low_game_fragment" />
+        tools:layout="@layout/high_low_game_fragment" >
+        <argument
+            android:name="playlist_id"
+            android:defaultValue="1ocd7l0Q4L97N3JHNdMUfD"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".album_game.playlist_picker.PlaylistPickerFragment">
+    tools:context=".game_utils.playlist_picker.PlaylistPickerFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.album_game.playlist_picker.PlaylistPickerViewModel" />
+            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
