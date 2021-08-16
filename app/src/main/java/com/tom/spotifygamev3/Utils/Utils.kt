@@ -10,6 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.models.spotify_models.Images
+import java.text.NumberFormat
 import java.util.*
 
 object Utils {
@@ -18,11 +19,19 @@ object Utils {
     fun <T> List<T>.safeSubList(fromIndex: Int, toIndex: Int): List<T> =
         this.subList(fromIndex, toIndex.coerceAtMost(this.size))
 
-    fun regexedString(string: String, regex: Regex): String {
+    fun regexedString(string: String, regex: Regex) : String {
         return regex.replace(string, "")
     }
 
-    fun cleanedString(string: String) : String {
+    fun regexedString(string: String, regexes: List<Regex>): String {
+        var ret = string
+        for (reg in regexes) {
+            ret = reg.replace(ret, "")
+        }
+        return ret
+    }
+
+    fun cleanedString(string: String): String {
         val original_tokens = string.split(" ").toMutableList()
         val regexed = regexedString(string, Constants.ALPHANUM_REGEX)
         val toRemove = mutableListOf<Int>()
@@ -30,7 +39,7 @@ object Utils {
         val index = splits.indexOf("edition")
         if (index > 0) {
             toRemove.add(index)
-            toRemove.add(index-1)
+            toRemove.add(index - 1)
         }
         toRemove.forEach { original_tokens.removeAt(it) }
         return original_tokens.joinToString(" ")
@@ -55,11 +64,11 @@ object Utils {
 
     fun glideShowImageLoadAnim(images: List<Images>, context: Context, imageView: ImageView) {
         Log.d(TAG, "loading image")
-        images.forEach {Log.d(TAG, it.url)}
+        images.forEach { Log.d(TAG, it.url) }
         val imgUri = urlToUri(images[0].url)
         Log.d(TAG, imgUri.toString())
 
-         val glide = Glide.with(context)
+        val glide = Glide.with(context)
             .load(imgUri)
             .apply(
                 RequestOptions()
@@ -87,7 +96,7 @@ object Utils {
 
     }
 
-    fun urlToUri(url: String) : Uri {
+    private fun urlToUri(url: String): Uri {
         return url.toUri().buildUpon().scheme("https").build()
     }
 }

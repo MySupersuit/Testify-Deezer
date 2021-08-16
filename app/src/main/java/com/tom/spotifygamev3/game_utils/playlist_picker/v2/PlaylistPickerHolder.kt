@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import com.tom.spotifygamev3.game_utils.playlist_picker.ViewPagerAdapter
 
 class PlaylistPickerHolder: Fragment() {
 

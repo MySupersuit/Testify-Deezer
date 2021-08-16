@@ -25,8 +25,9 @@ class AlbumScoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = AlbumGameScoreFragmentBinding.inflate(inflater)
+        val args = AlbumScoreFragmentArgs.fromBundle(requireArguments())
         viewModelFactory =
-            AlbumScoreViewModelFactory(AlbumScoreFragmentArgs.fromBundle(requireArguments()).score)
+            AlbumScoreViewModelFactory(args.score, args.numQuestions)
 
         binding.lifecycleOwner = this
 
@@ -37,7 +38,11 @@ class AlbumScoreFragment : Fragment() {
 
         viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain ->
             if (playAgain) {
-                findNavController().navigate(AlbumScoreFragmentDirections.actionAlbumGameRestart(Constants.ALBUM_GAME_TYPE))
+                findNavController().navigate(
+                    AlbumScoreFragmentDirections.actionAlbumGameRestart(
+                        Constants.ALBUM_GAME_TYPE
+                    )
+                )
                 viewModel.onPlayAgainComplete()
             }
         })

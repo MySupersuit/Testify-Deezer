@@ -3,6 +3,7 @@ package com.tom.spotifygamev3
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -73,6 +74,18 @@ fun showAlbumQuiz(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) 
         }
         SpotifyApiStatus.DONE -> {
             constraintLayout.visibility = View.VISIBLE
+        }
+    }
+}
+
+@BindingAdapter("showHighLowQuiz")
+fun showHighLowQuiz(linearLayout: LinearLayout, status: SpotifyApiStatus) {
+    when (status) {
+        SpotifyApiStatus.LOADING -> {
+            linearLayout.visibility = View.GONE
+        }
+        SpotifyApiStatus.DONE -> {
+            linearLayout.visibility = View.VISIBLE
         }
     }
 }
