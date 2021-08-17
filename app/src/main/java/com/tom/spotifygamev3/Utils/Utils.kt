@@ -10,6 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.models.spotify_models.Images
+import java.text.Normalizer
 import java.text.NumberFormat
 import java.util.*
 
@@ -98,5 +99,10 @@ object Utils {
 
     private fun urlToUri(url: String): Uri {
         return url.toUri().buildUpon().scheme("https").build()
+    }
+
+    fun CharSequence.unaccent(): String {
+        val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
+        return Constants.UNACCENT_REGEX.replace(temp, "")
     }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import java.lang.IllegalArgumentException
 
-class PlaylistPickerViewModelFactory(private val application: Application, private val gameType: String) :
+class PlaylistPickerViewModelFactory(private val application: Application, private val gameType: Int) :
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

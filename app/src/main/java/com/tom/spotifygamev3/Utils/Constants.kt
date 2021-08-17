@@ -30,8 +30,8 @@ object Constants {
         ROCK_CLASSICS
     )
 
-    const val ALBUM_GAME_TYPE = "album"
-    const val HIGH_LOW_GAME_TYPE = "highlow"
+    const val ALBUM_GAME_TYPE = 0
+    const val HIGH_LOW_GAME_TYPE = 1
 
     const val USER_PLAYLISTS_URL_PARAMS = "limit=30"
     const val SIMPLE_PLAYLIST_PARAMS = "fields=id,images,owner,name"
@@ -40,4 +40,6 @@ object Constants {
     val ALPHANUM_REGEX = "[^A-Za-z0-9 ]".toRegex()
     val PARANTHESES_REGEX = """\(([^()]*)\)""".toRegex()
     val SINGLE_SPACE_REGEX = "\\s+".toRegex()
+
+    val UNACCENT_REGEX = "\\p{InCombiningDiacriticalMarks}+".toRegex()
 }
