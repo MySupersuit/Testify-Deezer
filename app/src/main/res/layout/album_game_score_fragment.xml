@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".album_game.score.AlbumScoreFragment">
+    tools:context=".game_utils.show_score.ScoreFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.album_game.score.AlbumScoreViewModel" />
+            type="com.tom.spotifygamev3.game_utils.show_score.ScoreViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

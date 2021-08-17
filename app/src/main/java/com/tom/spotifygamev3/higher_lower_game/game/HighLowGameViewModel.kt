@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.Utils.Utils.cleanedString
 import com.tom.spotifygamev3.Utils.Utils.regexedString
+import com.tom.spotifygamev3.Utils.Utils.unaccent
 import com.tom.spotifygamev3.album_game.game.SpotifyApiStatus
 import com.tom.spotifygamev3.models.HighLowQuestion
 import com.tom.spotifygamev3.models.lastfm_models.LfmTrack
@@ -95,26 +96,21 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
             else -> throw IllegalArgumentException("neither answer 1 or 2 was chosen")
         }
 
-        // TODO Show stream count for each
-
-//        viewModelScope.launch {
-//            delay(3000)
-//            finishStreamCount()
-//        }
-
-//        lastQuestionRes = if (chosenAnswer.playCount > otherAnswer.playCount) "Correct :)" else "Wrong :("
         val result = currentQuestion.value
-        result?.correct = chosenAnswer.playCount > otherAnswer.playCount
+        if (chosenAnswer.playCount > otherAnswer.playCount) {
+            _score.value = (_score.value)?.plus(1)
+            result?.correct = true
+        } else {
+            result?.correct = false
+        }
 
         if (result != null) {
             showModal(result)
         }
-
     }
 
     fun onNextModalClick() {
         hideModal()
-
         if ((questionIndex + 1) == numQuestions) {
             // Game over
             onGameFinish()
@@ -164,41 +160,35 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
                 Log.d(TAG, "${it.name} : ${it.playCount}")
             }
 
-            Log.d(
-                TAG,
-                "test ${regexedString("19-2000 - Soulchild Remix", listOf(Constants.ALPHANUM_REGEX, Constants.SINGLE_SPACE_REGEX))}"
-            )
-            Log.d(
-                TAG,
-                "test ${regexedString("19-2000 (Soulchild remix)", listOf(Constants.ALPHANUM_REGEX, Constants.SINGLE_SPACE_REGEX))}"
-            )
-
-
+            // TODO clean up string manipulation shtuff
             for (i in 0 until Constants.HIGH_LOW_NUM_QUESTIONS * 2) {
                 val paranth_regex_local =
                     regexedString(
                         localTracksPlaycount[i].name,
                         listOf(Constants.PARANTHESES_REGEX, Constants.SINGLE_SPACE_REGEX)
-                    ).trim()
+                    ).unaccent().trim()
                 for (item in shuffled.subList(0, Constants.HIGH_LOW_NUM_QUESTIONS * 2 + 5)) {
 
                     val paranth_regex_item =
                         regexedString(
                             item.track.name,
                             listOf(Constants.PARANTHESES_REGEX, Constants.SINGLE_SPACE_REGEX)
-                        ).trim()
+                        ).unaccent().trim()
 
-                    if (regexedString(item.track.name, listOf(Constants.PARANTHESES_REGEX, Constants.SINGLE_SPACE_REGEX)).equals(
-                            regexedString(localTracksPlaycount[i].name, listOf(Constants.PARANTHESES_REGEX, Constants.SINGLE_SPACE_REGEX)),
+                    if (regexedString(
+                            item.track.name.unaccent(),
+                            listOf(Constants.ALPHANUM_REGEX, Constants.SINGLE_SPACE_REGEX)
+                        ).equals(
+                            regexedString(
+                                localTracksPlaycount[i].name.unaccent(),
+                                listOf(Constants.ALPHANUM_REGEX, Constants.SINGLE_SPACE_REGEX)
+                            ),
                             ignoreCase = true
                         ) || (paranth_regex_item.equals(paranth_regex_local, ignoreCase = true))
                     ) {
                         item.playCount = localTracksPlaycount[i].playCount
                     }
                 }
-//                shuffled[i].playCount = localTracksPlaycount[i].playCount
-//                Log.d(TAG, "${shuffled[i].track.name} has ${shuffled[i].playCount} plays")
-//                Log.d(TAG, "shuffled ${shuffled[i].track.name} || localPlayCount ${localTracksPlaycount[i].name}")
             }
 
             localTracks = shuffled.subList(0, Constants.HIGH_LOW_NUM_QUESTIONS * 2)

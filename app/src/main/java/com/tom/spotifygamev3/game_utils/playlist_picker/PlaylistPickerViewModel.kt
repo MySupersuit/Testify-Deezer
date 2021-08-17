@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.internal.toImmutableList
 
-class PlaylistPickerViewModel(application: Application, gameType: String) :
+class PlaylistPickerViewModel(application: Application, gameType: Int) :
     AndroidViewModel(application) {
 
     private val TAG = "PlaylistPickerViewModel"
@@ -38,8 +38,8 @@ class PlaylistPickerViewModel(application: Application, gameType: String) :
     val navigateToGame: LiveData<String>
         get() = _navigateToGame
 
-    private val _gameType = MutableLiveData<String>()
-    val gameType: LiveData<String>
+    private val _gameType = MutableLiveData<Int>()
+    val gameType: LiveData<Int>
         get() = _gameType
 
 //    private val _fabClick = MutableLiveData<Boolean>()
@@ -74,7 +74,6 @@ class PlaylistPickerViewModel(application: Application, gameType: String) :
                 job1.join()
             }
             _commonPlaylists.value = localCommonPlaylists.toImmutableList()
-            localCommonPlaylists.forEach { Log.d(TAG, it.name) }
 
             _status.value = SpotifyApiStatus.DONE
         }
@@ -119,8 +118,4 @@ class PlaylistPickerViewModel(application: Application, gameType: String) :
     fun fabClick() {
         _showUserPlaylists.value = _showUserPlaylists.value?.not()
     }
-
-//    fun fabClickFinish() {
-//        _fabClick.value = false
-//    }
 }

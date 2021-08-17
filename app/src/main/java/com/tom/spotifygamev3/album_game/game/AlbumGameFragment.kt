@@ -15,7 +15,6 @@ import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.Utils.Utils.glidePreloadImage
 import com.tom.spotifygamev3.Utils.Utils.glideShowImage
-import com.tom.spotifygamev3.album_game.score.AlbumScoreViewModelFactory
 import com.tom.spotifygamev3.databinding.AlbumGameFragmentBinding
 import com.tom.spotifygamev3.models.AlbumQuestion
 import com.tom.spotifygamev3.models.spotify_models.Images
@@ -68,7 +67,6 @@ class AlbumGameFragment : Fragment() {
             if (newWrong != 0) {
                 doAlphaAnimation(binding.cross)
             }
-            Log.d(TAG, "incorrect score observer")
         })
 
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { hasFinished ->
@@ -95,7 +93,8 @@ class AlbumGameFragment : Fragment() {
     private fun gameFinished() {
         val action = AlbumGameFragmentDirections.actionAlbumGameFragmentToAlbumGameScoreFragment(
             score = viewModel.score.value ?: 0,
-            numQuestions = Constants.ALBUM_GAME_NUM_QUESTIONS
+            numQuestions = Constants.ALBUM_GAME_NUM_QUESTIONS,
+            gameType = Constants.ALBUM_GAME_TYPE
         )
         NavHostFragment.findNavController(this).navigate(action)
         viewModel.onGameFinishComplete()

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.Utils.Utils.glideShowImage
 import com.tom.spotifygamev3.Utils.Constants
@@ -58,10 +59,24 @@ class HighLowGameFragment : Fragment() {
             } else {
                 hideModal(binding)
             }
+        })
+
+        viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { hasFinished ->
+            if (hasFinished) gameFinished()
 
         })
 
         return binding.root
+    }
+
+    private fun gameFinished() {
+        val action = HighLowGameFragmentDirections.actionHighLowGameFragmentToAlbumGameScoreFragment(
+            score = viewModel.score.value ?: 0,
+            numQuestions = Constants.HIGH_LOW_NUM_QUESTIONS,
+            gameType = Constants.HIGH_LOW_GAME_TYPE
+        )
+        NavHostFragment.findNavController(this).navigate(action)
+        viewModel.onGameFinishComplete()
     }
 
     private fun showModal(binding: HighLowGameFragmentBinding, question: HighLowQuestion) {

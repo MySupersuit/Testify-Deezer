@@ -47,10 +47,11 @@ class PlaylistPickerFragment : Fragment() {
             viewModel.onPlaylistChosen(playlistId)
         })
 
+        // Once playlist ID is picked navigate to the game
+        // Which game we navigate to is passed into the fragment in the bundle
         viewModel.navigateToGame.observe(viewLifecycleOwner, Observer { playlistId ->
             Log.d(TAG, playlistId ?: "nulled")
             playlistId?.let {
-
                 val action = when (viewModel.gameType.value) {
                     Constants.ALBUM_GAME_TYPE ->
                         PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToAlbumGameFragment(
@@ -69,6 +70,7 @@ class PlaylistPickerFragment : Fragment() {
 
         binding.playlistRv.adapter = adapter
 
+        // Load user playlists into rv if showUserPlaylists is true
         viewModel.userPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
             if (viewModel.showUserPlaylists.value == true) {
                 adapter.submitPlaylist(playlists)
@@ -76,6 +78,7 @@ class PlaylistPickerFragment : Fragment() {
             }
         })
 
+        // Load common playlists into rv if showUserPlaylists is false
         viewModel.commonPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
             if (viewModel.showUserPlaylists.value == false) {
                 adapter.submitPlaylist(playlists)
@@ -83,9 +86,10 @@ class PlaylistPickerFragment : Fragment() {
             }
         })
 
+        // Clicking the FAB changes which set of playlists the rv shows
+        // - User playlists or Common playlists
         viewModel.showUserPlaylists.observe(viewLifecycleOwner, Observer { showUserPlaylists ->
             if (showUserPlaylists) {
-                Log.d(TAG, "fab clicked")
                 viewModel.userPlaylists.value?.let { adapter.submitPlaylist(it) }
                 binding.playlistTitle.text = getString(R.string.your_playlists)
             } else {
