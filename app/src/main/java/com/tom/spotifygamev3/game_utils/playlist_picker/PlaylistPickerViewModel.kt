@@ -6,7 +6,9 @@ import androidx.lifecycle.*
 import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.album_game.game.SpotifyApiStatus
 import com.tom.spotifygamev3.models.spotify_models.Playlist
+import com.tom.spotifygamev3.models.spotify_models.SimplePlaylist
 import com.tom.spotifygamev3.models.spotify_models.SimplePlaylistResponse
+import com.tom.spotifygamev3.models.spotify_models.UserPlaylistsResponse
 import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -22,15 +24,15 @@ class PlaylistPickerViewModel(application: Application, gameType: String) :
     val status: LiveData<SpotifyApiStatus>
         get() = _status
 
-    private val _userPlaylists = MutableLiveData<List<Playlist>>()
-    val userPlaylists: LiveData<List<Playlist>>
+    private val _userPlaylists = MutableLiveData<List<SimplePlaylist>>()
+    val userPlaylists: LiveData<List<SimplePlaylist>>
         get() = _userPlaylists
 
-    private val _commonPlaylists = MutableLiveData<List<SimplePlaylistResponse>>()
-    val commonPlaylists: LiveData<List<SimplePlaylistResponse>>
+    private val _commonPlaylists = MutableLiveData<List<SimplePlaylist>>()
+    val commonPlaylists: LiveData<List<SimplePlaylist>>
         get() = _commonPlaylists
 
-    private val localCommonPlaylists = mutableListOf<SimplePlaylistResponse>()
+    private val localCommonPlaylists = mutableListOf<SimplePlaylist>()
 
     private val _navigateToGame = MutableLiveData<String>()
     val navigateToGame: LiveData<String>
@@ -40,9 +42,18 @@ class PlaylistPickerViewModel(application: Application, gameType: String) :
     val gameType: LiveData<String>
         get() = _gameType
 
+//    private val _fabClick = MutableLiveData<Boolean>()
+//    val fabClick : LiveData<Boolean>
+//        get() = _fabClick
+
+    private val _showUserPlaylists = MutableLiveData<Boolean>()
+    val showUserPlaylists : LiveData<Boolean>
+        get() = _showUserPlaylists
+
     private var apiClient: ApiClient = ApiClient()
 
     init {
+        _showUserPlaylists.value = true
         _gameType.value = gameType
         runBlocking {
             _status.value = SpotifyApiStatus.LOADING
@@ -104,4 +115,12 @@ class PlaylistPickerViewModel(application: Application, gameType: String) :
     fun onNavigationToGame() {
         _navigateToGame.value = null
     }
+
+    fun fabClick() {
+        _showUserPlaylists.value = _showUserPlaylists.value?.not()
+    }
+
+//    fun fabClickFinish() {
+//        _fabClick.value = false
+//    }
 }

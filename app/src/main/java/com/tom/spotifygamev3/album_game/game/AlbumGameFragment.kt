@@ -94,7 +94,8 @@ class AlbumGameFragment : Fragment() {
 
     private fun gameFinished() {
         val action = AlbumGameFragmentDirections.actionAlbumGameFragmentToAlbumGameScoreFragment(
-            score = viewModel.score.value ?: 0
+            score = viewModel.score.value ?: 0,
+            numQuestions = Constants.ALBUM_GAME_NUM_QUESTIONS
         )
         NavHostFragment.findNavController(this).navigate(action)
         viewModel.onGameFinishComplete()

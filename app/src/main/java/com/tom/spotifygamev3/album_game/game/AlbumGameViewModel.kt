@@ -19,8 +19,6 @@ enum class SpotifyApiStatus { LOADING, ERROR, DONE }
 
 class AlbumGameViewModel(application: Application, playlist_id: String) : AndroidViewModel(application) {
 
-    // TODO figure out best way to get questions / data structures
-
     private val TAG = "AlbumGameViewModel"
 
     private val _status = MutableLiveData<SpotifyApiStatus>()

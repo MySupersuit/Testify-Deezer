@@ -6,9 +6,10 @@ object Constants {
     const val LASTFM_API_KEY = "f504a46e92218226ee4517f47f04d7db"
 
     const val TEST_PLAYLIST_URI = "1ocd7l0Q4L97N3JHNdMUfD"
-    const val TRACKS_URL_PARAMS = "fields=href,next,items(track(album(id,images,name,uri,album_type),artists(id,name,uri),id,name,preview_url,uri))&market=IE"
+    const val TRACKS_URL_PARAMS = "fields=href,next,items(track(album(id,images,name,uri,album_type),artists(id,name,uri),id,name,preview_url,uri))"
     const val BICEP_URI = "73A3bLnfnz5BoQjb4gNCga"
     const val ALBUM_GAME_NUM_QUESTIONS = 10
+    const val HIGH_LOW_NUM_QUESTIONS = 10
     const val SMALL_IMAGE_SIZE = 60
 
     const val TOP_50_IRL = "37i9dQZEVXbKM896FDX8L1"
@@ -33,7 +34,10 @@ object Constants {
     const val HIGH_LOW_GAME_TYPE = "highlow"
 
     const val USER_PLAYLISTS_URL_PARAMS = "limit=30"
-    const val SIMPLE_PLAYLIST_PARAMS = "fields=name"
+    const val SIMPLE_PLAYLIST_PARAMS = "fields=id,images,owner,name"
+    const val FULL_PLAYLISTS_PARAMS = "fields=id,images,owner,name,tracks"
 
     val ALPHANUM_REGEX = "[^A-Za-z0-9 ]".toRegex()
+    val PARANTHESES_REGEX = """\(([^()]*)\)""".toRegex()
+    val SINGLE_SPACE_REGEX = "\\s+".toRegex()
 }

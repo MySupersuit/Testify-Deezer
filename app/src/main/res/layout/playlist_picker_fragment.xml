@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/playlist_loading_cl"
             android:layout_width="match_parent"
@@ -43,16 +44,44 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playlist_rv"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#e8dddd"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:showPlaylistPicker="@{viewModel.status}"
-            tools:itemCount="10"
-            tools:listitem="@layout/playlist_item" />
+            app:showPlaylistPicker="@{viewModel.status}">
+
+            <TextView
+                android:id="@+id/playlist_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Your Playlists" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playlist_rv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#e8dddd"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/playlist_title"
+                tools:itemCount="10"
+                tools:listitem="@layout/playlist_item" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:onClick="@{() -> viewModel.fabClick()}"
+                android:src="@drawable/ic_baseline_swap_horiz_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,12 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class AlbumScoreViewModel(finalScore: Int) : ViewModel() {
+class AlbumScoreViewModel(finalScore: Int, numQuestions: Int) : ViewModel() {
     private val TAG = "AlbumGameScoreViewModel"
 
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
         get() = _score
+
+    private val _numQuestions = MutableLiveData<Int>()
+    val numQuestions: LiveData<Int>
+        get() = _numQuestions
 
     private val _eventPlayAgain = MutableLiveData<Boolean>()
     val eventPlayAgain: LiveData<Boolean>
@@ -23,6 +27,7 @@ class AlbumScoreViewModel(finalScore: Int) : ViewModel() {
     init {
         Log.d(TAG, "finalScore: $finalScore")
         _score.value = finalScore
+        _numQuestions.value = numQuestions
     }
 
     fun onPlayAgain() {
