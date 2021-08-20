@@ -6,9 +6,12 @@
 
     <data>
 
-        <variable
+<!--        <variable-->
+<!--            name="viewModel"-->
+<!--            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerViewModel" />-->
+<variable
             name="viewModel"
-            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerViewModel" />
+            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerViewModelV2" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -13,13 +13,10 @@
         <action
             android:id="@+id/action_homeFragment_to_playlistPickerFragment"
             app:destination="@id/playlistPickerFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_playlistPickerFragment2"
-            app:destination="@id/playlistPickerFragment2" />
     </fragment>
     <fragment
         android:id="@+id/albumGameFragment"
-        android:name="com.tom.spotifygamev3.album_game.game.AlbumGameFragment"
+        android:name="com.tom.spotifygamev3.album_game.AlbumGameFragment"
         android:label="album_game_fragment"
         tools:layout="@layout/album_game_fragment">
         <argument
@@ -72,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/highLowGameFragment"
-        android:name="com.tom.spotifygamev3.higher_lower_game.game.HighLowGameFragment"
+        android:name="com.tom.spotifygamev3.higher_lower_game.HighLowGameFragment"
         android:label="high_low_game_fragment"
         tools:layout="@layout/high_low_game_fragment" >
         <argument
@@ -84,13 +81,5 @@
             app:destination="@id/albumGameScoreFragment"
             app:popUpTo="@id/highLowGameFragment"
             app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/playlistPickerFragment2"
-        android:name="com.tom.spotifygamev3.game_utils.playlist_picker.v2.PlaylistPickerFragment2"
-        android:label="PlaylistPickerFragment2" >
-        <argument
-            android:name="gameType"
-            app:argType="string" />
     </fragment>
 </navigation>

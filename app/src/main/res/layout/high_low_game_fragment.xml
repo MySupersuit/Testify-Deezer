@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".higher_lower_game.game.HighLowGameFragment">
+    tools:context=".higher_lower_game.HighLowGameFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.higher_lower_game.game.HighLowGameViewModel" />
+            type="com.tom.spotifygamev3.higher_lower_game.HighLowGameViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,37 +72,87 @@
 
                         <ImageView
                             android:id="@+id/image_ans1"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="center"
+                            android:alpha="0.8"
+                            tools:src="@drawable/blackmidi_cruising" />
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="20dp"
-                            android:layout_marginBottom="50dp"
-                            android:adjustViewBounds="true"
+                            android:background="@color/text_background"
+                            android:padding="5dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:src="@drawable/blackmidi_cruising" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/artist_ans1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="Artist"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/image_ans1" />
+                            <TextView
+                                android:id="@+id/artist_ans1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/black"
+                                android:textSize="32sp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="Earl Sweatshirt" />
 
-                        <TextView
-                            android:id="@+id/song_ans1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Song"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/artist_ans1" />
+                            <TextView
+                                android:id="@+id/song_ans1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center"
+                                android:textColor="@color/black"
+                                android:textSize="30sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/artist_ans1"
+                                tools:text="Song" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <!--                        <ImageView-->
+                        <!--                            android:id="@+id/image_ans1"-->
+                        <!--                            android:layout_width="0dp"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_marginHorizontal="20dp"-->
+                        <!--                            android:layout_marginBottom="50dp"-->
+                        <!--                            android:adjustViewBounds="true"-->
+                        <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                        <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                            app:layout_constraintTop_toTopOf="parent"-->
+                        <!--                            tools:src="@drawable/blackmidi_cruising" />-->
+
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/artist_ans1"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_marginTop="10dp"-->
+                        <!--                            android:gravity="center"-->
+                        <!--                            android:text="Artist"-->
+                        <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                            app:layout_constraintTop_toBottomOf="@id/image_ans1" />-->
+
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/song_ans1"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:gravity="center"-->
+                        <!--                            android:text="Song"-->
+                        <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                            app:layout_constraintTop_toBottomOf="@id/artist_ans1" />-->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -118,37 +168,71 @@
 
                         <ImageView
                             android:id="@+id/image_ans2"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:alpha="0.8"
+                            android:scaleType="center"
+                            tools:src="@drawable/blackmidi_cruising" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="20dp"
-                            android:layout_marginBottom="50dp"
-                            android:adjustViewBounds="true"
+                            android:background="@color/text_background"
+                            android:padding="10dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:src="@drawable/blackmidi_cruising" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/artist_ans2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="Artist"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/image_ans2" />
+                            <TextView
+                                android:id="@+id/artist_ans2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/black"
+                                android:textSize="32sp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="Earl Sweatshirt" />
 
-                        <TextView
-                            android:id="@+id/song_ans2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Song"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/artist_ans2" />
+                            <TextView
+                                android:id="@+id/song_ans2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center"
+                                android:textColor="@color/black"
+                                android:textSize="30sp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/artist_ans2"
+                                tools:text="Song" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/artist_ans2"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_marginTop="10dp"-->
+                        <!--                            android:gravity="center"-->
+                        <!--                            android:text="Artist"-->
+                        <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                            app:layout_constraintTop_toBottomOf="@id/image_ans2" />-->
+
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/song_ans2"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:gravity="center"-->
+                        <!--                            android:text="Song"-->
+                        <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                            app:layout_constraintTop_toBottomOf="@id/artist_ans2" />-->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -285,11 +369,11 @@
                 android:id="@+id/modal_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:onClick="@{() -> viewModel.onNextModalClick()}"
                 android:text="next"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/modal_ll" />
 

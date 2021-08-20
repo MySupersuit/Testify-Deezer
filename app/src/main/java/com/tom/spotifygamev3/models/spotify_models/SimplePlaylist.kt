@@ -2,6 +2,8 @@ package com.tom.spotifygamev3.models.spotify_models
 
 import com.google.gson.annotations.SerializedName
 import com.tom.spotifygamev3.Utils.Constants
+import com.tom.spotifygamev3.database.DatabaseCommonPlaylist
+import com.tom.spotifygamev3.database.DatabaseUserPlaylist
 
 data class SimplePlaylist(
     @SerializedName("id") val id: String,
@@ -16,4 +18,25 @@ data class SimplePlaylist(
         }
         return reversed
     }
+}
+
+fun SimplePlaylist.asDatabaseModel(): DatabaseCommonPlaylist {
+    return DatabaseCommonPlaylist(
+        id = this.id,
+        images = this.images,
+        owner = this.owner,
+        name = this.name
+    )
+}
+
+fun List<SimplePlaylist>.asDatabaseModel(): List<DatabaseUserPlaylist> {
+    return this.map {
+        DatabaseUserPlaylist(
+            id = it.id,
+            images = it.images,
+            owner = it.owner,
+            name = it.name
+        )
+    }
+
 }
