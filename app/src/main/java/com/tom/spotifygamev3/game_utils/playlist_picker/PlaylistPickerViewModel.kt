@@ -4,11 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.tom.spotifygamev3.Utils.Constants
-import com.tom.spotifygamev3.album_game.game.SpotifyApiStatus
-import com.tom.spotifygamev3.models.spotify_models.Playlist
+import com.tom.spotifygamev3.album_game.SpotifyApiStatus
 import com.tom.spotifygamev3.models.spotify_models.SimplePlaylist
-import com.tom.spotifygamev3.models.spotify_models.SimplePlaylistResponse
-import com.tom.spotifygamev3.models.spotify_models.UserPlaylistsResponse
 import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -19,6 +16,9 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
     AndroidViewModel(application) {
 
     private val TAG = "PlaylistPickerViewModel"
+
+//    private val playlistRepository = PlaylistRepository(getDatabase(application), getApplication())
+//    val userRepoPlaylists = playlistRepository.userPlaylists
 
     private val _status = MutableLiveData<SpotifyApiStatus>()
     val status: LiveData<SpotifyApiStatus>
@@ -53,6 +53,13 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
     private var apiClient: ApiClient = ApiClient()
 
     init {
+        // something like this to observe playlist changes instead of jobs and joins
+        // TODO don't forget to stop this observe forever on exiting viewmodel lifecycle
+//        userRepoPlaylists.observeForever(Observer {
+//            Log.d(TAG, "observe forever")
+//            it.forEach { Log.d(TAG, it.name) }
+//        })
+//        fetchUserPlaylistsRepo()
         _showUserPlaylists.value = true
         _gameType.value = gameType
         runBlocking {
@@ -61,12 +68,30 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
         }
     }
 
+    // Trying caching
+
+    // just use this as fetchUserPlaylists()
+    // do this in splash screen? have to be after login
+//    private fun fetchUserPlaylistsRepo(): Job {
+//        val job = viewModelScope.launch {
+//            try {
+//                playlistRepository.refreshUserPlaylists()
+//            } catch (networkError: IOException) {
+//                Log.e(TAG, networkError.toString())
+//                _status.value = SpotifyApiStatus.ERROR
+//            }
+//        }
+//        return job
+//    }
+
     private suspend fun fetchData() {
         viewModelScope.launch {
             Log.d(TAG, "Fetching data")
 
             val job = fetchUserPlaylists()
+//            val job = fetchUserPlaylistsRepo()
             job.join()
+
             Log.d(TAG, "playlists fetched")
 
             for (i in Constants.COMMON_PLAYLISTS) {
@@ -118,4 +143,11 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
     fun fabClick() {
         _showUserPlaylists.value = _showUserPlaylists.value?.not()
     }
+
+
+
+
+
+
+
 }

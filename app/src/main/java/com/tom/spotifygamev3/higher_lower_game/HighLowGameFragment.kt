@@ -1,8 +1,7 @@
-package com.tom.spotifygamev3.higher_lower_game.game
+package com.tom.spotifygamev3.higher_lower_game
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,8 @@ import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.Utils.Utils.glidePreloadImage
 import com.tom.spotifygamev3.Utils.Utils.glideShowImageLoadAnim
 import com.tom.spotifygamev3.databinding.HighLowGameFragmentBinding
+import com.tom.spotifygamev3.higher_lower_game.game.HighLowGameFragmentArgs
+import com.tom.spotifygamev3.higher_lower_game.game.HighLowGameFragmentDirections
 import com.tom.spotifygamev3.models.HighLowQuestion
 
 class HighLowGameFragment : Fragment() {
@@ -70,11 +71,12 @@ class HighLowGameFragment : Fragment() {
     }
 
     private fun gameFinished() {
-        val action = HighLowGameFragmentDirections.actionHighLowGameFragmentToAlbumGameScoreFragment(
-            score = viewModel.score.value ?: 0,
-            numQuestions = Constants.HIGH_LOW_NUM_QUESTIONS,
-            gameType = Constants.HIGH_LOW_GAME_TYPE
-        )
+        val action =
+            HighLowGameFragmentDirections.actionHighLowGameFragmentToAlbumGameScoreFragment(
+                score = viewModel.score.value ?: 0,
+                numQuestions = Constants.HIGH_LOW_NUM_QUESTIONS,
+                gameType = Constants.HIGH_LOW_GAME_TYPE
+            )
         NavHostFragment.findNavController(this).navigate(action)
         viewModel.onGameFinishComplete()
     }

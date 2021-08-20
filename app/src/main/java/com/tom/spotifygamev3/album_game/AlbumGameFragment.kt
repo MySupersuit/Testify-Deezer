@@ -1,7 +1,6 @@
-package com.tom.spotifygamev3.album_game.game
+package com.tom.spotifygamev3.album_game
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,8 @@ import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.Utils.Utils.glidePreloadImage
 import com.tom.spotifygamev3.Utils.Utils.glideShowImage
+import com.tom.spotifygamev3.album_game.game.AlbumGameFragmentArgs
+import com.tom.spotifygamev3.album_game.game.AlbumGameFragmentDirections
 import com.tom.spotifygamev3.databinding.AlbumGameFragmentBinding
 import com.tom.spotifygamev3.models.AlbumQuestion
 import com.tom.spotifygamev3.models.spotify_models.Images

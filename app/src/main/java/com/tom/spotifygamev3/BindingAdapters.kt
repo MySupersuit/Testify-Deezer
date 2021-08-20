@@ -7,11 +7,10 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.tom.spotifygamev3.Utils.Utils
-import com.tom.spotifygamev3.album_game.game.SpotifyApiStatus
+import com.tom.spotifygamev3.album_game.SpotifyApiStatus
 import com.tom.spotifygamev3.models.spotify_models.Images
 
 const val TAG = "BindingAdapter"

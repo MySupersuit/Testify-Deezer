@@ -1,4 +1,4 @@
-package com.tom.spotifygamev3.album_game.game
+package com.tom.spotifygamev3.album_game
 
 import android.app.Application
 import android.util.Log
@@ -11,7 +11,6 @@ import com.tom.spotifygamev3.models.spotify_models.Items
 import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.*
 import kotlin.math.min
-import com.tom.spotifygamev3.Utils.Utils.regexedString
 import java.util.*
 import kotlin.collections.HashMap
 

@@ -49,7 +49,6 @@ object Utils {
     fun glideShowImage(images: List<Images>, context: Context, imageView: ImageView) {
         val imgUri = urlToUri(images[0].url)
         val imgUri2 = urlToUri(images[1].url)
-        Log.d(TAG, imgUri.toString())
 
         Glide.with(context)
             .load(imgUri)
@@ -64,10 +63,7 @@ object Utils {
     }
 
     fun glideShowImageLoadAnim(images: List<Images>, context: Context, imageView: ImageView) {
-        Log.d(TAG, "loading image")
-        images.forEach { Log.d(TAG, it.url) }
         val imgUri = urlToUri(images[0].url)
-        Log.d(TAG, imgUri.toString())
 
         val glide = Glide.with(context)
             .load(imgUri)

@@ -1,13 +1,12 @@
-package com.tom.spotifygamev3.higher_lower_game.game
+package com.tom.spotifygamev3.higher_lower_game
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.tom.spotifygamev3.Utils.Constants
-import com.tom.spotifygamev3.Utils.Utils.cleanedString
 import com.tom.spotifygamev3.Utils.Utils.regexedString
 import com.tom.spotifygamev3.Utils.Utils.unaccent
-import com.tom.spotifygamev3.album_game.game.SpotifyApiStatus
+import com.tom.spotifygamev3.album_game.SpotifyApiStatus
 import com.tom.spotifygamev3.models.HighLowQuestion
 import com.tom.spotifygamev3.models.lastfm_models.LfmTrack
 import com.tom.spotifygamev3.models.spotify_models.Items
@@ -15,7 +14,6 @@ import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.*
 import java.lang.Exception
 import java.lang.IllegalArgumentException
-import java.util.*
 
 class HighLowGameViewModel(application: Application, playlist_id: String) :
     AndroidViewModel(application) {

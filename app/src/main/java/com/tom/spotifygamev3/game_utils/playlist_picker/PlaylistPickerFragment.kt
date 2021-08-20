@@ -18,11 +18,14 @@ class PlaylistPickerFragment : Fragment() {
 
     private val TAG = "PlaylistPickerFragment"
 
-    private val viewModel: PlaylistPickerViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[PlaylistPickerViewModel::class.java]
+    private val viewModel: PlaylistPickerViewModelV2 by lazy {
+        ViewModelProvider(this, viewModelFactory)[PlaylistPickerViewModelV2::class.java]
     }
 
     private lateinit var viewModelFactory: PlaylistPickerViewModelFactory
+
+    private lateinit var binding: PlaylistPickerFragmentBinding
+    private lateinit var adapter: PlaylistAdapter
 
 //    val adapter = PlaylistRecyclerAdapter()
 
@@ -31,7 +34,7 @@ class PlaylistPickerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = PlaylistPickerFragmentBinding.inflate(inflater)
+        binding = PlaylistPickerFragmentBinding.inflate(inflater)
 
         viewModelFactory =
             PlaylistPickerViewModelFactory(
@@ -42,7 +45,7 @@ class PlaylistPickerFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        val adapter = PlaylistAdapter(PlaylistListener { playlistId ->
+        adapter = PlaylistAdapter(PlaylistListener { playlistId ->
             // navigate to game fragment
             viewModel.onPlaylistChosen(playlistId)
         })
@@ -78,7 +81,9 @@ class PlaylistPickerFragment : Fragment() {
             }
         })
 
-        // Load common playlists into rv if showUserPlaylists is false
+
+
+//        Load common playlists into rv if showUserPlaylists is false
         viewModel.commonPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
             if (viewModel.showUserPlaylists.value == false) {
                 adapter.submitPlaylist(playlists)
@@ -86,19 +91,41 @@ class PlaylistPickerFragment : Fragment() {
             }
         })
 
+
         // Clicking the FAB changes which set of playlists the rv shows
         // - User playlists or Common playlists
         viewModel.showUserPlaylists.observe(viewLifecycleOwner, Observer { showUserPlaylists ->
             if (showUserPlaylists) {
                 viewModel.userPlaylists.value?.let { adapter.submitPlaylist(it) }
+//                viewModel.userRepoPlaylists.value?.let { adapter.submitPlaylist(it) }
                 binding.playlistTitle.text = getString(R.string.your_playlists)
             } else {
                 viewModel.commonPlaylists.value?.let { adapter.submitPlaylist(it) }
+//                viewModel.commonRepoPlaylists.value?.let { adapter.submitPlaylist(it) }
                 binding.playlistTitle.text = getString(R.string.top_playlists)
             }
         })
 
         return binding.root
     }
+
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        viewModel.commonPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
+//            if (viewModel.showUserPlaylists.value == false) {
+//                adapter.submitPlaylist(playlists)
+//                binding.playlistTitle.text = getString(R.string.top_playlists)
+//            }
+//        })
+//
+//        viewModel.userPlaylists.observe(
+//            viewLifecycleOwner, Observer { playlists ->
+//                if (viewModel.showUserPlaylists.value == true) {
+//                    adapter.submitPlaylist(playlists)
+//                    binding.playlistTitle.text = getString(R.string.your_playlists)
+//                }
+//            })
+//    }
 
 }

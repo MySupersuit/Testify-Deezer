@@ -30,8 +30,8 @@ class HomeFragment : Fragment() {
 
         viewModel.navigateToAlbumGame.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
-//                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPlaylistPickerFragment(
-//                    Constants.ALBUM_GAME_TYPE))
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPlaylistPickerFragment(
+                    Constants.ALBUM_GAME_TYPE))
                 viewModel.onNavigateToAlbumGame()
             }
         })
@@ -41,9 +41,6 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPlaylistPickerFragment(
                     Constants.HIGH_LOW_GAME_TYPE
                 ))
-//                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPlaylistPickerFragment2(
-//                    Constants.HIGH_LOW_GAME_TYPE
-//                ))
                 viewModel.onNavigateToHighLow()
             }
         })

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.album_game.game.AlbumGameViewModel" />
+            type="com.tom.spotifygamev3.album_game.AlbumGameViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

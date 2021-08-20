@@ -1,4 +1,4 @@
-package com.tom.spotifygamev3.higher_lower_game.game
+package com.tom.spotifygamev3.higher_lower_game
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
