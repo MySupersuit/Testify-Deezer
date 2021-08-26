@@ -9,7 +9,7 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.tom.spotifygamev3.Utils.Utils
+import com.tom.spotifygamev3.utils.Utils
 import com.tom.spotifygamev3.album_game.SpotifyApiStatus
 import com.tom.spotifygamev3.models.spotify_models.Images
 
@@ -68,11 +68,11 @@ fun bindProgress(statusProgress: ConstraintLayout, status: SpotifyApiStatus) {
 @BindingAdapter("showAlbumQuiz")
 fun showAlbumQuiz(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) {
     when (status) {
-        SpotifyApiStatus.LOADING -> {
-            constraintLayout.visibility = View.GONE
-        }
         SpotifyApiStatus.DONE -> {
             constraintLayout.visibility = View.VISIBLE
+        }
+        else -> {
+            constraintLayout.visibility = View.GONE
         }
     }
 }
@@ -80,11 +80,11 @@ fun showAlbumQuiz(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) 
 @BindingAdapter("showHighLowQuiz")
 fun showHighLowQuiz(linearLayout: LinearLayout, status: SpotifyApiStatus) {
     when (status) {
-        SpotifyApiStatus.LOADING -> {
-            linearLayout.visibility = View.GONE
-        }
         SpotifyApiStatus.DONE -> {
             linearLayout.visibility = View.VISIBLE
+        }
+        else -> {
+            linearLayout.visibility = View.GONE
         }
     }
 }

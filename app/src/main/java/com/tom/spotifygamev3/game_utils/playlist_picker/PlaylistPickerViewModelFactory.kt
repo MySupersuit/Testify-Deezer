@@ -16,8 +16,8 @@ class PlaylistPickerViewModelFactory(private val application: Application, priva
 //    }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PlaylistPickerViewModelV2::class.java)) {
-            return PlaylistPickerViewModelV2(application, gameType) as T
+        if (modelClass.isAssignableFrom(PlaylistPickerViewModel::class.java)) {
+            return PlaylistPickerViewModel(application, gameType) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

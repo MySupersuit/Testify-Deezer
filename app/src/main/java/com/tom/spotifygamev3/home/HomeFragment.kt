@@ -8,8 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.tom.spotifygamev3.R
-import com.tom.spotifygamev3.Utils.Constants
+import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.databinding.HomeFragmentBinding
 
 class HomeFragment : Fragment() {
@@ -42,6 +41,15 @@ class HomeFragment : Fragment() {
                     Constants.HIGH_LOW_GAME_TYPE
                 ))
                 viewModel.onNavigateToHighLow()
+            }
+        })
+
+        viewModel.navigateToBeatIntro.observe(viewLifecycleOwner, Observer { navigate ->
+            if (navigate) {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPlaylistPickerFragment(
+                    Constants.BEAT_INTRO_GAME_TYPE
+                ))
+                viewModel.onNavigateToBeatIntro()
             }
         })
 

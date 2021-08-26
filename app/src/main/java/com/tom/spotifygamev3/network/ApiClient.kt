@@ -1,9 +1,7 @@
 package com.tom.spotifygamev3.network
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.tom.spotifygamev3.Utils.Constants
+import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.network.lastfm.LastFmApiService
 import com.tom.spotifygamev3.network.spotify.ApiService
 import com.tom.spotifygamev3.network.spotify.AuthInterceptor

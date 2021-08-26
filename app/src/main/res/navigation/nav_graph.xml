@@ -5,6 +5,8 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
+<!--  TODO fix back button presses / pop up to's  -->
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.tom.spotifygamev3.home.HomeFragment"
@@ -25,29 +27,24 @@
             app:argType="string" />
         <action
             android:id="@+id/action_albumGameFragment_to_albumGameScoreFragment"
-            app:destination="@id/albumGameScoreFragment"
+            app:destination="@id/gameScoreFragment"
             app:popUpTo="@id/albumGameFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/albumGameScoreFragment"
+        android:id="@+id/gameScoreFragment"
         android:name="com.tom.spotifygamev3.game_utils.show_score.ScoreFragment"
-        android:label="album_game_score_fragment"
+        android:label="game_score_fragment"
         tools:layout="@layout/album_game_score_fragment">
         <argument
             android:name="score"
-            android:defaultValue="0"
-            app:argType="integer" />
+            app:argType="string" />
         <action
             android:id="@+id/action_game_restart"
             app:destination="@id/playlistPickerFragment" />
         <action
             android:id="@+id/action_album_game_go_home"
             app:destination="@id/homeFragment" />
-        <argument
-            android:name="numQuestions"
-            app:argType="integer"
-            android:defaultValue="-1" />
         <argument
             android:name="gameType"
             app:argType="integer" />
@@ -66,6 +63,9 @@
         <action
             android:id="@+id/action_playlistPickerFragment_to_highLowGameFragment"
             app:destination="@id/highLowGameFragment" />
+        <action
+            android:id="@+id/action_playlistPickerFragment_to_beatTheIntroFragment"
+            app:destination="@id/beatTheIntroFragment" />
     </fragment>
     <fragment
         android:id="@+id/highLowGameFragment"
@@ -78,8 +78,20 @@
             app:argType="string" />
         <action
             android:id="@+id/action_highLowGameFragment_to_albumGameScoreFragment"
-            app:destination="@id/albumGameScoreFragment"
+            app:destination="@id/gameScoreFragment"
             app:popUpTo="@id/highLowGameFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/beatTheIntroFragment"
+        android:name="com.tom.spotifygamev3.beat_the_intro_game.BeatTheIntroFragment"
+        android:label="beat_the_intro_fragment"
+        tools:layout="@layout/beat_the_intro_fragment" >
+        <action
+            android:id="@+id/action_beatTheIntroFragment_to_gameScoreFragment"
+            app:destination="@id/gameScoreFragment" />
+        <argument
+            android:name="playlist_id"
+            app:argType="string" />
     </fragment>
 </navigation>

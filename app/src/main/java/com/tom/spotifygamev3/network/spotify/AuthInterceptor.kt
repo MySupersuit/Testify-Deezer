@@ -1,7 +1,7 @@
 package com.tom.spotifygamev3.network.spotify
 
 import android.content.Context
-import com.tom.spotifygamev3.Utils.SessionManager
+import com.tom.spotifygamev3.utils.SessionManager
 import okhttp3.Interceptor
 import okhttp3.Response
 

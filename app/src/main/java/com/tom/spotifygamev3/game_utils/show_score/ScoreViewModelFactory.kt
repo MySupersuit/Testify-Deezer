@@ -5,15 +5,14 @@ import androidx.lifecycle.ViewModelProvider
 import java.lang.IllegalArgumentException
 
 class ScoreViewModelFactory(
-    private val finalScore: Int,
-    private val numQuestions: Int,
+    private val score: String,
     private val gameType: Int
 ) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ScoreViewModel::class.java)) {
-            return ScoreViewModel(finalScore, numQuestions, gameType) as T
+            return ScoreViewModel(score, gameType) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -11,14 +11,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.tom.spotifygamev3.R
-import com.tom.spotifygamev3.Utils.Constants
-import com.tom.spotifygamev3.Utils.Utils.glidePreloadImage
-import com.tom.spotifygamev3.Utils.Utils.glideShowImage
-import com.tom.spotifygamev3.album_game.game.AlbumGameFragmentArgs
-import com.tom.spotifygamev3.album_game.game.AlbumGameFragmentDirections
+import com.tom.spotifygamev3.utils.Constants
+import com.tom.spotifygamev3.utils.Utils.glidePreloadImage
+import com.tom.spotifygamev3.utils.Utils.glideShowImage
 import com.tom.spotifygamev3.databinding.AlbumGameFragmentBinding
 import com.tom.spotifygamev3.models.AlbumQuestion
 import com.tom.spotifygamev3.models.spotify_models.Images
+import com.tom.spotifygamev3.utils.Utils.doAlphaAnimation
 
 class AlbumGameFragment : Fragment() {
 
@@ -58,7 +57,7 @@ class AlbumGameFragment : Fragment() {
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
             // Some correct animation
             if (newScore != 0) {
-                doAlphaAnimation(binding.checkmark)
+                doAlphaAnimation(binding.albumCheckmark)
             }
             binding.albumScoreCounter.text =
                 getString(R.string.score, newScore, Constants.ALBUM_GAME_NUM_QUESTIONS)
@@ -66,7 +65,7 @@ class AlbumGameFragment : Fragment() {
 
         viewModel.numWrong.observe(viewLifecycleOwner, Observer { newWrong ->
             if (newWrong != 0) {
-                doAlphaAnimation(binding.cross)
+                doAlphaAnimation(binding.albumCross)
             }
         })
 
@@ -83,18 +82,13 @@ class AlbumGameFragment : Fragment() {
         return binding.root
     }
 
-    private fun doAlphaAnimation(imgView: ImageView) {
-        val anim = AlphaAnimation(1f, 0f)
-        anim.duration = 1500
-        anim.fillAfter = true
-        imgView.startAnimation(anim)
-        imgView.visibility = View.VISIBLE
-    }
-
     private fun gameFinished() {
         val action = AlbumGameFragmentDirections.actionAlbumGameFragmentToAlbumGameScoreFragment(
-            score = viewModel.score.value ?: 0,
-            numQuestions = Constants.ALBUM_GAME_NUM_QUESTIONS,
+            score = getString(
+                R.string.score,
+                viewModel.score.value ?: 0,
+                Constants.ALBUM_GAME_NUM_QUESTIONS
+            ),
             gameType = Constants.ALBUM_GAME_TYPE
         )
         NavHostFragment.findNavController(this).navigate(action)
@@ -121,10 +115,6 @@ class AlbumGameFragment : Fragment() {
             buttons[i].text = ""
             buttons[i].isClickable = false
         }
-//        binding.albumFirstAnswerButton.text = albumQ.allAnswers[0]
-//        binding.albumSecondAnswerButton.text = albumQ.allAnswers[1]
-//        binding.albumThirdAnswerButton.text = albumQ.allAnswers[2]
-//        binding.albumFourthAnswerButton.text = albumQ.allAnswers[3]
     }
 
 

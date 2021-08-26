@@ -11,7 +11,7 @@
 <!--            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerViewModel" />-->
 <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerViewModelV2" />
+            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

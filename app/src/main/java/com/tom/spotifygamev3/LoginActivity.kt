@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
-import com.tom.spotifygamev3.Utils.SessionManager
+import com.tom.spotifygamev3.utils.SessionManager
 import com.tom.spotifygamev3.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
