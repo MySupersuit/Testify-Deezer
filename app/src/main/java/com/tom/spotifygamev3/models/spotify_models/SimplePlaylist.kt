@@ -1,7 +1,7 @@
 package com.tom.spotifygamev3.models.spotify_models
 
 import com.google.gson.annotations.SerializedName
-import com.tom.spotifygamev3.Utils.Constants
+import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.database.DatabaseCommonPlaylist
 import com.tom.spotifygamev3.database.DatabaseUserPlaylist
 

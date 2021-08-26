@@ -31,9 +31,7 @@ class PlaylistRepository(private val database: PlaylistDatabase, private val con
         Log.d(TAG, "REFRESHING")
         withContext(Dispatchers.IO) {
             val playlists = ApiClient().getApiService(context).getUserPlaylists().playlists
-            Log.d(TAG, "playlists")
             database.playlistDao.insertAllUserPlaylists(playlists.asDatabaseModel())
-            Log.d(TAG, "after")
         }
     }
 

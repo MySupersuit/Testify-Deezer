@@ -3,9 +3,9 @@ package com.tom.spotifygamev3.higher_lower_game
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.tom.spotifygamev3.Utils.Constants
-import com.tom.spotifygamev3.Utils.Utils.regexedString
-import com.tom.spotifygamev3.Utils.Utils.unaccent
+import com.tom.spotifygamev3.utils.Constants
+import com.tom.spotifygamev3.utils.Utils.regexedString
+import com.tom.spotifygamev3.utils.Utils.unaccent
 import com.tom.spotifygamev3.album_game.SpotifyApiStatus
 import com.tom.spotifygamev3.models.HighLowQuestion
 import com.tom.spotifygamev3.models.lastfm_models.LfmTrack
@@ -51,9 +51,10 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     private var localTracks = listOf<Items>()
     private val questions: MutableList<HighLowQuestion> = mutableListOf()
 
-    private var lastQuestionRes = ""
     private var numQuestions = -1
     private var questionIndex = 0
+
+    private var botchedLastFmQs = 0
 
     init {
         _score.value = 0
@@ -108,24 +109,22 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     }
 
     fun onNextModalClick() {
-        hideModal()
         if ((questionIndex + 1) == numQuestions) {
             // Game over
             onGameFinish()
         } else {
             questionIndex++
             setQuestion()
+            hideModal()
         }
     }
 
     private fun showModal(result: HighLowQuestion) {
         _showModal.value = result
-        Log.d(TAG, "showing stream count")
     }
 
     private fun hideModal() {
         _showModal.value = null
-        Log.d(TAG, "stream count finishing")
     }
 
     private fun onGameFinish() {
@@ -150,16 +149,18 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
             // get 20 tracks' playcounts
             for (i in 0 until Constants.HIGH_LOW_NUM_QUESTIONS * 2) {
                 val track = shuffled[i].track
+                Log.d(TAG, track.name)
                 jobs.add(fetchTrackPlaycount(track.artists[0].name, track.name))
             }
             jobs.forEach { it.join() }
             Log.d(TAG, "localTracksPlaycount size: ${localTracksPlaycount.size}")
+            // TODO Handle stuff that doesn't have last fm tracks
             localTracksPlaycount.forEach {
                 Log.d(TAG, "${it.name} : ${it.playCount}")
             }
 
             // TODO clean up string manipulation shtuff
-            for (i in 0 until Constants.HIGH_LOW_NUM_QUESTIONS * 2) {
+            for (i in 0 until Constants.HIGH_LOW_NUM_QUESTIONS * 2 - (botchedLastFmQs + (botchedLastFmQs % 2))) {
                 val paranth_regex_local =
                     regexedString(
                         localTracksPlaycount[i].name,
@@ -227,18 +228,22 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     ): Job {
         val job = viewModelScope.launch {
             try {
-                localTracksPlaycount.add(
-                    apiClient.getLastFmApiService(getApplication())
-                        .getLastFmTrackInfo(
-                            "track.getInfo",
-                            Constants.LASTFM_API_KEY,
-                            artist,
-                            trackName
-                        ).track
-                )
+                val track = apiClient.getLastFmApiService(getApplication())
+                    .getLastFmTrackInfo(
+                        "track.getInfo",
+                        Constants.LASTFM_API_KEY,
+                        artist,
+                        trackName
+                    ).track
+                Log.d(TAG, "track: ${track.name}")
+                localTracksPlaycount.add(track)
+
             } catch (e: Exception) {
                 Log.e(TAG, "err on $artist - $trackName")
                 Log.e(TAG, e.toString())
+                botchedLastFmQs++
+                // TODO Take out offending artist track name
+                // or add to offending tracks dict to ignore later on?
             }
         }
         return job

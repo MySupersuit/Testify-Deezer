@@ -3,8 +3,8 @@ package com.tom.spotifygamev3.album_game
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.tom.spotifygamev3.Utils.Constants
-import com.tom.spotifygamev3.Utils.Utils.cleanedString
+import com.tom.spotifygamev3.utils.Constants
+import com.tom.spotifygamev3.utils.Utils.cleanedString
 import com.tom.spotifygamev3.models.spotify_models.Album
 import com.tom.spotifygamev3.models.AlbumQuestion
 import com.tom.spotifygamev3.models.spotify_models.Items
@@ -40,7 +40,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) : Androi
     val numAlbumsLoaded : LiveData<Int>
         get() = _numAlbumsLoaded
 
-    private var _score = MutableLiveData<Int>()
+    private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
         get() = _score
 
@@ -127,15 +127,6 @@ class AlbumGameViewModel(application: Application, playlist_id: String) : Androi
         }
 
         // TODO find a better way to remove duplicate album releases
-//        albums.removeAll {
-//            regexedString(it.name, Constants.ALPHANUM_REGEX)
-//                .contains(regexedString(album_name, Constants.ALPHANUM_REGEX)) ||
-//                    regexedString(album_name, Constants.ALPHANUM_REGEX)
-//                        .contains(regexedString(it.name, Constants.ALPHANUM_REGEX))
-//        }
-
-
-        Log.d(TAG, artist_id)
 
         val toAdd = albums.shuffled().slice(0..min(2, albums.size - 1)).toMutableList()
         toAdd.forEach { Log.d(TAG, "toAdd ${it.name}") }
@@ -171,7 +162,6 @@ class AlbumGameViewModel(application: Application, playlist_id: String) : Androi
                 // TODO prioritise album names rather than singles/eps?
 
                 makeAnswerOptionsV2(correctAlbum, albums)
-
             }
             _nextQuestion.value = questions[0]
             numQuestions = initialItems.size
@@ -244,7 +234,6 @@ class AlbumGameViewModel(application: Application, playlist_id: String) : Androi
             try {
                 artistAlbums =
                     apiClient.getApiService(getApplication()).getArtistAlbums(artist_id).items
-
 
                 artistAlbums.forEach { Log.d(TAG, "preDistinct ${it.name}") }
                 val subList =

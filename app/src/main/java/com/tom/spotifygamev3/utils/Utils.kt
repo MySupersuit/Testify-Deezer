@@ -1,8 +1,11 @@
-package com.tom.spotifygamev3.Utils
+package com.tom.spotifygamev3.utils
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Log
+import android.view.View
+import android.view.animation.AlphaAnimation
 import android.widget.ImageView
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
@@ -11,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.models.spotify_models.Images
 import java.text.Normalizer
-import java.text.NumberFormat
 import java.util.*
 
 object Utils {
@@ -93,7 +95,7 @@ object Utils {
 
     }
 
-    private fun urlToUri(url: String): Uri {
+    fun urlToUri(url: String): Uri {
         return url.toUri().buildUpon().scheme("https").build()
     }
 
@@ -101,4 +103,13 @@ object Utils {
         val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
         return Constants.UNACCENT_REGEX.replace(temp, "")
     }
+
+    fun doAlphaAnimation(imgView: ImageView) {
+        val anim = AlphaAnimation(1f, 0f)
+        anim.duration = 1500
+        anim.fillAfter = true
+        imgView.startAnimation(anim)
+        imgView.visibility = View.VISIBLE
+    }
+
 }

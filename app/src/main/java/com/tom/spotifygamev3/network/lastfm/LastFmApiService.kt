@@ -1,9 +1,7 @@
 package com.tom.spotifygamev3.network.lastfm
 
-import com.tom.spotifygamev3.Utils.Constants
 import com.tom.spotifygamev3.models.lastfm_models.LastFmTrackResponse
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface LastFmApiService {

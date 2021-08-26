@@ -13,7 +13,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _navigateToHighLow = MutableLiveData<Boolean>()
     val navigateToHighLow: LiveData<Boolean>
-        get () = _navigateToHighLow
+        get() = _navigateToHighLow
+
+    private val _navigateToBeatIntro = MutableLiveData<Boolean>()
+    val navigateToBeatIntro: LiveData<Boolean>
+        get() = _navigateToBeatIntro
 
     fun onAlbumGameClick() {
         _navigateToAlbumGame.value = true
@@ -29,6 +33,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onNavigateToHighLow() {
         _navigateToHighLow.value = false
+    }
+
+    fun onBeatIntroClick() {
+        _navigateToBeatIntro.value = true
+    }
+
+    fun onNavigateToBeatIntro() {
+        _navigateToBeatIntro.value = false
     }
 
 

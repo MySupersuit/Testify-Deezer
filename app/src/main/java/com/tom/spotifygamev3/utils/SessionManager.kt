@@ -1,4 +1,4 @@
-package com.tom.spotifygamev3.Utils
+package com.tom.spotifygamev3.utils
 
 import android.content.Context
 import android.content.SharedPreferences

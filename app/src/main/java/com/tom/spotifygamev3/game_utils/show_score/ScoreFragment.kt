@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tom.spotifygamev3.R
-import com.tom.spotifygamev3.Utils.Constants
+import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.databinding.AlbumGameScoreFragmentBinding
 
 class ScoreFragment : Fragment() {
@@ -26,16 +26,15 @@ class ScoreFragment : Fragment() {
     ): View? {
         val binding = AlbumGameScoreFragmentBinding.inflate(inflater)
         val args = ScoreFragmentArgs.fromBundle(requireArguments())
-        // need another arg for game coming from? so I can replay it
+
         viewModelFactory =
-            ScoreViewModelFactory(args.score, args.numQuestions, args.gameType)
+            ScoreViewModelFactory(args.score, args.gameType)
 
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
-        binding.albumScore.text =
-            getString(R.string.score, viewModel.score.value, Constants.ALBUM_GAME_NUM_QUESTIONS)
+        binding.albumScore.text = viewModel.score.value
 
         viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain ->
             if (playAgain) {
@@ -51,6 +50,13 @@ class ScoreFragment : Fragment() {
                         findNavController().navigate(
                             ScoreFragmentDirections.actionGameRestart(
                                 Constants.HIGH_LOW_GAME_TYPE
+                            )
+                        )
+
+                    Constants.BEAT_INTRO_GAME_TYPE ->
+                        findNavController().navigate(
+                            ScoreFragmentDirections.actionGameRestart(
+                                Constants.BEAT_INTRO_GAME_TYPE
                             )
                         )
                 }

@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.tom.spotifygamev3.R
-import com.tom.spotifygamev3.Utils.Constants
+import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.databinding.PlaylistPickerFragmentBinding
 import java.lang.IllegalArgumentException
 
@@ -18,8 +18,8 @@ class PlaylistPickerFragment : Fragment() {
 
     private val TAG = "PlaylistPickerFragment"
 
-    private val viewModel: PlaylistPickerViewModelV2 by lazy {
-        ViewModelProvider(this, viewModelFactory)[PlaylistPickerViewModelV2::class.java]
+    private val viewModel: PlaylistPickerViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[PlaylistPickerViewModel::class.java]
     }
 
     private lateinit var viewModelFactory: PlaylistPickerViewModelFactory
@@ -62,6 +62,10 @@ class PlaylistPickerFragment : Fragment() {
                         )
                     Constants.HIGH_LOW_GAME_TYPE ->
                         PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToHighLowGameFragment(
+                            playlistId
+                        )
+                    Constants.BEAT_INTRO_GAME_TYPE ->
+                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToBeatTheIntroFragment(
                             playlistId
                         )
                     else -> throw IllegalArgumentException("Unknown Game Type")

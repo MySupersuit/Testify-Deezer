@@ -83,11 +83,10 @@
                     tools:src="@drawable/blackmidi_cruising" />
 
                 <ImageView
-                    android:id="@+id/checkmark"
+                    android:id="@+id/album_checkmark"
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
                     android:src="@drawable/checkmark"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/album_score_counter"
@@ -95,11 +94,10 @@
                     app:layout_constraintTop_toTopOf="@id/album_score_counter" />
 
                 <ImageView
-                    android:id="@+id/cross"
+                    android:id="@+id/album_cross"
                     android:layout_width="30dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
                     android:src="@drawable/x_mark"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/album_score_counter"
