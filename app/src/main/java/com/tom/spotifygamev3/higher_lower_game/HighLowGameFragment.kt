@@ -51,6 +51,13 @@ class HighLowGameFragment : Fragment() {
             }
         })
 
+        viewModel.numQsLoaded.observe(viewLifecycleOwner, Observer { loaded ->
+            binding.loadingMessage.text = getString(
+                R.string.loading_prog_message,
+                loaded, Constants.HIGH_LOW_NUM_QUESTIONS * 2
+            )
+        })
+
         viewModel.score.observe(viewLifecycleOwner, Observer { score ->
             binding.highLowScoreTv.text =
                 getString(R.string.score, score, Constants.HIGH_LOW_NUM_QUESTIONS)

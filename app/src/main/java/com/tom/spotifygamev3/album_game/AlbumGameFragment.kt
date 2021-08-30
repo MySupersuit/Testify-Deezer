@@ -1,15 +1,18 @@
 package com.tom.spotifygamev3.album_game
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.palette.graphics.Palette
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.utils.Utils.glidePreloadImage
@@ -18,6 +21,7 @@ import com.tom.spotifygamev3.databinding.AlbumGameFragmentBinding
 import com.tom.spotifygamev3.models.AlbumQuestion
 import com.tom.spotifygamev3.models.spotify_models.Images
 import com.tom.spotifygamev3.utils.Utils.doAlphaAnimation
+import com.tom.spotifygamev3.utils.Utils.glideShowImagePalette
 
 class AlbumGameFragment : Fragment() {
 
@@ -100,7 +104,8 @@ class AlbumGameFragment : Fragment() {
     }
 
     private fun showQuestion(binding: AlbumGameFragmentBinding, albumQ: AlbumQuestion) {
-        glideShowImage(albumQ.images, requireContext(), binding.albumCoverImage)
+        // includes transition
+        glideShowImagePalette(albumQ.images, requireContext(), binding.albumCoverImage, binding)
 
         // Work around for artists with not enough albums
         val buttons = listOf(

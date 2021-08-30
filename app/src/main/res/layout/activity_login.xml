@@ -6,17 +6,52 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/spotify_black">
 
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/spotify_logo_login"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_margin"
+            android:src="@drawable/spotify_logo_green"
+            app:layout_constraintBottom_toTopOf="@id/login_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/login_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_margin"
+            android:fontFamily="@font/gotham_medium"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="10dp"
+            android:textColor="@color/spotify_white"
+            android:text="@string/login_message"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spotify_logo_login"
+            tools:text="How well do you know your Spotify?" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/login_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_margin"
+            android:background="@drawable/rounded_corners"
+            android:paddingVertical="10dp"
+            android:text="@string/login"
+            android:textColor="@color/spotify_white"
+            android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="Login"/>
+            app:layout_constraintTop_toBottomOf="@id/login_text" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

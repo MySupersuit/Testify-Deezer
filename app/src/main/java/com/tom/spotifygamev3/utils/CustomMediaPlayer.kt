@@ -8,6 +8,4 @@ class CustomMediaPlayer : MediaPlayer() {
         super.setDataSource(path)
         datasource = path
     }
-
-
 }

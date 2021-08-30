@@ -23,7 +23,7 @@
             app:spotifyApiProgress="@{viewModel.status}">
 
             <ProgressBar
-                android:id="@+id/high_low_progress_bar"
+                android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -32,13 +32,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/high_low_loading_message"
+                android:id="@+id/loading_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/high_low_progress_bar"
+                app:layout_constraintTop_toBottomOf="@id/progress_bar"
                 tools:text="Loading..." />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -62,7 +62,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColor"
                     android:textSize="25sp"
                     tools:text="0/10" />
 
@@ -264,7 +264,7 @@
                     android:gravity="center"
                     android:padding="30dp"
                     android:text="Which one has more streams?"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColor"
                     android:textSize="30dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

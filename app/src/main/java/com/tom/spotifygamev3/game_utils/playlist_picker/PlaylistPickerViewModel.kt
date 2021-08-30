@@ -16,7 +16,7 @@ import java.io.IOException
 class PlaylistPickerViewModel(application: Application, gameType: Int) :
     AndroidViewModel(application) {
 
-    private val TAG = "PlaylistPickerViewModelV2"
+    private val TAG = "PlaylistPickerViewModel"
 
     private val _status = MutableLiveData<SpotifyApiStatus>()
     val status: LiveData<SpotifyApiStatus>

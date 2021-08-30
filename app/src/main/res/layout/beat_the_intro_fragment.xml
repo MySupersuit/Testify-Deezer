@@ -11,6 +11,7 @@
             type="com.tom.spotifygamev3.beat_the_intro_game.BeatTheIntroViewModel" />
     </data>
 
+<!--  TODO have the score shown above buffering - can happen between questions  -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

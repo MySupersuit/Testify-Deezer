@@ -17,8 +17,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="5dp"
+        android:layout_height="80dp"
+        android:layout_marginVertical="12dp"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
@@ -63,11 +63,11 @@
                     android:id="@+id/playlist_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/spotify_white"
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:text="@{playlist.name}"
                     android:textSize="18sp"
-                    android:textStyle="bold"
                     tools:text="Super Mega Class Playlist" />
 
                 <TextView
@@ -75,6 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/spotify_grey"
                     android:text="@{playlist.owner.display_name}"
                     android:textSize="15sp"
                     tools:text="Four tet" />

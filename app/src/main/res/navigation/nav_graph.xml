@@ -10,7 +10,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.tom.spotifygamev3.home.HomeFragment"
-        tools:layout="@layout/home_fragment"
+        tools:layout="@layout/choose_game_fragment"
         android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_playlistPickerFragment"
@@ -35,7 +35,7 @@
         android:id="@+id/gameScoreFragment"
         android:name="com.tom.spotifygamev3.game_utils.show_score.ScoreFragment"
         android:label="game_score_fragment"
-        tools:layout="@layout/album_game_score_fragment">
+        tools:layout="@layout/game_score_fragment">
         <argument
             android:name="score"
             app:argType="string" />
