@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.tom.spotifygamev3.databinding.ChooseGameFragmentBinding
 import com.tom.spotifygamev3.utils.Constants
-import com.tom.spotifygamev3.databinding.HomeFragmentBinding
 
 class HomeFragment : Fragment() {
 
@@ -21,7 +21,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = HomeFragmentBinding.inflate(inflater)
+        val binding = ChooseGameFragmentBinding.inflate(inflater)
 
         binding.lifecycleOwner = this
 

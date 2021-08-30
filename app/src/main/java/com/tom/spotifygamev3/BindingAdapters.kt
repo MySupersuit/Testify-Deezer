@@ -4,8 +4,11 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
+import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -61,7 +64,11 @@ fun bindProgress(statusProgress: ConstraintLayout, status: SpotifyApiStatus) {
         SpotifyApiStatus.DONE -> {
             statusProgress.visibility = View.GONE
         }
-        else -> Log.e(TAG, "progress")
+        SpotifyApiStatus.ERROR -> {
+            statusProgress.visibility = View.VISIBLE
+            statusProgress.findViewById<ProgressBar>(R.id.progress_bar).visibility = View.INVISIBLE
+            statusProgress.findViewById<TextView>(R.id.loading_message).text = "Error Loading"
+        }
     }
 }
 

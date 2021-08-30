@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
 
+    // TODO Figure out palette - get colour from artwork for background
+    // https://developer.android.com/training/material/palette-colors
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -10,4 +10,8 @@
     <color name="text_background">#66EDE7F6</color>
     <color name="blueAccent">#E3F2FD</color>
     <color name="blue">#2196F3</color>
+    <color name="spotify_black">#191414</color>
+    <color name="spotify_green">#1DB954</color>
+    <color name="spotify_white">#FFFFFF</color>
+    <color name="spotify_grey">#b3b3b3</color>
 </resources>

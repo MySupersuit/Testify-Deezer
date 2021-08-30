@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tom.spotifygamev3.R
+import com.tom.spotifygamev3.databinding.GameScoreFragmentBinding
 import com.tom.spotifygamev3.utils.Constants
-import com.tom.spotifygamev3.databinding.AlbumGameScoreFragmentBinding
 
 class ScoreFragment : Fragment() {
 
@@ -24,7 +24,7 @@ class ScoreFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = AlbumGameScoreFragmentBinding.inflate(inflater)
+        val binding = GameScoreFragmentBinding.inflate(inflater)
         val args = ScoreFragmentArgs.fromBundle(requireArguments())
 
         viewModelFactory =

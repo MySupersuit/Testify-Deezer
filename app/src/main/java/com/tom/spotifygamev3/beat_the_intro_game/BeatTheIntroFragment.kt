@@ -33,25 +33,19 @@ class BeatTheIntroFragment : Fragment() {
 
     private lateinit var viewModelFactory: BeatTheIntroViewModelFactory
 
-    private lateinit var mediaPlayer: MediaPlayer
     private lateinit var preloadMp: CustomMediaPlayer
     private lateinit var customMp: CustomMediaPlayer
-    private lateinit var mps: MutableList<CustomMediaPlayer>
+    private lateinit var mps: MutableList<CustomMediaPlayer>    // list of mediaplayers
     private var exitProgressThread = false
     private var localScore = 0
-    private var questionIndex = 0
-    private var nextQIndex = 0
-
-    private var nextTrackPrepared = false
-
-    private val _nextTrackPrepped = MutableLiveData<Boolean>()
-    private val nextTrackPrepped: LiveData<Boolean>
-        get() = _nextTrackPrepped
+    private var questionIndex = 0               // index of song question to be shown
+    private var nextQIndex = 0                  // index of the song question to be preloaded
 
     private val _currentQReady = MutableLiveData<CustomMediaPlayer>()
     var currentQuestionUrl = ""
 
     private val trackPrepStatus: HashMap<String, Boolean> = HashMap()
+    // mapping from preview_url to whether it has been prepared by its mediaplayer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,19 +62,7 @@ class BeatTheIntroFragment : Fragment() {
         binding.loadingProgressCl.visibility = View.VISIBLE
         binding.beatIntroGameCl.visibility = View.GONE
 
-        // set up media player
-        // mediaplayer may already be set up
-        // breaking mvvm model here
-
-        mediaPlayer = MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-        }
-
+        // setup two media players - one to preload while the other plays
         preloadMp = CustomMediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -115,10 +97,6 @@ class BeatTheIntroFragment : Fragment() {
             if (url == currentQuestionUrl) _currentQReady.value = customMp
         }
 
-        mediaPlayer.setOnPreparedListener {
-            Log.d(TAG, it.trackInfo[0].toString())
-        }
-
         _currentQReady.observe(viewLifecycleOwner, Observer { player ->
             if (player != null) {
                 Log.d(TAG, "currentQReady")
@@ -128,7 +106,7 @@ class BeatTheIntroFragment : Fragment() {
                 binding.beatIntroGameCl.visibility = View.VISIBLE
                 stopProgressThread()
                 Log.d(TAG, "question index $questionIndex")
-                setupProgressBar(binding, mps[questionIndex % 2])
+                setupProgressBar(binding, mps[questionIndex % mps.size])
                 Log.d(TAG, "starting")
                 player.start()
                 questionIndex++
@@ -156,7 +134,6 @@ class BeatTheIntroFragment : Fragment() {
 
         // TODO figure out duration call errors
         // Tidy up a bit
-
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer { question ->
             binding.beatIntroGameCl.visibility = View.GONE
             binding.loadingProgressCl.visibility = View.VISIBLE
@@ -164,8 +141,8 @@ class BeatTheIntroFragment : Fragment() {
             val prepped = trackPrepStatus[currentQuestionUrl]
             Log.d(TAG, "prepped $prepped")
             if (prepped == true) {
-                Log.d(TAG, "current q index " + (questionIndex % 2).toString())
-                _currentQReady.value = mps[questionIndex % 2]
+                Log.d(TAG, "current q index " + (questionIndex % mps.size).toString())
+                _currentQReady.value = mps[questionIndex % mps.size]
             }
             showQuestion(binding, question)
         })
@@ -220,7 +197,6 @@ class BeatTheIntroFragment : Fragment() {
     }
 
     private fun gameFinished() {
-
         val action = BeatTheIntroFragmentDirections.actionBeatTheIntroFragmentToGameScoreFragment(
             gameType = Constants.BEAT_INTRO_GAME_TYPE,
             score = (viewModel.score.value ?: 0).toString()
@@ -230,12 +206,10 @@ class BeatTheIntroFragment : Fragment() {
     }
 
     private fun setupProgressBar(binding: BeatTheIntroFragmentBinding, mp: CustomMediaPlayer) {
-//        binding.progressBar.max = mediaPlayer.duration
         binding.progressBar.max = mp.duration
         binding.progressBar.progress = 0
 
         // let viewmodel know player duration so it can calculate scores
-//        viewModel.playerDuration = mediaPlayer.duration
         viewModel.playerDuration = mp.duration
 
         exitProgressThread = false
@@ -262,28 +236,6 @@ class BeatTheIntroFragment : Fragment() {
         exitProgressThread = true
     }
 
-    private fun playTrack(url: String) {
-        mediaPlayer.apply {
-            setDataSource(url)
-            // switch to prepareAsyc() and onPrepare
-            prepare()
-            start()
-        }
-    }
-
-    // TODO work out async implementation
-    // See if stuff can go in the viewmodel or not 
-    private fun playTrackAsync(url: String) {
-        mediaPlayer.apply {
-            setDataSource(url)
-            setOnPreparedListener {
-                mediaPlayer.start()
-            }
-            prepareAsync()
-            viewModel._mpStatus.value = MediaPlayerStatus.PREPARING
-        }
-    }
-
     override fun onPause() {
         super.onPause()
         exitProgressThread = true
@@ -291,18 +243,9 @@ class BeatTheIntroFragment : Fragment() {
 
     }
 
-    private fun changeMediaUrl(url: String) {
-//        if (mediaPlayer.isPlaying) mediaPlayer.stop()
-        mediaPlayer.reset()
-        playTrack(url)
-    }
-
     private fun stopPlayer(mp: CustomMediaPlayer) {
         mp.reset()
         mp.release()
-//        mediaPlayer.stop()
-//        mediaPlayer.reset()
-//        mediaPlayer.release()
     }
 
     private fun stopPlayers() {

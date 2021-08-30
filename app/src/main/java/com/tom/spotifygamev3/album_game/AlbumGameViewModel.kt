@@ -16,7 +16,8 @@ import kotlin.collections.HashMap
 
 enum class SpotifyApiStatus { LOADING, ERROR, DONE }
 
-class AlbumGameViewModel(application: Application, playlist_id: String) : AndroidViewModel(application) {
+class AlbumGameViewModel(application: Application, playlist_id: String) :
+    AndroidViewModel(application) {
 
     private val TAG = "AlbumGameViewModel"
 
@@ -37,7 +38,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) : Androi
         get() = _eventGameFinish
 
     private val _numAlbumsLoaded = MutableLiveData<Int>()
-    val numAlbumsLoaded : LiveData<Int>
+    val numAlbumsLoaded: LiveData<Int>
         get() = _numAlbumsLoaded
 
     private val _score = MutableLiveData<Int>()
@@ -163,10 +164,13 @@ class AlbumGameViewModel(application: Application, playlist_id: String) : Androi
 
                 makeAnswerOptionsV2(correctAlbum, albums)
             }
-            _nextQuestion.value = questions[0]
-            numQuestions = initialItems.size
-            _status.value = SpotifyApiStatus.DONE
-            startQuiz()
+            if (questions.size == 0) _status.value = SpotifyApiStatus.ERROR
+            else {
+                _nextQuestion.value = questions[0]
+                numQuestions = initialItems.size
+                _status.value = SpotifyApiStatus.DONE
+                startQuiz()
+            }
         }
     }
 
@@ -202,7 +206,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) : Androi
                 initialItems = getRandomSubset(localItems)
 
             } catch (e: Exception) {
-                Log.e(TAG, e.toString())
+                Log.e(TAG, "fetchPlaylistTracks $e")
                 _status.value = SpotifyApiStatus.ERROR
             }
         }

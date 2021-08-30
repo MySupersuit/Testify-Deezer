@@ -47,6 +47,10 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     val score: LiveData<Int>
         get() = _score
 
+    private val _numQsLoaded = MutableLiveData<Int>()
+    val numQsLoaded: LiveData<Int>
+        get() = _numQsLoaded
+
     private val localTracksPlaycount = mutableListOf<LfmTrack>()
     private var localTracks = listOf<Items>()
     private val questions: MutableList<HighLowQuestion> = mutableListOf()
@@ -58,6 +62,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
 
     init {
         _score.value = 0
+        _numQsLoaded.value = 0
         runBlocking {
             _status.value = SpotifyApiStatus.LOADING
             fetchData(playlist_id)
@@ -152,7 +157,10 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
                 Log.d(TAG, track.name)
                 jobs.add(fetchTrackPlaycount(track.artists[0].name, track.name))
             }
-            jobs.forEach { it.join() }
+            jobs.forEach {
+                it.join()
+                _numQsLoaded.value = _numQsLoaded.value?.plus(1)
+            }
             Log.d(TAG, "localTracksPlaycount size: ${localTracksPlaycount.size}")
             // TODO Handle stuff that doesn't have last fm tracks
             localTracksPlaycount.forEach {
@@ -161,6 +169,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
 
             // TODO clean up string manipulation shtuff
             for (i in 0 until Constants.HIGH_LOW_NUM_QUESTIONS * 2 - (botchedLastFmQs + (botchedLastFmQs % 2))) {
+
                 val paranth_regex_local =
                     regexedString(
                         localTracksPlaycount[i].name,

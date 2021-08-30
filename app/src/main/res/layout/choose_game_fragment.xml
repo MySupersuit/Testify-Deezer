@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.tom.spotifygamev3.home.HomeViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.tom.spotifygamev3.MainActivity">
+
+        <ImageView
+            android:id="@+id/spotify_logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/spotify_icon_green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/home_choose_game_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_margin"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/choose_a_game"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spotify_logo" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/home_choose_game_tv"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/album_game_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginBottom="40dp"
+                android:onClick="@{() -> viewModel.onAlbumGameClick()}"
+                android:paddingVertical="10dp"
+                android:text="Album Covers"
+                android:textSize="@dimen/choose_game_button_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/high_low_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="40dp"
+                android:onClick="@{() -> viewModel.onHighLowClick()}"
+                android:padding="10dp"
+                android:text="Higher or Lower"
+                android:textSize="@dimen/choose_game_button_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/album_game_button" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="40dp"
+                android:onClick="@{() -> viewModel.onBeatIntroClick()}"
+                android:paddingVertical="10dp"
+                android:text="Beat the Intro"
+                android:textSize="@dimen/choose_game_button_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/high_low_button" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
