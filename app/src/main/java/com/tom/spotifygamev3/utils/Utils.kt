@@ -1,18 +1,17 @@
 package com.tom.spotifygamev3.utils
 
 import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.media.MediaPlayer
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -27,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.databinding.AlbumGameFragmentBinding
+import com.tom.spotifygamev3.databinding.HighLowGameFragment3Binding
 import com.tom.spotifygamev3.models.spotify_models.Images
 import java.text.Normalizer
 import java.util.*
@@ -63,22 +63,71 @@ object Utils {
         return original_tokens.joinToString(" ")
     }
 
-    // TODO MESSY REDO
-    // Gradient drawables
-    // https://stackoverflow.com/questions/6115715/how-do-i-programmatically-set-the-background-color-gradient-on-a-custom-title-ba
-    // pass in colour to transiation from
-    fun glideShowImagePalette(
+    //    fun hlShowImage1(images: List<Images>, context: Context, imgView: ImageView, binding: HighLowGameFragment3Binding) {
+    fun hlShowImage1(images: List<Images>, context: Context, binding: HighLowGameFragment3Binding) {
+        glideShowImagePaletteHL(
+            images,
+            context,
+            binding.imageAns1,
+            binding.clAns1,
+            binding.artistAns1,
+            binding.songAns1,
+            binding.divAns1,
+            binding.bground1,
+            intArrayOf(-1, ContextCompat.getColor(context, R.color.spotify_black))
+
+        )
+    }
+
+    fun hlShowImage2(images: List<Images>, context: Context, binding: HighLowGameFragment3Binding) {
+        glideShowImagePaletteHL(
+            images,
+            context,
+            binding.imageAns2,
+            binding.clAns2,
+            binding.artistAns2,
+            binding.songAns2,
+            binding.divAns2,
+            binding.bground2,
+            intArrayOf(ContextCompat.getColor(context, R.color.spotify_black), -1)
+
+        )
+    }
+
+    private fun glideShowImagePaletteHL(
         images: List<Images>,
         context: Context,
-        imageView: ImageView,
-        binding: AlbumGameFragmentBinding
+        imgView: ImageView,
+        cl: ConstraintLayout,
+        artistTv: TextView,
+        songTv: TextView,
+        div: View,
+        bground: View,
+        gdColors: IntArray
     ) {
         val imgUri = urlToUri(images[0].url)
         val imgUri2 = urlToUri(images[1].url)
 
         Glide.with(context)
             .load(imgUri)
-            .error(Glide.with(context).load(imgUri2))
+            .error(
+                reloadHL(
+                    context,
+                    imgUri2,
+                    imgView,
+                    cl,
+                    artistTv,
+                    songTv,
+                    div,
+                    bground,
+                    gdColors
+                )
+            )
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.loading_animation)
+            )
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -86,62 +135,7 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Glide.with(context).load(imgUri2)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                Log.d(TAG, "load double failed")
-                                return false
-                            }
-
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                Log.d(TAG, "resource ready1")
-                                resource?.let {
-                                    val bitmap = it.toBitmap()
-                                    val builder = Palette.Builder(bitmap)
-                                    val background = listOf(
-                                        binding.albumGameCl,
-                                        binding.albumButtonCl,
-                                        binding.albumScoreCounter,
-                                        binding.albumCheckmark,
-                                        binding.albumCross
-                                    )
-                                    val palette = builder.generate() { palette ->
-                                        val bground =
-                                            binding.albumGameCl.background as ColorDrawable
-                                        val fromColor =
-                                            bground.color // TODO need to keep track of previous color
-                                        val toColor = palette?.dominantSwatch?.rgb
-                                        Log.d(TAG, "solid color $fromColor")
-                                        val fadeAnimator = ValueAnimator.ofObject(
-                                            ArgbEvaluator(),
-                                            fromColor,
-                                            toColor
-                                        )
-                                        fadeAnimator.setDuration(250)
-                                        fadeAnimator.addUpdateListener { anim ->
-                                            binding.albumGameCl.setBackgroundColor(anim.animatedValue as Int)
-                                        }
-                                        fadeAnimator.start()
-
-                                    }
-                                    
-                                }
-                                return false
-                            }
-                        })
-                        .into(imageView)
-
+                    Log.d(TAG, "single fail HL")
                     return false
                 }
 
@@ -152,44 +146,239 @@ object Utils {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "resource ready2")
-                    resource?.let {
-                        val bitmap = it.toBitmap()
-                        val builder = Palette.Builder(bitmap)
-                        val background = listOf(
-                            binding.albumGameCl,
-                            binding.albumButtonCl,
-                            binding.albumScoreCounter,
-                            binding.albumCheckmark,
-                            binding.albumCross
-                        )
-                        val palette = builder.generate() { palette ->
-                            val fromColor = binding.albumGameCl.solidColor
-                            val toColor = palette?.dominantSwatch?.rgb
-                            Log.d(TAG, "solid color $fromColor")
-                            val fadeAnimator =
-                                ValueAnimator.ofObject(ArgbEvaluator(), fromColor
-                                    , toColor ?: ContextCompat.getColor(context, R.color.spotify_black))
-                            fadeAnimator.setDuration(250)
-                            fadeAnimator.addUpdateListener { anim ->
-                                background.forEach {
-                                    it.setBackgroundColor(anim.animatedValue as Int)
-                                }
-//                                binding.albumGameCl.setBackgroundColor(anim.animatedValue as Int)
-                            }
-                            fadeAnimator.start()
-
-                        }
+                    if (resource != null) {
+                        hlAnim(context, resource, cl, artistTv, songTv, div, bground, gdColors)
                     }
                     return false
                 }
-
             })
+            .into(imgView)
+    }
+
+    private fun hlAnim(
+        context: Context,
+        resource: Drawable,
+        cl: ConstraintLayout,
+        artistTv: TextView,
+        songTv: TextView,
+        div: View,
+        bground: View,
+        gdColors: IntArray
+    ) {
+        val bitmap = resource.toBitmap()
+        val builder = Palette.Builder(bitmap)
+        val black = ContextCompat.getColor(context, R.color.spotify_black)
+        val white = ContextCompat.getColor(context, R.color.spotify_white)
+        val grey = ContextCompat.getColor(context, R.color.spotify_grey)
+        val index = if (gdColors[0] == -1) 0 else 1
+        builder.generate { palette ->
+            val fromDomColor = (cl.background as ColorDrawable).color
+            val fromMutColor = (bground.background as GradientDrawable).colors?.get(index)
+            Log.d(TAG, "from color $fromDomColor")
+            val toDomColor = palette?.dominantSwatch?.rgb ?: black
+            val toMutColor = palette?.mutedSwatch?.rgb ?: black
+//            val toDarkVibColor = palette?.mute?.rgb ?: black
+            val animator = ValueAnimator.ofObject(
+                ArgbEvaluator(),
+                fromDomColor,
+                toDomColor
+            )
+            val bgAnimator = ValueAnimator.ofObject(
+                ArgbEvaluator(),
+                fromMutColor,
+                toMutColor
+            )
+            animator.duration = 250
+            bgAnimator.duration = 250
+            animator.addUpdateListener { anim ->
+                cl.setBackgroundColor(anim.animatedValue as Int)
+            }
+            bgAnimator.addUpdateListener { anim ->
+                gdColors[index] = anim.animatedValue as Int
+                val gd = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM,
+                    gdColors
+                )
+                bground.background = gd
+            }
+            animator.start()
+            bgAnimator.start()
+            artistTv.setTextColor(
+                palette?.dominantSwatch?.bodyTextColor ?: grey
+            )
+            songTv.setTextColor(
+                palette?.dominantSwatch?.bodyTextColor ?: white
+            )
+            div.setBackgroundColor(
+                palette?.dominantSwatch?.bodyTextColor ?: white
+            )
+        }
+    }
+
+    private fun reloadHL(
+        context: Context,
+        uri: Uri,
+        imgView: ImageView,
+        cl: ConstraintLayout,
+        artistTv: TextView,
+        songTv: TextView,
+        div: View,
+        bground: View,
+        gdColors: IntArray
+    ) {
+        Glide.with(context).load(uri)
             .apply(
                 RequestOptions()
-//                    .placeholder(R.drawable.loading_animation)
-                    .error(R.drawable.broken_image)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
             )
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d(TAG, "single fail HL")
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (resource != null) {
+                        hlAnim(context, resource, cl, artistTv, songTv, div, bground, gdColors)
+                    }
+                    return false
+                }
+            })
+            .into(imgView)
+
+    }
+
+    fun glideShowImagePaletteV2(
+        images: List<Images>,
+        context: Context,
+        imgView: ImageView,
+        binding: AlbumGameFragmentBinding
+    ) {
+        val imgUri = urlToUri(images[0].url)
+        val imgUri2 = urlToUri(images[1].url)
+
+        Glide.with(context)
+            .load(imgUri)
+            // on error try reload with 2nd uri
+            .error(reloadAC(context, imgUri2, imgView, binding))
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+            )
+            .listener(object : RequestListener<Drawable> {
+
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d(TAG, "single fail AC")
+                    return false
+                }
+
+                // on ready change background colour
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    // On image load - animates background change colour
+                    if (resource != null) {
+                        bgColorAnimation(context, resource, binding)
+                    }
+                    return false
+                }
+            })
+            .into(imgView)
+    }
+
+    // factor out binding potentially
+    private fun bgColorAnimation(
+        context: Context, resource: Drawable, binding: AlbumGameFragmentBinding
+    ) {
+        val bitmap = resource.toBitmap()
+        val builder = Palette.Builder(bitmap)
+        val black = ContextCompat.getColor(context, R.color.spotify_black)
+        val white = ContextCompat.getColor(context, R.color.spotify_white)
+        var toColor: Int
+        builder.generate { palette ->
+            // .colors ups the api level to 24 from 21 - some way to use customGradDrawable to get color[0]
+            val fromColor = (binding.mainBackground.background as GradientDrawable).colors?.get(0)
+            Log.d(TAG, "from color $fromColor")
+            toColor = palette?.dominantSwatch?.rgb ?: black
+            val animator = ValueAnimator.ofObject(
+                ArgbEvaluator(),
+                fromColor,
+                toColor
+            )
+            animator.duration = 250
+            animator.addUpdateListener { anim ->
+                // make new gradient drawable
+                val gd = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM,
+                    intArrayOf(anim.animatedValue as Int, black)
+                )
+                binding.mainBackground.background = gd
+            }
+            animator.start()
+            binding.albumScoreCounter.setTextColor(
+                palette?.dominantSwatch?.bodyTextColor ?: white
+            )
+        }
+    }
+
+    private fun reloadAC(
+        context: Context,
+        uri: Uri,
+        imageView: ImageView,
+        binding: AlbumGameFragmentBinding
+    ) {
+        Log.d(TAG, "reload")
+        Glide.with(context).load(uri)
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+            )
+            .listener(object : RequestListener<Drawable> {
+
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d(TAG, "single fail")
+                    return false
+                }
+
+                // on ready change background colour
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (resource != null) {
+                        bgColorAnimation(context, resource, binding)
+                    }
+                    return false
+                }
+            })
             .into(imageView)
     }
 
@@ -200,7 +389,7 @@ object Utils {
     ) {
         val imgUri = urlToUri(images[0].url)
         val imgUri2 = urlToUri(images[1].url)
-//
+
         Glide.with(context)
             .load(imgUri)
             .error(Glide.with(context).load(imgUri2))
@@ -279,33 +468,20 @@ object Utils {
 
         Glide.with(context)
             .load(imgUri)
-//            .error(Glide.with(context).load(imgUri2))
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    Glide.with(context).load(imgUri2)
-                        .error(Log.d(TAG, "preload fail twice"))
-                        .diskCacheStrategy(DiskCacheStrategy.DATA)
-                        .preload()
-                    Log.d(TAG, "preload fail once")
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-            })
-            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+            )
+            .error(
+                Glide.with(context)
+                    .load(imgUri2)
+                    .apply(
+                        RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    )
+                    .preload()
+            )
+//            .listener(preloadListener(context, imgUri2))
             .preload()
         Log.d(TAG, "Preloaded")
 

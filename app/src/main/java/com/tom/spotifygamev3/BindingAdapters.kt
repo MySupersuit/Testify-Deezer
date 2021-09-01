@@ -2,13 +2,9 @@ package com.tom.spotifygamev3
 
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
-import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -85,13 +81,25 @@ fun showAlbumQuiz(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) 
 }
 
 @BindingAdapter("showHighLowQuiz")
-fun showHighLowQuiz(linearLayout: LinearLayout, status: SpotifyApiStatus) {
+fun showHighLowQuiz(frameLayout: FrameLayout, status: SpotifyApiStatus) {
     when (status) {
         SpotifyApiStatus.DONE -> {
-            linearLayout.visibility = View.VISIBLE
+            frameLayout.visibility = View.VISIBLE
         }
         else -> {
-            linearLayout.visibility = View.GONE
+            frameLayout.visibility = View.GONE
+        }
+    }
+}
+
+@BindingAdapter("showFrameLayout")
+fun showFrameLayout(frameLayout: FrameLayout, status: SpotifyApiStatus) {
+    when (status) {
+        SpotifyApiStatus.DONE -> {
+            frameLayout.visibility = View.VISIBLE
+        }
+        else -> {
+            frameLayout.visibility = View.GONE
         }
     }
 }

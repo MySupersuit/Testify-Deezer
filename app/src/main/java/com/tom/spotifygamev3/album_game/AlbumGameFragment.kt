@@ -1,6 +1,7 @@
 package com.tom.spotifygamev3.album_game
 
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,7 @@ import com.tom.spotifygamev3.databinding.AlbumGameFragmentBinding
 import com.tom.spotifygamev3.models.AlbumQuestion
 import com.tom.spotifygamev3.models.spotify_models.Images
 import com.tom.spotifygamev3.utils.Utils.doAlphaAnimation
-import com.tom.spotifygamev3.utils.Utils.glideShowImagePalette
+import com.tom.spotifygamev3.utils.Utils.glideShowImagePaletteV2
 
 class AlbumGameFragment : Fragment() {
 
@@ -47,6 +48,11 @@ class AlbumGameFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
+
+        binding.mainBackground.background = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(R.color.spotify_black, R.color.spotify_black)
+        )
 
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer { albumQuestion ->
             showQuestion(binding, albumQuestion)
@@ -105,7 +111,8 @@ class AlbumGameFragment : Fragment() {
 
     private fun showQuestion(binding: AlbumGameFragmentBinding, albumQ: AlbumQuestion) {
         // includes transition
-        glideShowImagePalette(albumQ.images, requireContext(), binding.albumCoverImage, binding)
+//        glideShowImagePalette(albumQ.images, requireContext(), binding.albumCoverImage, binding)
+        glideShowImagePaletteV2(albumQ.images, requireContext(), binding.albumCoverImage, binding)
 
         // Work around for artists with not enough albums
         val buttons = listOf(
