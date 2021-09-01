@@ -1,20 +1,26 @@
 package com.tom.spotifygamev3.higher_lower_game
 
+import android.graphics.drawable.GradientDrawable
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.tom.spotifygamev3.R
+import com.tom.spotifygamev3.databinding.HighLowGameFragment2Binding
+import com.tom.spotifygamev3.databinding.HighLowGameFragment3Binding
 import com.tom.spotifygamev3.utils.Utils.glideShowImage
 import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.utils.Utils.glidePreloadImage
 import com.tom.spotifygamev3.utils.Utils.glideShowImageLoadAnim
 import com.tom.spotifygamev3.databinding.HighLowGameFragmentBinding
 import com.tom.spotifygamev3.models.HighLowQuestion
+import com.tom.spotifygamev3.utils.Utils.hlShowImage1
+import com.tom.spotifygamev3.utils.Utils.hlShowImage2
 
 class HighLowGameFragment : Fragment() {
 
@@ -30,7 +36,7 @@ class HighLowGameFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = HighLowGameFragmentBinding.inflate(inflater)
+        val binding = HighLowGameFragment3Binding.inflate(inflater)
         viewModelFactory =
             HighLowGameViewModelFactory(
                 requireActivity().application,
@@ -38,6 +44,17 @@ class HighLowGameFragment : Fragment() {
             )
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        val black = ContextCompat.getColor(requireContext(), R.color.spotify_black)
+
+        binding.bground1.background = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(black, black)
+        )
+        binding.bground2.background = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(black, black)
+        )
 
         // TODO grab artist images from API call
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer { question ->
@@ -92,7 +109,7 @@ class HighLowGameFragment : Fragment() {
         viewModel.onGameFinishComplete()
     }
 
-    private fun showModal(binding: HighLowGameFragmentBinding, question: HighLowQuestion) {
+    private fun showModal(binding: HighLowGameFragment3Binding, question: HighLowQuestion) {
         disableAnswerButtons(binding)
         binding.modalTitle.text = if (question.correct == true) "Correct :)" else "Wrong :("
 
@@ -112,32 +129,34 @@ class HighLowGameFragment : Fragment() {
         binding.modalCl.visibility = View.VISIBLE
     }
 
-    private fun hideModal(binding: HighLowGameFragmentBinding) {
+    private fun hideModal(binding: HighLowGameFragment3Binding) {
         enableAnswerButtons(binding)
         binding.modalCl.visibility = View.GONE
     }
 
-    private fun showQuestion(binding: HighLowGameFragmentBinding, question: HighLowQuestion) {
+    private fun showQuestion(binding: HighLowGameFragment3Binding, question: HighLowQuestion) {
         val track1 = question.track1.track
         val track2 = question.track2.track
 
-        glideShowImageLoadAnim(track1.album.images, requireContext(), binding.imageAns1)
+//        glideShowImageLoadAnim(track1.album.images, requireContext(), binding.imageAns1)
+        hlShowImage1(track1.album.images, requireContext(), binding)
         binding.artistAns1.text = track1.artists[0].name
         binding.songAns1.text = track1.name
 
-        glideShowImageLoadAnim(track2.album.images, requireContext(), binding.imageAns2)
+//        glideShowImageLoadAnim(track2.album.images, requireContext(), binding.imageAns2)
+        hlShowImage2(track2.album.images, requireContext(), binding)
         binding.artistAns2.text = track2.artists[0].name
         binding.songAns2.text = track2.name
     }
 
-    private fun disableAnswerButtons(binding: HighLowGameFragmentBinding) {
-        binding.option1Cl.isClickable = false
-        binding.option2Cl.isClickable = false
+    private fun disableAnswerButtons(binding: HighLowGameFragment3Binding) {
+        binding.cvAns1.isClickable = false
+        binding.cvAns2.isClickable = false
     }
 
-    private fun enableAnswerButtons(binding: HighLowGameFragmentBinding) {
-        binding.option1Cl.isClickable = true
-        binding.option2Cl.isClickable = true
+    private fun enableAnswerButtons(binding: HighLowGameFragment3Binding) {
+        binding.cvAns1.isClickable = true
+        binding.cvAns2.isClickable = true
     }
 
 
