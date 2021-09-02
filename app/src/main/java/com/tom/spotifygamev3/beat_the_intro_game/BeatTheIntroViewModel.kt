@@ -63,6 +63,10 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     val eventGameFinish: LiveData<Boolean>
         get() = _eventGameFinish
 
+    private val _showModal = MutableLiveData<BeatIntroQuestion>()
+    val showModal: LiveData<BeatIntroQuestion>
+        get() = _showModal
+
     init {
         _score.value = 0
         _numTracksLoaded.value = 0
@@ -135,7 +139,8 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
             BeatIntroQuestion(
                 correctAnswer = correctTrack.name,
                 incorrectAnswers = incorrectAnswers,
-                previewUrl = correctTrack.preview_url!!
+                previewUrl = correctTrack.preview_url!!,
+                correctTrack = correctTrack
             )
         )
     }
@@ -147,19 +152,40 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
         val questionScore = (remaining.toDouble() / playerDuration * 1000).toInt()
         Log.d(TAG, "score = ${questionScore.toString()}")
 
+        val result = currentQuestion.value
         if (chosenAnswer == correctAnswer) {
             _score.value = (_score.value)?.plus(questionScore)
+            result?.questionScore = questionScore
         } else {
             _score.value = (_score.value)?.minus(questionScore / 2)
+            result?.questionScore = -(questionScore/2)
         }
 
+
+        if (result != null) {
+            showModal(result)
+        } else {
+            throw Exception("result null")
+        }
+    }
+
+    fun onNextModalClick() {
         if ((questionIndex + 1) == questions.size) {
             Log.d(TAG, "game finished")
             onGameFinish()
         } else {
             questionIndex++
             setQuestion()
+            hideModal()
         }
+    }
+
+    private fun showModal(result: BeatIntroQuestion) {
+        _showModal.value = result
+    }
+
+    private fun hideModal() {
+        _showModal.value = null
     }
 
     private fun onGameFinish() {

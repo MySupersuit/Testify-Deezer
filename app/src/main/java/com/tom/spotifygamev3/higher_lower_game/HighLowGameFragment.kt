@@ -1,24 +1,21 @@
 package com.tom.spotifygamev3.higher_lower_game
 
 import android.graphics.drawable.GradientDrawable
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.tom.spotifygamev3.R
-import com.tom.spotifygamev3.databinding.HighLowGameFragment2Binding
 import com.tom.spotifygamev3.databinding.HighLowGameFragment3Binding
-import com.tom.spotifygamev3.utils.Utils.glideShowImage
+import com.tom.spotifygamev3.models.HighLowQuestion
 import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.utils.Utils.glidePreloadImage
-import com.tom.spotifygamev3.utils.Utils.glideShowImageLoadAnim
-import com.tom.spotifygamev3.databinding.HighLowGameFragmentBinding
-import com.tom.spotifygamev3.models.HighLowQuestion
+import com.tom.spotifygamev3.utils.Utils.glideShowImage
 import com.tom.spotifygamev3.utils.Utils.hlShowImage1
 import com.tom.spotifygamev3.utils.Utils.hlShowImage2
 
@@ -76,8 +73,7 @@ class HighLowGameFragment : Fragment() {
         })
 
         viewModel.score.observe(viewLifecycleOwner, Observer { score ->
-            binding.highLowScoreTv.text =
-                getString(R.string.score, score, Constants.HIGH_LOW_NUM_QUESTIONS)
+            binding.highLowScoreTv.text = score.toString()
         })
 
         viewModel.showModal.observe(viewLifecycleOwner, Observer { question ->
