@@ -69,8 +69,8 @@ class AlbumGameFragment : Fragment() {
             if (newScore != 0) {
                 doAlphaAnimation(binding.albumCheckmark)
             }
-            binding.albumScoreCounter.text =
-                getString(R.string.score, newScore, Constants.ALBUM_GAME_NUM_QUESTIONS)
+            binding.albumScoreCounter.text = newScore.toString()
+//                getString(R.string.score, newScore, Constants.ALBUM_GAME_NUM_QUESTIONS)
         })
 
         viewModel.numWrong.observe(viewLifecycleOwner, Observer { newWrong ->

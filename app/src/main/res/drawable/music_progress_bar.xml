@@ -4,9 +4,9 @@
         android:id="@android:id/background"
         android:gravity="center_vertical|fill_horizontal">
         <shape android:shape="rectangle">
-            <corners android:radius="10dp" />
-            <size android:height="20dp" />
-            <solid android:color="@color/blueAccent" />
+            <corners android:radius="40dp" />
+            <size android:height="40dp" />
+            <solid android:color="@color/spotify_white" />
         </shape>
     </item>
     <item
@@ -14,9 +14,9 @@
         android:gravity="center_vertical|fill_horizontal">
         <scale android:scaleWidth="100%">
             <shape android:shape="rectangle">
-                <corners android:radius="10dp" />
-                <size android:height="20dp" />
-                <solid android:color="@color/blue" />
+                <corners android:radius="40dp" />
+                <size android:height="40dp" />
+                <solid android:color="@color/spotify_green" />
             </shape>
         </scale>
     </item>

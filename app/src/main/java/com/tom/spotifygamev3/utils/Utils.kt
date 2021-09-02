@@ -3,6 +3,8 @@ package com.tom.spotifygamev3.utils
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -12,18 +14,26 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.blue
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.core.net.toUri
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.card.MaterialCardView
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.databinding.AlbumGameFragmentBinding
 import com.tom.spotifygamev3.databinding.HighLowGameFragment3Binding
@@ -126,7 +136,7 @@ object Utils {
             .apply(
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.loading_animation)
+                    .placeholder(R.drawable.music_note_icon)
             )
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
@@ -230,6 +240,8 @@ object Utils {
             .apply(
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.music_note_icon)
+                    .error(R.drawable.ic_connection_error)
             )
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
@@ -257,6 +269,156 @@ object Utils {
             })
             .into(imgView)
 
+    }
+
+    fun glideShowImagePaletteBtI(
+        images: List<Images>,
+        context: Context,
+        imgView: ImageView,
+        cl: ConstraintLayout,
+        songTv: TextView,
+        artistTv: TextView,
+        titleTv: TextView,
+        scoreTv: TextView,
+        nextBtn: AppCompatButton
+    ) {
+        val imgUri = urlToUri(images[0].url)
+        val imgUri2 = urlToUri(images[1].url)
+
+        Glide.with(context).load(imgUri)
+            .error(reloadBtI(imgUri2, context, imgView, cl, songTv, artistTv, titleTv, scoreTv, nextBtn))
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.loading_animation)
+            )
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d(TAG, "BtI load fail 1")
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (resource != null) {
+                        setColorsBtI(resource, context, cl,
+                            songTv, artistTv, titleTv, scoreTv, nextBtn)
+                    }
+                    return false
+                }
+            })
+            .into(imgView)
+    }
+
+    private fun setColorsBtI(
+        resource: Drawable,
+        context: Context,
+        cl: ConstraintLayout,
+        songTv: TextView,
+        artistTv: TextView,
+        titleTv: TextView,
+        scoreTv: TextView,
+        nextBtn: AppCompatButton
+    ) {
+        val bitmap = resource.toBitmap()
+        val builder = Palette.Builder(bitmap)
+        val black = ContextCompat.getColor(context, R.color.spotify_black)
+        val white = ContextCompat.getColor(context, R.color.spotify_white)
+        val green = ContextCompat.getColor(context, R.color.spotify_green)
+        builder.generate { palette ->
+            val fromDomColor = (cl.background as ColorDrawable).color
+            val domColor = palette?.dominantSwatch?.rgb ?: green
+//            val lightVibColor = palette?.lightVibrantSwatch?.rgb
+            val darkVib = palette?.mutedSwatch?.rgb
+            val domTextColor = palette?.dominantSwatch?.bodyTextColor ?: black
+            Log.d(TAG, "to dom color ${domColor.red} ${domColor.green} ${domColor.blue}")
+            val animator = ValueAnimator.ofObject(
+                ArgbEvaluator(),
+                fromDomColor,
+                domColor
+            )
+            val vibAnimator = ValueAnimator.ofObject(
+                ArgbEvaluator(),
+                black,
+                darkVib ?: black
+            )
+            animator.duration = 600
+            vibAnimator.duration = 600
+            animator.addUpdateListener { anim ->
+                cl.setBackgroundColor(anim.animatedValue as Int)
+            }
+            vibAnimator.addUpdateListener { anim ->
+                nextBtn.backgroundTintList = ColorStateList.valueOf(anim.animatedValue as Int)
+            }
+            animator.start()
+            vibAnimator.start()
+
+            songTv.setTextColor(domTextColor)
+            artistTv.setTextColor(domTextColor)
+            titleTv.setTextColor(domTextColor)
+            scoreTv.setTextColor(domTextColor)
+//            nextBtn.setTextColor(palette?.darkVibrantSwatch?.bodyTextColor ?: white)
+//            nextBtn.setTextColor(palette?.lightVibrantSwatch?.bodyTextColor ?: white)
+//            nextBtn.backgroundTintList = ColorStateList.valueOf(palette?.vibrantSwatch?.rgb ?: black)
+        }
+    }
+
+    private fun reloadBtI(
+        uri: Uri,
+        context: Context,
+        imgView: ImageView,
+        cl: ConstraintLayout,
+        songTv: TextView,
+        artistTv: TextView,
+        titleTv: TextView,
+        scoreTv: TextView,
+        nextBtn: AppCompatButton
+    ) {
+        Log.d(TAG, "reloading bti")
+        Glide.with(context).load(uri)
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.music_note_icon)
+                    .error(R.drawable.ic_connection_error)
+            )
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d(TAG, "BtI load fail 2")
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (resource != null) {
+                        setColorsBtI(resource, context, cl,
+                            songTv, artistTv, titleTv, scoreTv, nextBtn)
+                    }
+                    return false
+                }
+            })
+            .into(imgView)
     }
 
     fun glideShowImagePaletteV2(
@@ -352,6 +514,7 @@ object Utils {
             .apply(
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.music_note_icon)  // on reload show loading animation
             )
             .listener(object : RequestListener<Drawable> {
 
@@ -439,7 +602,6 @@ object Utils {
             })
             .apply(
                 RequestOptions()
-//                    .placeholder(R.drawable.loading_animation)
                     .error(R.drawable.broken_image)
             )
             .into(imageView)
@@ -452,7 +614,7 @@ object Utils {
             .load(imgUri)
             .apply(
                 RequestOptions()
-                    .placeholder(R.drawable.loading_animation)
+                    .placeholder(R.drawable.music_note_icon)
             )
 
         if (images.size > 1) {

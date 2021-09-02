@@ -1,5 +1,7 @@
 package com.tom.spotifygamev3.beat_the_intro_game
 
+import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -21,7 +26,10 @@ import com.tom.spotifygamev3.models.BeatIntroQuestion
 import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.utils.CustomMediaPlayer
 import com.tom.spotifygamev3.utils.Utils.doAlphaAnimation
-import java.lang.Exception
+import com.tom.spotifygamev3.utils.Utils.glidePreloadImage
+import com.tom.spotifygamev3.utils.Utils.glideShowImage
+import com.tom.spotifygamev3.utils.Utils.glideShowImagePaletteBtI
+import kotlin.Exception
 
 class BeatTheIntroFragment : Fragment() {
 
@@ -114,12 +122,15 @@ class BeatTheIntroFragment : Fragment() {
         })
 
         viewModel.nextQuestion.observe(viewLifecycleOwner, Observer { nextQ ->
+            // slowed it down a lot
+//            glidePreloadImage(nextQ.correctTrack.album.images, requireContext())
+
             val mp = mps[nextQIndex % mps.size]
             nextQIndex++
             Log.d(TAG, "next q index $nextQIndex")
             if (nextQ == null) {
                 Log.d(TAG, "next null")
-                stopPlayer(mp)
+                stopReleasePlayer(mp)
                 mps.remove(mp)
             } else {
                 if (currentQuestionUrl == "") currentQuestionUrl = nextQ.previewUrl
@@ -161,15 +172,21 @@ class BeatTheIntroFragment : Fragment() {
             }
         })
 
-        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
-            if (newScore != 0) {
-                // TODO change animation to be +$score or -$score in green and red
-                if (newScore > localScore) doAlphaAnimation(binding.beatIntroCheckmark)
-                else if (newScore < localScore) doAlphaAnimation(binding.beatIntroCross)
+        viewModel.showModal.observe(viewLifecycleOwner, Observer { question ->
+            if (question != null) {
+                Log.d(TAG, "q index showmodal $questionIndex")
+                // stop previous player
+                stopPlayer(mps[(questionIndex - 1) % mps.size])
+                showModal(binding, question)
+            } else {
+                hideModal(binding)
             }
-                binding.beatIntroScoreCounter.text =
-                    newScore.toString()
-                localScore = newScore
+        })
+
+        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
+            binding.beatIntroScoreCounter.text =
+                newScore.toString()
+            localScore = newScore
 
         })
 
@@ -178,6 +195,10 @@ class BeatTheIntroFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    private fun stopPlayer(mp: CustomMediaPlayer) {
+        mp.reset()
     }
 
     private fun showQuestion(binding: BeatTheIntroFragmentBinding, question: BeatIntroQuestion) {
@@ -197,6 +218,7 @@ class BeatTheIntroFragment : Fragment() {
     }
 
     private fun gameFinished() {
+
         val action = BeatTheIntroFragmentDirections.actionBeatTheIntroFragmentToGameScoreFragment(
             gameType = Constants.BEAT_INTRO_GAME_TYPE,
             score = (viewModel.score.value ?: 0).toString()
@@ -206,8 +228,9 @@ class BeatTheIntroFragment : Fragment() {
     }
 
     private fun setupProgressBar(binding: BeatTheIntroFragmentBinding, mp: CustomMediaPlayer) {
+
         binding.progressBar.max = mp.duration
-        binding.progressBar.progress = 0
+        binding.progressBar.setProgressCompat(0, true)
 
         // let viewmodel know player duration so it can calculate scores
         viewModel.playerDuration = mp.duration
@@ -218,10 +241,11 @@ class BeatTheIntroFragment : Fragment() {
 
     // TODO if preview plays all the way through, progress does not reset
     private fun startProgressThread(binding: BeatTheIntroFragmentBinding, mp: CustomMediaPlayer) {
+//        binding.progressBar.progress = mp.currentPosition
         Thread {
             // update progress bar until told to exit or reaches end of audio file
             while (!exitProgressThread && binding.progressBar.progress < mp.duration) {
-                binding.progressBar.progress = mp.currentPosition
+                binding.progressBar.setProgressCompat(mp.currentPosition, true)
                 viewModel.playerPosition = mp.currentPosition
                 try {
                     Thread.sleep(15)
@@ -243,14 +267,61 @@ class BeatTheIntroFragment : Fragment() {
 
     }
 
-    private fun stopPlayer(mp: CustomMediaPlayer) {
+    private fun stopReleasePlayer(mp: CustomMediaPlayer) {
         mp.reset()
         mp.release()
     }
 
     private fun stopPlayers() {
         for (mp in mps) {
-            stopPlayer(mp)
+            stopReleasePlayer(mp)
+        }
+    }
+
+    private fun showModal(binding: BeatTheIntroFragmentBinding, question: BeatIntroQuestion) {
+        disableAnswerButtons(binding)
+
+        // glide show image palette BtI
+        glideShowImagePaletteBtI(
+            question.correctTrack.album.images,
+            requireContext(),
+            binding.modalImage,
+            binding.modalCl,
+            binding.modalSong,
+            binding.modalArtist,
+            binding.modalTitle,
+            binding.modalScoreUpdate,
+            binding.modalButton
+        )
+        if (question.questionScore >= 0) {
+            binding.modalTitle.text = getString(R.string.correct_smiley)
+            binding.modalScoreUpdate.text = getString(R.string.pos_score, question.questionScore)
+        } else {
+            binding.modalTitle.text = getString(R.string.wrong_frowny)
+            binding.modalScoreUpdate.text = question.questionScore.toString()
+        }
+        binding.modalArtist.text = question.correctTrack.artists[0].name
+        binding.modalSong.text = question.correctTrack.name
+
+        binding.modalCv.visibility = View.VISIBLE
+    }
+
+    private fun hideModal(binding: BeatTheIntroFragmentBinding) {
+        enableAnswerButtons(binding)
+        binding.modalCv.visibility = View.GONE
+    }
+
+    private fun disableAnswerButtons(binding: BeatTheIntroFragmentBinding) {
+        val buttons = listOf(binding.answer1, binding.answer2, binding.answer3, binding.answer4)
+        for (button in buttons) {
+            button.isClickable = false
+        }
+    }
+
+    private fun enableAnswerButtons(binding: BeatTheIntroFragmentBinding) {
+        val buttons = listOf(binding.answer1, binding.answer2, binding.answer3, binding.answer4)
+        for (button in buttons) {
+            button.isClickable = true
         }
     }
 

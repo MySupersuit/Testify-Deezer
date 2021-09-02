@@ -13,4 +13,8 @@
     <string name="login_message">How well do you know your Spotify?</string>
     <string name="choose_a_game">Choose a game</string>
     <string name="next">Next</string>
+    <string name="score_title">Score:</string>
+    <string name="correct_smiley">Correct :)</string>
+    <string name="pos_score">+%1$d</string>
+    <string name="wrong_frowny">Wrong :(</string>
 </resources>
