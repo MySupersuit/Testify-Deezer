@@ -120,23 +120,9 @@ object Utils {
 
         Glide.with(context)
             .load(imgUri)
-            .error(
-                reloadHL(
-                    context,
-                    imgUri2,
-                    imgView,
-                    cl,
-                    artistTv,
-                    songTv,
-                    div,
-                    bground,
-                    gdColors
-                )
-            )
             .apply(
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.music_note_icon)
             )
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
@@ -145,7 +131,38 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "single fail HL")
+                    Log.e(TAG, "single fail HL", e)
+
+                    if (e != null) {
+                        for (t in e.rootCauses) {
+                            Log.e(TAG, "Caused by", t)
+                        }
+                    }
+                    Log.d(TAG, "posting runnable to main")
+                    imgView.post {
+                        reloadHL(
+                            context,
+                            imgUri2,
+                            imgView,
+                            cl,
+                            artistTv,
+                            songTv,
+                            div,
+                            bground,
+                            gdColors
+                        )
+                    }
+//                    reloadHL(
+//                        context,
+//                        imgUri2,
+//                        imgView,
+//                        cl,
+//                        artistTv,
+//                        songTv,
+//                        div,
+//                        bground,
+//                        gdColors
+//                    )
                     return false
                 }
 
@@ -184,7 +201,6 @@ object Utils {
         builder.generate { palette ->
             val fromDomColor = (cl.background as ColorDrawable).color
             val fromMutColor = (bground.background as GradientDrawable).colors?.get(index)
-            Log.d(TAG, "from color $fromDomColor")
             val toDomColor = palette?.dominantSwatch?.rgb ?: black
             val toMutColor = palette?.mutedSwatch?.rgb ?: black
 //            val toDarkVibColor = palette?.mute?.rgb ?: black
@@ -236,6 +252,7 @@ object Utils {
         bground: View,
         gdColors: IntArray
     ) {
+        Log.d(TAG, "reload HL")
         Glide.with(context).load(uri)
             .apply(
                 RequestOptions()
@@ -286,7 +303,19 @@ object Utils {
         val imgUri2 = urlToUri(images[1].url)
 
         Glide.with(context).load(imgUri)
-            .error(reloadBtI(imgUri2, context, imgView, cl, songTv, artistTv, titleTv, scoreTv, nextBtn))
+            .error(
+                reloadBtI(
+                    imgUri2,
+                    context,
+                    imgView,
+                    cl,
+                    songTv,
+                    artistTv,
+                    titleTv,
+                    scoreTv,
+                    nextBtn
+                )
+            )
             .apply(
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -312,8 +341,10 @@ object Utils {
                     isFirstResource: Boolean
                 ): Boolean {
                     if (resource != null) {
-                        setColorsBtI(resource, context, cl,
-                            songTv, artistTv, titleTv, scoreTv, nextBtn)
+                        setColorsBtI(
+                            resource, context, cl,
+                            songTv, artistTv, titleTv, scoreTv, nextBtn
+                        )
                     }
                     return false
                 }
@@ -412,8 +443,10 @@ object Utils {
                     isFirstResource: Boolean
                 ): Boolean {
                     if (resource != null) {
-                        setColorsBtI(resource, context, cl,
-                            songTv, artistTv, titleTv, scoreTv, nextBtn)
+                        setColorsBtI(
+                            resource, context, cl,
+                            songTv, artistTv, titleTv, scoreTv, nextBtn
+                        )
                     }
                     return false
                 }
@@ -480,7 +513,6 @@ object Utils {
         builder.generate { palette ->
             // .colors ups the api level to 24 from 21 - some way to use customGradDrawable to get color[0]
             val fromColor = (binding.mainBackground.background as GradientDrawable).colors?.get(0)
-            Log.d(TAG, "from color $fromColor")
             toColor = palette?.dominantSwatch?.rgb ?: black
             val animator = ValueAnimator.ofObject(
                 ArgbEvaluator(),
@@ -634,18 +666,60 @@ object Utils {
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
             )
-            .error(
-                Glide.with(context)
-                    .load(imgUri2)
-                    .apply(
-                        RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    )
-                    .preload()
-            )
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d(TAG, "preload 1st success of $imgUri")
+                    return false
+                }
+            })
+//            .error(
+//                Glide.with(context)
+//                    .load(imgUri2)
+//                    .apply(
+//                        RequestOptions()
+//                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    )
+//                    .listener(object: RequestListener<Drawable> {
+//                        override fun onLoadFailed(
+//                            e: GlideException?,
+//                            model: Any?,
+//                            target: Target<Drawable>?,
+//                            isFirstResource: Boolean
+//                        ): Boolean {
+//                            return false
+//                        }
+//
+//                        override fun onResourceReady(
+//                            resource: Drawable?,
+//                            model: Any?,
+//                            target: Target<Drawable>?,
+//                            dataSource: DataSource?,
+//                            isFirstResource: Boolean
+//                        ): Boolean {
+//                            Log.d(TAG, "Preload 2nd success of $imgUri2")
+//                            return false
+//                        }
+//                    })
+//                    .preload()
+//            )
 //            .listener(preloadListener(context, imgUri2))
             .preload()
-        Log.d(TAG, "Preloaded")
+
 
     }
 

@@ -84,6 +84,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
             val initialJob = fetchPlaylistTracks(playlistId)
             initialJob.join()
             Log.d(TAG, "initial fetched. size: ${initialPlaylistItems.size}")
+            if (initialPlaylistItems.isEmpty()) return@launch
 
             for (item in initialPlaylistItems) {
                 val track = item.track

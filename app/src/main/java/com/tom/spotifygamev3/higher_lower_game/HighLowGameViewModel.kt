@@ -147,6 +147,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
             val initialJob = fetchTracks(playlistId)
             initialJob.join()
             Log.d(TAG, "initialTracks fetched")
+            if (initialItems.isEmpty()) return@launch
 
             val shuffled = initialItems.shuffled()
 
