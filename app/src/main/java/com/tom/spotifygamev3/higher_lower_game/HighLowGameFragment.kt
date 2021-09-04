@@ -58,6 +58,7 @@ class HighLowGameFragment : Fragment() {
             showQuestion(binding, question)
         })
 
+        // TODO try cache all images when loading??
         viewModel.nextQuestion.observe(viewLifecycleOwner, Observer { nextQuestion ->
             if (nextQuestion != null) {
                 glidePreloadImage(nextQuestion.track1.track.album.images, requireContext())

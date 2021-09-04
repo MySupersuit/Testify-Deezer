@@ -50,6 +50,21 @@ fun bindStatus(statusImageView: ImageView, status: SpotifyApiStatus) {
     }
 }
 
+@BindingAdapter("BtIApiStatus")
+fun bindBtIStatus(statusProgress: ConstraintLayout, status: SpotifyApiStatus) {
+    when (status) {
+        SpotifyApiStatus.LOADING -> {
+            statusProgress.visibility = View.VISIBLE
+        }
+        SpotifyApiStatus.DONE -> statusProgress.visibility = View.GONE
+        SpotifyApiStatus.ERROR -> {
+            statusProgress.visibility = View.VISIBLE
+            statusProgress.findViewById<ProgressBar>(R.id.loading_progress_bar).visibility = View.INVISIBLE
+            statusProgress.findViewById<TextView>(R.id.beat_intro_loading_message).text = "Error Loading"
+        }
+    }
+}
+
 @BindingAdapter("spotifyApiProgress")
 fun bindProgress(statusProgress: ConstraintLayout, status: SpotifyApiStatus) {
     Log.d(TAG, status.name)

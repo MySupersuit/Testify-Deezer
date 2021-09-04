@@ -3,12 +3,11 @@
     <string name="score">%1$d/%2$d</string>
     <string name="loading_prog_message">%1$d/%2$d loaded</string>
     <string name="you_scored">You scored</string>
-    <string name="loading_playlists">Loading playlists…</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="your_playlists">Your Playlists</string>
     <string name="top_playlists">Top Playlists</string>
     <string name="num_streams">%1$s plays</string>
-    <string name="buffering">Buffering...</string>
+    <string name="buffering">Buffering…</string>
     <string name="login">Login</string>
     <string name="login_message">How well do you know your Spotify?</string>
     <string name="choose_a_game">Choose a game</string>
@@ -17,4 +16,5 @@
     <string name="correct_smiley">Correct :)</string>
     <string name="pos_score">+%1$d</string>
     <string name="wrong_frowny">Wrong :(</string>
+    <string name="loading_playlists">Loading playlists…\nThis may take a few seconds if it\'s your first time</string>
 </resources>

@@ -15,8 +15,11 @@
         <item name="android:background">@color/spotify_black</item>
         <item name="android:textColor">@color/spotify_white</item>
         <item name="android:textViewStyle">@style/GothamTextViewStyle</item>
+
         <item name="buttonStyle">@style/GothamButtonStyle</item>
+
     </style>
+
 
     <style name="GothamTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/gotham_medium</item>
@@ -27,4 +30,11 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:background">@drawable/rounded_corners</item>
     </style>
+
+
+    <!--    <style name="MySnackBarTVStyle" parent="Widget.MaterialComponents.Snackbar.TextView">-->
+    <!--        <item name="android:background">@color/spotify_green</item>-->
+    <!--    </style>-->
+
+
 </resources>
