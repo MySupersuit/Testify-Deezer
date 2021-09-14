@@ -462,11 +462,13 @@ object Utils {
     ) {
         val imgUri = urlToUri(images[0].url)
         val imgUri2 = urlToUri(images[1].url)
+        for (i in images) {
+            Log.d(TAG, "image height: ${i.height} width: ${i.width}")
+        }
 
         Glide.with(context)
             .load(imgUri)
             // on error try reload with 2nd uri
-            .error(reloadAC(context, imgUri2, imgView, binding))
             .apply(
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -479,6 +481,14 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
+                    imgView.post {
+                        reloadAC(
+                            context,
+                            imgUri2,
+                            imgView,
+                            binding
+                        )
+                    }
                     Log.d(TAG, "single fail AC")
                     return false
                 }
@@ -547,6 +557,7 @@ object Utils {
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.music_note_icon)  // on reload show loading animation
+                    .error(R.drawable.ic_connection_error)
             )
             .listener(object : RequestListener<Drawable> {
 
@@ -556,7 +567,7 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "single fail")
+                    Log.d(TAG, "second fail")
                     return false
                 }
 

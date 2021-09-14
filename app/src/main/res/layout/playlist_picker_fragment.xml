@@ -43,7 +43,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/progress_bar"
-                tools:text="Loading playlists…\nThis may take a few seconds if it\'s your first time" />
+                tools:text="Loading playlists…" />
+
+            <TextView
+                android:id="@+id/loading_message_extra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:layout_marginHorizontal="30dp"
+                android:lineSpacingExtra="10dp"
+                android:text="@string/may_take_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/loading_message"
+                tools:text="(This may take a few seconds if it\'s your first time)"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

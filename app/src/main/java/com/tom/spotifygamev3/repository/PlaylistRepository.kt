@@ -21,7 +21,6 @@ class PlaylistRepository(private val database: PlaylistDatabase, private val con
             it.asDomainModel()
         }
 
-
     val commonPlaylists: LiveData<List<SimplePlaylist>> =
         Transformations.map(database.playlistDao.getCommonPlaylists()) {
             it.asDomainModel()
@@ -30,21 +29,25 @@ class PlaylistRepository(private val database: PlaylistDatabase, private val con
     suspend fun refreshUserPlaylists() {
         Log.d(TAG, "REFRESHING")
         withContext(Dispatchers.IO) {
-            val playlists = ApiClient().getApiService(context).getUserPlaylists().playlists
-            database.playlistDao.insertAllUserPlaylists(playlists.asDatabaseModel())
+            try {
+                val playlists = ApiClient().getApiService(context).getUserPlaylists().playlists
+                database.playlistDao.insertAllUserPlaylists(playlists.asDatabaseModel())
+                Log.d(TAG, "REFRESHED")
+            } catch (e: Exception) {
+                Log.e(TAG, "refreshUserPlaylists $e")
+            }
+
         }
     }
 
-//    suspend fun addAllCommonPlaylists() {
-//        withContext(Dispatchers.IO) {
-//            val
-//        }
-//    }
-
     suspend fun addCommonPlaylist(id: String) {
         withContext(Dispatchers.IO) {
-            val playlist = ApiClient().getApiService(context).getPlaylist(id)
-            database.playlistDao.insertCommonPlaylists(playlist.asDatabaseModel())
+            try {
+                val playlist = ApiClient().getApiService(context).getPlaylist(id)
+                database.playlistDao.insertCommonPlaylists(playlist.asDatabaseModel())
+            } catch (e: Exception) {
+                Log.e(TAG, "addcommonplaylist $e")
+            }
         }
     }
 }

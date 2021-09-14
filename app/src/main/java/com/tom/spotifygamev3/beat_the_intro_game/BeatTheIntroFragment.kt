@@ -1,6 +1,7 @@
 package com.tom.spotifygamev3.beat_the_intro_game
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -20,6 +21,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
+import com.tom.spotifygamev3.LoginActivity
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.databinding.BeatTheIntroFragmentBinding
 import com.tom.spotifygamev3.models.BeatIntroQuestion
@@ -71,39 +73,7 @@ class BeatTheIntroFragment : Fragment() {
         binding.beatIntroGameCl.visibility = View.GONE
 
         // setup two media players - one to preload while the other plays
-        preloadMp = CustomMediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-        }
-
-        customMp = CustomMediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-        }
-
-        mps = mutableListOf(customMp, preloadMp)
-
-        preloadMp.setOnPreparedListener {
-            Log.d(TAG, "preloadMp prep listener")
-            val url = preloadMp.datasource!!
-            trackPrepStatus[url] = true
-            if (url == currentQuestionUrl) _currentQReady.value = preloadMp
-        }
-
-        customMp.setOnPreparedListener {
-            Log.d(TAG, "customMp prep listener")
-            val url = customMp.datasource!!
-            trackPrepStatus[url] = true
-            if (url == currentQuestionUrl) _currentQReady.value = customMp
-        }
+        setupMediaPlayers()
 
         _currentQReady.observe(viewLifecycleOwner, Observer { player ->
             if (player != null) {
@@ -194,11 +164,57 @@ class BeatTheIntroFragment : Fragment() {
             if (hasFinished) gameFinished()
         })
 
+        viewModel.loginClick.observe(viewLifecycleOwner, Observer { login ->
+            if (login) {
+                val intent = Intent(requireActivity(), LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                requireActivity().finish()
+                viewModel.onLoginClickFinish()
+            }
+        })
+
         return binding.root
     }
 
     private fun stopPlayer(mp: CustomMediaPlayer) {
         mp.reset()
+    }
+
+    private fun setupMediaPlayers() {
+        preloadMp = CustomMediaPlayer().apply {
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build()
+            )
+        }
+
+        customMp = CustomMediaPlayer().apply {
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build()
+            )
+        }
+
+        mps = mutableListOf(customMp, preloadMp)
+
+        preloadMp.setOnPreparedListener {
+            Log.d(TAG, "preloadMp prep listener")
+            val url = preloadMp.datasource!!
+            trackPrepStatus[url] = true
+            if (url == currentQuestionUrl) _currentQReady.value = preloadMp
+        }
+
+        customMp.setOnPreparedListener {
+            Log.d(TAG, "customMp prep listener")
+            val url = customMp.datasource!!
+            trackPrepStatus[url] = true
+            if (url == currentQuestionUrl) _currentQReady.value = customMp
+        }
     }
 
     private fun showQuestion(binding: BeatTheIntroFragmentBinding, question: BeatIntroQuestion) {

@@ -1,5 +1,6 @@
 package com.tom.spotifygamev3.higher_lower_game
 
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.tom.spotifygamev3.LoginActivity
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.databinding.HighLowGameFragment3Binding
 import com.tom.spotifygamev3.models.HighLowQuestion
@@ -89,12 +91,22 @@ class HighLowGameFragment : Fragment() {
             if (hasFinished) gameFinished()
         })
 
+        viewModel.loginClick.observe(viewLifecycleOwner, Observer { login ->
+            if (login) {
+                val intent = Intent(requireActivity(), LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                requireActivity().finish()
+                viewModel.onLoginClickFinish()
+            }
+        })
+
         return binding.root
     }
 
     private fun gameFinished() {
         val action =
-            HighLowGameFragmentDirections.actionHighLowGameFragmentToAlbumGameScoreFragment(
+            HighLowGameFragmentDirections.actionHighLowGameFragmentToGameScoreFragment(
                 score = getString(
                     R.string.score,
                     viewModel.score.value ?: 0,

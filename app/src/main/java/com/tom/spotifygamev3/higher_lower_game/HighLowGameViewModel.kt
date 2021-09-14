@@ -51,6 +51,10 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     val numQsLoaded: LiveData<Int>
         get() = _numQsLoaded
 
+    private val _loginClick = MutableLiveData<Boolean>()
+    val loginClick: LiveData<Boolean>
+        get() = _loginClick
+
     private val localTracksPlaycount = mutableListOf<LfmTrack>()
     private var localTracks = listOf<Items>()
     private val questions: MutableList<HighLowQuestion> = mutableListOf()
@@ -138,6 +142,14 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
 
     fun onGameFinishComplete() {
         _eventGameFinish.value = false
+    }
+
+    fun onLoginClick() {
+        _loginClick.value = true
+    }
+
+    fun onLoginClickFinish() {
+        _loginClick.value = false
     }
 
     private suspend fun fetchData(playlistId: String) {

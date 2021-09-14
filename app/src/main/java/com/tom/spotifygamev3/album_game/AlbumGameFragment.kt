@@ -1,8 +1,10 @@
 package com.tom.spotifygamev3.album_game
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
+import com.tom.spotifygamev3.LoginActivity
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.utils.Utils.glidePreloadImage
@@ -59,7 +62,7 @@ class AlbumGameFragment : Fragment() {
         })
 
         viewModel.nextQuestion.observe(viewLifecycleOwner, Observer { nextQuestion ->
-            if (nextQuestion != null) {
+            if (nextQuestion.correctAnswer != "" ) {
                 preloadImage(nextQuestion.images)
             }
         })
@@ -70,7 +73,6 @@ class AlbumGameFragment : Fragment() {
                 doAlphaAnimation(binding.albumCheckmark)
             }
             binding.albumScoreCounter.text = newScore.toString()
-//                getString(R.string.score, newScore, Constants.ALBUM_GAME_NUM_QUESTIONS)
         })
 
         viewModel.numWrong.observe(viewLifecycleOwner, Observer { newWrong ->
@@ -87,6 +89,16 @@ class AlbumGameFragment : Fragment() {
             binding.loadingMessage.text = getString(
                 R.string.loading_prog_message, numLoaded, Constants.ALBUM_GAME_NUM_QUESTIONS
             )
+        })
+
+        viewModel.loginClick.observe(viewLifecycleOwner, Observer { login ->
+            if (login) {
+                val intent = Intent(requireActivity(), LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                requireActivity().finish()
+                viewModel.onLoginClickFinish()
+            }
         })
 
         return binding.root

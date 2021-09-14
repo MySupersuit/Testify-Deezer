@@ -67,6 +67,10 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     val showModal: LiveData<BeatIntroQuestion>
         get() = _showModal
 
+    private val _loginClick = MutableLiveData<Boolean>()
+    val loginClick: LiveData<Boolean>
+        get() = _loginClick
+
     init {
         _score.value = 0
         _numTracksLoaded.value = 0
@@ -195,6 +199,14 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
 
     fun onGameFinishComplete() {
         _eventGameFinish.value = false
+    }
+
+    fun onLoginClick() {
+        _loginClick.value = true
+    }
+
+    fun onLoginClickFinish() {
+        _loginClick.value = false
     }
 
     private fun fetchPlaylistTracks(playlistId: String): Job {

@@ -61,27 +61,13 @@
             android:name="gameType"
             app:argType="integer" />
         <action
-            android:id="@+id/action_playlistPickerFragment_to_highLowGameFragment"
-            app:destination="@id/highLowGameFragment" />
-        <action
             android:id="@+id/action_playlistPickerFragment_to_beatTheIntroFragment"
             app:destination="@id/beatTheIntroFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/highLowGameFragment"
-        android:name="com.tom.spotifygamev3.higher_lower_game.HighLowGameFragment"
-        android:label="high_low_game_fragment"
-        tools:layout="@layout/high_low_game_fragment" >
-        <argument
-            android:name="playlist_id"
-            android:defaultValue="1ocd7l0Q4L97N3JHNdMUfD"
-            app:argType="string" />
         <action
-            android:id="@+id/action_highLowGameFragment_to_albumGameScoreFragment"
-            app:destination="@id/gameScoreFragment"
-            app:popUpTo="@id/highLowGameFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_playlistPickerFragment_to_highLowGameFragment"
+            app:destination="@id/highLowGameFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/beatTheIntroFragment"
         android:name="com.tom.spotifygamev3.beat_the_intro_game.BeatTheIntroFragment"
@@ -89,7 +75,23 @@
         tools:layout="@layout/beat_the_intro_fragment" >
         <action
             android:id="@+id/action_beatTheIntroFragment_to_gameScoreFragment"
-            app:destination="@id/gameScoreFragment" />
+            app:destination="@id/gameScoreFragment"
+            app:popUpTo="@id/beatTheIntroFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="playlist_id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/highLowGameFragment"
+        android:name="com.tom.spotifygamev3.higher_lower_game.HighLowGameFragment"
+        android:label="high_low_game_fragment3"
+        tools:layout="@layout/high_low_game_fragment3" >
+        <action
+            android:id="@+id/action_highLowGameFragment_to_gameScoreFragment"
+            app:destination="@id/gameScoreFragment"
+            app:popUpTo="@id/highLowGameFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="playlist_id"
             app:argType="string" />
