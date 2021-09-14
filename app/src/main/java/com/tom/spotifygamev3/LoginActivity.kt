@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,13 +33,24 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Log.d(TAG, "getting to activity")
         sessionManager = SessionManager(this)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.loginButton.setOnClickListener {
+            showLoadingCircle(binding)
             login()
         }
+    }
+
+    private fun showLoadingCircle(binding: ActivityLoginBinding) {
+        binding.main.visibility = View.GONE
+        binding.loginLoadingCl.visibility = View.VISIBLE
+    }
+
+    private fun hideLoadingCircle(binding: ActivityLoginBinding) {
+        binding.main.visibility = View.VISIBLE
+        binding.loginLoadingCl.visibility = View.GONE
     }
 
     private fun login() {
@@ -54,6 +66,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        hideLoadingCircle(binding)
+
         if (requestCode == REQUEST_CODE) {
             val response = AuthorizationClient.getResponse(resultCode, data)
 
@@ -68,24 +82,28 @@ class LoginActivity : AppCompatActivity() {
                 }
                 AuthorizationResponse.Type.ERROR -> {
                     Log.e(TAG, "Auth error: " + response.error)
-                    val green = ContextCompat.getColor(applicationContext, R.color.spotify_green)
-                    val white = ContextCompat.getColor(applicationContext, R.color.spotify_white)
-                    val snackbar = Snackbar.make(
-                        binding.coordinatorLayout,
-                        "Login fail - Check connection",
-                        Snackbar.LENGTH_INDEFINITE
-                    )
-                    snackbar.setAction("OK") {
-                    }
-                    snackbar.setActionTextColor(white)
-                    for (view in snackbar.view.allViews) {
-                        view.setBackgroundColor(green)
-                    }
-                    snackbar.show()
+                    showErrorSnackbar()
                 }
                 else -> Log.d(TAG, "Auth result: " + response.type)
             }
         }
+    }
+
+    private fun showErrorSnackbar() {
+        val green = ContextCompat.getColor(applicationContext, R.color.spotify_green)
+        val white = ContextCompat.getColor(applicationContext, R.color.spotify_white)
+        val snackbar = Snackbar.make(
+            binding.coordinatorLayout,
+            "Login fail - Check connection",
+            Snackbar.LENGTH_INDEFINITE
+        )
+        snackbar.setAction("OK") {
+        }
+        snackbar.setActionTextColor(white)
+        for (view in snackbar.view.allViews) {
+            view.setBackgroundColor(green)
+        }
+        snackbar.show()
     }
 
 }

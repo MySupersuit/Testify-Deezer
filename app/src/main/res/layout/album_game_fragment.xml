@@ -19,7 +19,7 @@
             android:id="@+id/album_progress_cl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             app:spotifyApiProgress="@{viewModel.status}">
 
             <ProgressBar
@@ -42,11 +42,29 @@
                 app:layout_constraintTop_toBottomOf="@id/progress_bar"
                 tools:text="Loading..." />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:onClick="@{() -> viewModel.onLoginClick()}"
+                android:paddingHorizontal="50dp"
+                android:paddingVertical="10dp"
+                android:text="@string/login"
+                android:textColor="@color/spotify_white"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/loading_message" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="visible"
             app:showFrameLayout="@{viewModel.status}">
 
             <LinearLayout
@@ -58,14 +76,14 @@
                     android:id="@+id/main_background"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:background="@color/spotify_black"
-                    android:layout_weight="4"/>
+                    android:layout_weight="4"
+                    android:background="@color/spotify_black" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@color/spotify_black"/>
+                    android:background="@color/spotify_black" />
 
             </LinearLayout>
 
@@ -73,8 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:visibility="visible"
-                >
+                android:visibility="visible">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/album_game_cl"
@@ -165,8 +182,8 @@
                             android:layout_marginVertical="@dimen/game_button_margin"
                             android:maxLines="1"
                             android:onClick="@{() -> viewModel.onAnswerClick(0)}"
-                            app:autoSizeTextType="uniform"
                             app:autoSizeMaxTextSize="@dimen/game_text_size"
+                            app:autoSizeTextType="uniform"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="505 (Live at the Royal Albert Hall)" />
 
@@ -178,8 +195,8 @@
                             android:layout_marginVertical="@dimen/game_button_margin"
                             android:maxLines="1"
                             android:onClick="@{() -> viewModel.onAnswerClick(1)}"
-                            app:autoSizeTextType="uniform"
                             app:autoSizeMaxTextSize="@dimen/game_text_size"
+                            app:autoSizeTextType="uniform"
                             app:layout_constraintTop_toBottomOf="@id/album_first_answer_button"
                             tools:text="Answer" />
 
@@ -191,8 +208,8 @@
                             android:layout_marginVertical="@dimen/game_button_margin"
                             android:maxLines="1"
                             android:onClick="@{() -> viewModel.onAnswerClick(2)}"
-                            app:autoSizeTextType="uniform"
                             app:autoSizeMaxTextSize="@dimen/game_text_size"
+                            app:autoSizeTextType="uniform"
                             app:layout_constraintTop_toBottomOf="@id/album_second_answer_button"
                             tools:text="Answer" />
 
@@ -204,8 +221,8 @@
                             android:layout_marginVertical="@dimen/game_button_margin"
                             android:maxLines="1"
                             android:onClick="@{() -> viewModel.onAnswerClick(3)}"
-                            app:autoSizeTextType="uniform"
                             app:autoSizeMaxTextSize="@dimen/game_text_size"
+                            app:autoSizeTextType="uniform"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/album_third_answer_button"

@@ -43,6 +43,23 @@
                 app:layout_constraintTop_toBottomOf="@id/progress_bar"
                 tools:text="Loading..." />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:onClick="@{() -> viewModel.onLoginClick()}"
+                android:paddingHorizontal="50dp"
+                android:paddingVertical="10dp"
+                android:text="@string/login"
+                android:textColor="@color/spotify_white"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/loading_message" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--    TODO split background into two and make em gradient - top -> black + black -> bottom    -->

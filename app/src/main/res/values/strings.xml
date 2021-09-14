@@ -16,5 +16,7 @@
     <string name="correct_smiley">Correct :)</string>
     <string name="pos_score">+%1$d</string>
     <string name="wrong_frowny">Wrong :(</string>
-    <string name="loading_playlists">Loading playlists…\nThis may take a few seconds if it\'s your first time</string>
+    <string name="loading_playlists">Loading playlists…</string>
+    <string name="may_take_time">(This may take a few seconds if it\'s your first time)</string>
+    <string name="logging_in_message">Logging in…</string>
 </resources>

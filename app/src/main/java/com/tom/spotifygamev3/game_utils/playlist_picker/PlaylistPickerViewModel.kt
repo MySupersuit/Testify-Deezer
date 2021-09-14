@@ -123,7 +123,7 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
                 if (userRepoPlaylists.value.isNullOrEmpty()) {
                     Log.e(TAG, "err here")
                 }
-                Log.e(TAG, networkError.toString())
+                Log.e(TAG, "fetch user playlist $networkError")
                 _status.value = SpotifyApiStatus.ERROR
             }
         }

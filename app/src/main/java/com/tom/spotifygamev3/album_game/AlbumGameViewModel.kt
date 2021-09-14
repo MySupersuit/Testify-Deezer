@@ -29,8 +29,8 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     val currentQuestion: LiveData<AlbumQuestion>
         get() = _currentQuestion
 
-    private val _nextQuestion = MutableLiveData<AlbumQuestion?>()
-    val nextQuestion: LiveData<AlbumQuestion?>
+    private val _nextQuestion = MutableLiveData<AlbumQuestion>()
+    val nextQuestion: LiveData<AlbumQuestion>
         get() = _nextQuestion
 
     private val _eventGameFinish = MutableLiveData<Boolean>()
@@ -49,10 +49,15 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     val numWrong: LiveData<Int>
         get() = _numWrong
 
+    private val _loginClick = MutableLiveData<Boolean>()
+    val loginClick : LiveData<Boolean>
+        get() = _loginClick
+
     private var questionIndex = 0
     private var numQuestions = -1
 
     private var initialItems = listOf<Items>()
+    private val nullQuestion = AlbumQuestion(listOf(), "", listOf())
 
     private var artistAlbums = listOf<Album>()
     private var artistIdToOtherAlbums: HashMap<String, MutableList<Album>> = HashMap()
@@ -80,7 +85,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         // If index blah blah blah
         _currentQuestion.value = questions[questionIndex]
         if (questionIndex + 1 < numQuestions) _nextQuestion.value = questions[questionIndex + 1]
-        else _nextQuestion.value = null
+        else _nextQuestion.value = nullQuestion
     }
 
     fun onAnswerClick(answer_index: Int) {
@@ -110,6 +115,14 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
 
     fun onGameFinishComplete() {
         _eventGameFinish.value = false
+    }
+
+    fun onLoginClick() {
+        _loginClick.value = true
+    }
+
+    fun onLoginClickFinish() {
+        _loginClick.value = false
     }
 
     private fun removeIfPresent(
@@ -144,6 +157,8 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
             val job = fetchPlaylistTracks(playlist_id)
             job.join()  // wait for it to be finished
             Log.d(TAG, "Initial tracks fetched")
+
+            if (initialItems.isEmpty()) return@launch
 
             for (i in initialItems.indices) {
                 // Get three different albums from that artist for the other answers

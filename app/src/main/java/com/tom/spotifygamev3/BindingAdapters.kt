@@ -3,6 +3,7 @@ package com.tom.spotifygamev3
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -79,6 +80,7 @@ fun bindProgress(statusProgress: ConstraintLayout, status: SpotifyApiStatus) {
             statusProgress.visibility = View.VISIBLE
             statusProgress.findViewById<ProgressBar>(R.id.progress_bar).visibility = View.INVISIBLE
             statusProgress.findViewById<TextView>(R.id.loading_message).text = "Error Loading"
+            statusProgress.findViewById<AppCompatButton>(R.id.login_button).visibility = View.VISIBLE
         }
     }
 }
