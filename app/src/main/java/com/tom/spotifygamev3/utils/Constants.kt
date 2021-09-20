@@ -5,6 +5,9 @@ object Constants {
     const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
     const val LASTFM_API_KEY = "f504a46e92218226ee4517f47f04d7db"
 
+    const val SPOTIFY_CLIENT_ID = "927975ba561f48788c70a03ead116f5b"
+    const val SPOTIFY_REDIRECT_URL = "com.tom.spotifygame://callback"
+
     const val TEST_PLAYLIST_URI = "1ocd7l0Q4L97N3JHNdMUfD"
     const val TRACKS_URL_PARAMS =
         "fields=href,next,items(track(album(id,images,name,uri,album_type),artists(id,name,uri),id,name,preview_url,uri))"

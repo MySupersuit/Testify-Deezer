@@ -1,17 +1,17 @@
 package com.tom.spotifygamev3
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.allViews
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
@@ -21,11 +21,12 @@ import com.tom.spotifygamev3.utils.SessionManager
 
 class LoginActivity : AppCompatActivity() {
 
-    private val CLIENT_ID = "927975ba561f48788c70a03ead116f5b"
-    private val REDIRECT_URI = "com.tom.spotifygame://callback"
+    val CLIENT_ID = "927975ba561f48788c70a03ead116f5b"
+    val REDIRECT_URI = "com.tom.spotifygame://callback"
     private val TAG = "Spotify " + LoginActivity::class.simpleName
 
-    private val REQUEST_CODE = 1337
+    private val REQUEST_CODE_SPOTIFY = 1337
+    private val REQUEST_CODE_GOOGLE = 1338
     private val AUTH_TOKEN = "AUTH_TOKEN"
 
     private lateinit var binding: ActivityLoginBinding
@@ -33,14 +34,19 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "getting to activity")
         sessionManager = SessionManager(this)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.loginButton.setOnClickListener {
             showLoadingCircle(binding)
-            login()
+            signInSilently()
+            loginSpotify()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val googleAccount = GoogleSignIn.getLastSignedInAccount(this);
     }
 
     private fun showLoadingCircle(binding: ActivityLoginBinding) {
@@ -53,14 +59,52 @@ class LoginActivity : AppCompatActivity() {
         binding.loginLoadingCl.visibility = View.GONE
     }
 
-    private fun login() {
+    private fun signInSilently() {
+        val signInOptions = GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account != null) {
+            val signedInAccount = account
+            Log.d(TAG, "logged in with ${signedInAccount.displayName ?: signedInAccount.account?.name}")
+        } else { // not signed in before
+            val signInClient = GoogleSignIn.getClient(this, signInOptions)
+            signInClient
+                .silentSignIn()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val signedInAccount = task.result
+                    } else {
+                        loginGoogle()
+                    }
+                }
+        }
+    }
+
+    private fun loginGoogle() {
+        Log.d(TAG, "logingoogle")
+        val signInOptions = GoogleSignInOptions.Builder(
+            GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN
+        )
+            .requestIdToken("551033295127-scn4e8en6ljug6lp3jiivtiubmp46705.apps.googleusercontent.com")
+            .requestEmail()
+            .requestProfile()
+            .build()
+        val googleClient = GoogleSignIn.getClient(this, signInOptions)
+        val signInIntent = googleClient.signInIntent
+        startSignInIntent(signInIntent)
+    }
+
+    private fun startSignInIntent(intent: Intent) {
+        startActivityForResult(intent, REQUEST_CODE_GOOGLE)
+    }
+
+    private fun loginSpotify() {
         val req = AuthorizationRequest.Builder(
             CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI
         )
             .setScopes(arrayOf("streaming", "playlist-read-private"))
             .build()
 
-        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, req)
+        AuthorizationClient.openLoginActivity(this, REQUEST_CODE_SPOTIFY, req)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -68,7 +112,7 @@ class LoginActivity : AppCompatActivity() {
 
         hideLoadingCircle(binding)
 
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE_SPOTIFY) {
             val response = AuthorizationClient.getResponse(resultCode, data)
 
             when (response.type) {
@@ -85,6 +129,14 @@ class LoginActivity : AppCompatActivity() {
                     showErrorSnackbar()
                 }
                 else -> Log.d(TAG, "Auth result: " + response.type)
+            }
+        } else if (requestCode == REQUEST_CODE_GOOGLE) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                Log.d(TAG, "auth with google ${account.displayName}")
+            } catch (e: ApiException) {
+                Log.w(TAG, "google sign in failed", e)
             }
         }
     }
