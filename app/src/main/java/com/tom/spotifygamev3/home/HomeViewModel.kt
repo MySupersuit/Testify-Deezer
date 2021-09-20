@@ -19,6 +19,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val navigateToBeatIntro: LiveData<Boolean>
         get() = _navigateToBeatIntro
 
+    private val _logOut = MutableLiveData<Boolean>()
+    val logOut: LiveData<Boolean>
+        get() = _logOut
+
+    fun onLogOut() {
+        _logOut.value = true
+    }
+
+    fun onLogOutFinish() {
+        _logOut.value = false
+    }
+
     fun onAlbumGameClick() {
         _navigateToAlbumGame.value = true
     }

@@ -12,9 +12,20 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.tom.spotifygamev3.MainActivity">
+
+        <com.google.android.material.button.MaterialButton
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:inputType="text"
+            android:onClick="@{() -> viewModel.onLogOut()}"
+            android:fontFamily="@font/gotham_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_out"/>
 
         <ImageView
             android:id="@+id/spotify_logo"
