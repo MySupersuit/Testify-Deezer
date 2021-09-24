@@ -26,9 +26,6 @@ class ApiClient {
         return apiService
     }
 
-//    val gson: Gson = GsonBuilder()
-//        .setLenient()
-//        .create()
     
     fun getLastFmApiService(context: Context): LastFmApiService {
         if (!::lastFmApiService.isInitialized) {

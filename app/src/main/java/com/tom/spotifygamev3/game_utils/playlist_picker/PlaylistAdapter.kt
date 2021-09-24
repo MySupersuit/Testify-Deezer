@@ -37,9 +37,6 @@ class PlaylistAdapter(val clickListener: PlaylistListener) :
         }
     }
 
-//    override fun submitList(list: List<SimplePlaylist>?) {
-//        super.submitList(list?.let {ArrayList(it)})
-//    }
 
     class ViewHolder private constructor(val binding: PlaylistItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

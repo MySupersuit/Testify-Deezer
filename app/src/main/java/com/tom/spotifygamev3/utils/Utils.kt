@@ -125,6 +125,7 @@ object Utils {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
             )
             .listener(object : RequestListener<Drawable> {
+
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
@@ -140,29 +141,20 @@ object Utils {
                     }
                     Log.d(TAG, "posting runnable to main")
                     imgView.post {
-                        reloadHL(
-                            context,
-                            imgUri2,
-                            imgView,
-                            cl,
-                            artistTv,
-                            songTv,
-                            div,
-                            bground,
-                            gdColors
-                        )
+                        Runnable {
+                            reloadHL(
+                                context,
+                                imgUri2,
+                                imgView,
+                                cl,
+                                artistTv,
+                                songTv,
+                                div,
+                                bground,
+                                gdColors
+                            )
+                        }
                     }
-//                    reloadHL(
-//                        context,
-//                        imgUri2,
-//                        imgView,
-//                        cl,
-//                        artistTv,
-//                        songTv,
-//                        div,
-//                        bground,
-//                        gdColors
-//                    )
                     return false
                 }
 
@@ -267,7 +259,7 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "single fail HL")
+                    Log.d(TAG, "second fail HL")
                     return false
                 }
 

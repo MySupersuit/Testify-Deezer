@@ -39,7 +39,7 @@ object Constants {
     const val HIGH_LOW_GAME_TYPE = 1
     const val BEAT_INTRO_GAME_TYPE = 2
 
-    const val USER_PLAYLISTS_URL_PARAMS = "limit=30"
+    const val USER_PLAYLISTS_URL_PARAMS = "limit=50"
     const val SIMPLE_PLAYLIST_PARAMS = "fields=id,images,owner,name"
     const val FULL_PLAYLISTS_PARAMS = "fields=id,images,owner,name,tracks"
     const val TOP_TRACKS_PARAMS = "market=IE"

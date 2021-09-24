@@ -80,12 +80,12 @@ class BeatTheIntroFragment : Fragment() {
                 Log.d(TAG, "currentQReady")
                 Log.d(TAG, player.toString())
                 _currentQReady.value = null
-                binding.loadingProgressCl.visibility = View.GONE
-                binding.beatIntroGameCl.visibility = View.VISIBLE
                 stopProgressThread()
                 Log.d(TAG, "question index $questionIndex")
                 setupProgressBar(binding, mps[questionIndex % mps.size])
                 Log.d(TAG, "starting")
+                binding.loadingProgressCl.visibility = View.GONE
+                binding.beatIntroGameCl.visibility = View.VISIBLE
                 player.start()
                 questionIndex++
             }
@@ -137,7 +137,7 @@ class BeatTheIntroFragment : Fragment() {
                 Constants.BEAT_INTRO_NUM_QUESTIONS
             )
             // numLoaded only gets to 9 for some reason
-            if (numLoaded >= Constants.BEAT_INTRO_NUM_QUESTIONS) {
+            if (numLoaded >= Constants.BEAT_INTRO_NUM_QUESTIONS - 1) {
                 binding.beatIntroLoadingMessage.text = getString(R.string.buffering)
             }
         })

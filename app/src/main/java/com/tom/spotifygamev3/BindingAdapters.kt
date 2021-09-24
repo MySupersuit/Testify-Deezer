@@ -123,6 +123,7 @@ fun showFrameLayout(frameLayout: FrameLayout, status: SpotifyApiStatus) {
 
 @BindingAdapter("showPlaylistPicker")
 fun showPlaylistPicker(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) {
+    Log.d(TAG, "showPlaylistPicker pls $status")
     when (status) {
         SpotifyApiStatus.LOADING -> {
             constraintLayout.visibility = View.GONE
