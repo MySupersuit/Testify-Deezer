@@ -45,6 +45,10 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
     val gameType: LiveData<Int>
         get() = _gameType
 
+    private val _finishDataFetch = MutableLiveData<Boolean>()
+    val finishDataFetch : LiveData<Boolean>
+        get() = _finishDataFetch
+
     private val _showUserPlaylists = MutableLiveData<Boolean>()
     val showUserPlaylists: LiveData<Boolean>
         get() = _showUserPlaylists
@@ -59,7 +63,16 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
         _showUserPlaylists.value = true
         _gameType.value = gameType
         runBlocking {
-            _status.value = SpotifyApiStatus.LOADING
+//            _status.value = SpotifyApiStatus.LOADING
+            fetchData()
+            setUpForeverObservers()
+        }
+    }
+
+    fun forceRefresh() {
+//        _status.value = SpotifyApiStatus.LOADING
+        commonPlaylistFetchStatus = false
+        runBlocking {
             fetchData()
             setUpForeverObservers()
         }
@@ -137,6 +150,11 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
 
     private fun finishDataFetching() {
         _status.value = SpotifyApiStatus.DONE
+        _finishDataFetch.value = true
+    }
+
+    fun onFinishAckd() {
+        _finishDataFetch.value = false
     }
 
     fun onPlaylistChosen(id: String) {

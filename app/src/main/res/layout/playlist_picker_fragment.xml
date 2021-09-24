@@ -35,9 +35,9 @@
                 android:id="@+id/loading_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:layout_marginHorizontal="30dp"
                 android:lineSpacingExtra="10dp"
                 android:text="@string/loading_playlists"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -49,16 +49,16 @@
                 android:id="@+id/loading_message_extra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textSize="12sp"
-                android:layout_marginHorizontal="30dp"
                 android:lineSpacingExtra="10dp"
                 android:text="@string/may_take_time"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/loading_message"
-                tools:text="(This may take a few seconds if it\'s your first time)"/>
+                tools:text="(This may take a few seconds if it\'s your first time)" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -73,36 +73,59 @@
                 android:id="@+id/playlist_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:textSize="25sp"
-                android:layout_marginTop="8dp"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Your Playlists" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/playlist_rv"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@color/spotify_black"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="10dp"
-                app:layout_constraintTop_toBottomOf="@id/playlist_title"
-                tools:itemCount="10"
-                tools:listitem="@layout/playlist_item" />
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/playlist_title">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/playlist_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/spotify_black"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/playlist_item" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
+            <!--                android:id="@+id/playlist_rv"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="0dp"-->
+            <!--                android:background="@color/spotify_black"-->
+            <!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_marginHorizontal="10dp"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/playlist_title"-->
+            <!--                tools:itemCount="10"-->
+            <!--                tools:listitem="@layout/playlist_item" />-->
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:borderWidth="0dp"
                 android:backgroundTint="@color/spotify_green"
                 android:onClick="@{() -> viewModel.fabClick()}"
                 android:src="@drawable/ic_baseline_swap_horiz_24"
+                app:borderWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

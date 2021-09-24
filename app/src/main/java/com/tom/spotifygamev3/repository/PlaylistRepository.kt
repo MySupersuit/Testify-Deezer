@@ -36,7 +36,6 @@ class PlaylistRepository(private val database: PlaylistDatabase, private val con
             } catch (e: Exception) {
                 Log.e(TAG, "refreshUserPlaylists $e")
             }
-
         }
     }
 

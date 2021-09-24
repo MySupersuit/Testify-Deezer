@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.tom.spotifygamev3.R
@@ -50,6 +52,8 @@ class PlaylistPickerFragment : Fragment() {
             viewModel.onPlaylistChosen(playlistId)
         })
 
+        setupSwipeRefresh(binding)
+
         // Once playlist ID is picked navigate to the game
         // Which game we navigate to is passed into the fragment in the bundle
         viewModel.navigateToGame.observe(viewLifecycleOwner, Observer { playlistId ->
@@ -80,56 +84,55 @@ class PlaylistPickerFragment : Fragment() {
         // Load user playlists into rv if showUserPlaylists is true
         viewModel.userPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
             if (viewModel.showUserPlaylists.value == true) {
+                Log.d(TAG, "num_playlists: ${playlists.size}")
                 adapter.submitPlaylist(playlists)
                 binding.playlistTitle.text = getString(R.string.your_playlists)
             }
         })
 
-
-
 //        Load common playlists into rv if showUserPlaylists is false
         viewModel.commonPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
+            Log.d(TAG, "num_playlists: ${playlists.size}")
             if (viewModel.showUserPlaylists.value == false) {
                 adapter.submitPlaylist(playlists)
                 binding.playlistTitle.text = getString(R.string.top_playlists)
             }
         })
 
-
         // Clicking the FAB changes which set of playlists the rv shows
         // - User playlists or Common playlists
         viewModel.showUserPlaylists.observe(viewLifecycleOwner, Observer { showUserPlaylists ->
             if (showUserPlaylists) {
                 viewModel.userPlaylists.value?.let { adapter.submitPlaylist(it) }
-//                viewModel.userRepoPlaylists.value?.let { adapter.submitPlaylist(it) }
                 binding.playlistTitle.text = getString(R.string.your_playlists)
             } else {
                 viewModel.commonPlaylists.value?.let { adapter.submitPlaylist(it) }
-//                viewModel.commonRepoPlaylists.value?.let { adapter.submitPlaylist(it) }
                 binding.playlistTitle.text = getString(R.string.top_playlists)
+            }
+        })
+
+        viewModel.finishDataFetch.observe(viewLifecycleOwner, Observer { finished ->
+            if (finished) {
+                viewModel.onFinishAckd()
+                binding.swipeRefresh.isRefreshing = false
             }
         })
 
         return binding.root
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        viewModel.commonPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
-//            if (viewModel.showUserPlaylists.value == false) {
-//                adapter.submitPlaylist(playlists)
-//                binding.playlistTitle.text = getString(R.string.top_playlists)
-//            }
-//        })
-//
-//        viewModel.userPlaylists.observe(
-//            viewLifecycleOwner, Observer { playlists ->
-//                if (viewModel.showUserPlaylists.value == true) {
-//                    adapter.submitPlaylist(playlists)
-//                    binding.playlistTitle.text = getString(R.string.your_playlists)
-//                }
-//            })
-//    }
+    private fun setupSwipeRefresh(binding: PlaylistPickerFragmentBinding) {
+        val swipeContainer = binding.swipeRefresh
+        swipeContainer.setOnRefreshListener {
+            viewModel.forceRefresh()
+        }
+        swipeContainer.setColorSchemeColors(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.spotify_green
+            )
+        )
+
+    }
 
 }
