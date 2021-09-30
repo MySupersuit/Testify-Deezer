@@ -11,6 +11,7 @@ import com.tom.spotifygamev3.models.spotify_models.asDatabaseModel
 import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class PlaylistRepository(private val database: PlaylistDatabase, private val context: Context) {
 
@@ -27,14 +28,14 @@ class PlaylistRepository(private val database: PlaylistDatabase, private val con
         }
 
     suspend fun refreshUserPlaylists() {
-        Log.d(TAG, "REFRESHING")
+        Timber.d("REFRESHING")
         withContext(Dispatchers.IO) {
             try {
                 val playlists = ApiClient().getApiService(context).getUserPlaylists().playlists
                 database.playlistDao.insertAllUserPlaylists(playlists.asDatabaseModel())
-                Log.d(TAG, "REFRESHED")
+                Timber.d("REFRESHED")
             } catch (e: Exception) {
-                Log.e(TAG, "refreshUserPlaylists $e")
+                Timber.e( "refreshUserPlaylists $e")
             }
         }
     }
@@ -45,7 +46,7 @@ class PlaylistRepository(private val database: PlaylistDatabase, private val con
                 val playlist = ApiClient().getApiService(context).getPlaylist(id)
                 database.playlistDao.insertCommonPlaylists(playlist.asDatabaseModel())
             } catch (e: Exception) {
-                Log.e(TAG, "addcommonplaylist $e")
+                Timber.e( "addcommonplaylist $e")
             }
         }
     }

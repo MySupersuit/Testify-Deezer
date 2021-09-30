@@ -1,7 +1,6 @@
 package com.tom.spotifygamev3.beat_the_intro_game
 
 import android.app.Application
-import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.*
 import com.tom.spotifygamev3.utils.Constants
@@ -13,6 +12,8 @@ import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
+
 import java.lang.Exception
 
 enum class MediaPlayerStatus { PREPARING, DONE, ERROR }
@@ -82,19 +83,19 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
 
     private suspend fun fetchData(playlistId: String = Constants.TEST_PLAYLIST_URI) {
         viewModelScope.launch {
-            Log.d(TAG, "fetching data")
+            Timber.d("fetching data")
 
             // Fetch base 10 tracks
             val initialJob = fetchPlaylistTracks(playlistId)
             initialJob.join()
-            Log.d(TAG, "initial fetched. size: ${initialPlaylistItems.size}")
+            Timber.d("initial fetched. size: ${initialPlaylistItems.size}")
             if (initialPlaylistItems.isEmpty()) return@launch
 
             for (item in initialPlaylistItems) {
                 val track = item.track
                 // Get three other top tracks for that artist
                 val artistId = track.artists[0].id
-                Log.d(TAG, "artistId $artistId")
+                Timber.d("artistId $artistId")
 
                 val job2 = fetchTopTracks(artistId)
                 job2.join()
@@ -108,7 +109,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
                     if (otherTrack.name != track.name) {
                         incorrectAnswers.add(otherTrack)
                     } else {
-                        Log.d(TAG, "same ${otherTrack.name} == ${track.name}")
+                        Timber.d("same ${otherTrack.name} == ${track.name}")
                     }
                 }
                 // make question
@@ -121,7 +122,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     }
 
     private fun startQuiz() {
-        Log.d(TAG, "starting quiz")
+        Timber.d("starting quiz")
         questionIndex = 0
         setQuestion()
     }
@@ -139,7 +140,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
             it.name
         }
         // Some don't have previews so need to pick 10 tracks that do
-        Log.d(TAG, "${correctTrack.name} preview ${correctTrack.preview_url}")
+        Timber.d("${correctTrack.name} preview ${correctTrack.preview_url}")
         questions.add(
             BeatIntroQuestion(
                 correctAnswer = correctTrack.name,
@@ -155,7 +156,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
         val correctAnswer = questions[questionIndex].correctAnswer
         val remaining = playerDuration - playerPosition
         val questionScore = (remaining.toDouble() / playerDuration * 1000).toInt()
-        Log.d(TAG, "score = ${questionScore.toString()}")
+        Timber.d("score = ${questionScore.toString()}")
 
         val result = currentQuestion.value
         if (chosenAnswer == correctAnswer) {
@@ -176,7 +177,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
 
     fun onNextModalClick() {
         if ((questionIndex + 1) == questions.size) {
-            Log.d(TAG, "game finished")
+            Timber.d("game finished")
             onGameFinish()
         } else {
             questionIndex++
@@ -217,7 +218,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
                 initialPlaylistItems = getRandomSubset(localItems)
             } catch (e: Exception) {
                 _status.value = SpotifyApiStatus.ERROR
-                Log.e(TAG, e.toString())
+                Timber.e( e.toString())
             }
         }
         return job
@@ -233,8 +234,8 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
                 artistIdToTopTracks[artistId] = localItems
                 _numTracksLoaded.value = (_numTracksLoaded.value)?.plus(1)
             } catch (e: Exception) {
-                e.message?.let { Log.d(TAG, it) }
-                Log.e(TAG, e.toString())
+                e.message?.let { Timber.d(it) }
+                Timber.e( e.toString())
                 _status.value = SpotifyApiStatus.ERROR
             }
         }

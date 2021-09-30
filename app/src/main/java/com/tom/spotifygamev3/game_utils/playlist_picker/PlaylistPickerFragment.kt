@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.databinding.PlaylistPickerFragmentBinding
+import timber.log.Timber
 import java.lang.IllegalArgumentException
 
 class PlaylistPickerFragment : Fragment() {
@@ -57,7 +58,7 @@ class PlaylistPickerFragment : Fragment() {
         // Once playlist ID is picked navigate to the game
         // Which game we navigate to is passed into the fragment in the bundle
         viewModel.navigateToGame.observe(viewLifecycleOwner, Observer { playlistId ->
-            Log.d(TAG, playlistId ?: "nulled")
+            Timber.d(playlistId ?: "nulled")
             playlistId?.let {
                 val action = when (viewModel.gameType.value) {
                     Constants.ALBUM_GAME_TYPE ->
@@ -84,7 +85,7 @@ class PlaylistPickerFragment : Fragment() {
         // Load user playlists into rv if showUserPlaylists is true
         viewModel.userPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
             if (viewModel.showUserPlaylists.value == true) {
-                Log.d(TAG, "num_playlists: ${playlists.size}")
+                Timber.d("num_playlists: ${playlists.size}")
                 adapter.submitPlaylist(playlists)
                 binding.playlistTitle.text = getString(R.string.your_playlists)
             }
@@ -92,7 +93,7 @@ class PlaylistPickerFragment : Fragment() {
 
 //        Load common playlists into rv if showUserPlaylists is false
         viewModel.commonPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
-            Log.d(TAG, "num_playlists: ${playlists.size}")
+            Timber.d("num_playlists: ${playlists.size}")
             if (viewModel.showUserPlaylists.value == false) {
                 adapter.submitPlaylist(playlists)
                 binding.playlistTitle.text = getString(R.string.top_playlists)

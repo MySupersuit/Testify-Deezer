@@ -10,6 +10,8 @@ import com.tom.spotifygamev3.models.AlbumQuestion
 import com.tom.spotifygamev3.models.spotify_models.Items
 import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.*
+import timber.log.Timber
+
 import kotlin.math.min
 import java.util.*
 import kotlin.collections.HashMap
@@ -101,7 +103,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         // Then move on to next question if there is another question
         if ((questionIndex + 1) == numQuestions) {
             //  Game over
-            Log.d(TAG, "Game finished")
+            Timber.d("Game finished")
             onGameFinish()
         } else {
             questionIndex++
@@ -131,7 +133,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         albums: MutableList<Album>?
     ) {
         if (albums == null) {
-            Log.e(TAG, "No albums for $artist_id")
+            Timber.e( "No albums for $artist_id")
             return
         }
 
@@ -143,20 +145,20 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         // TODO find a better way to remove duplicate album releases
 
         val toAdd = albums.shuffled().slice(0..min(2, albums.size - 1)).toMutableList()
-        toAdd.forEach { Log.d(TAG, "toAdd ${it.name}") }
+        toAdd.forEach { Timber.d("toAdd ${it.name}") }
         artistIdToOtherAlbums[artist_id] = toAdd
-        Log.d(TAG, "=================")
+        Timber.d("=================")
     }
 
     private suspend fun fetchData(playlist_id: String) {
 
         viewModelScope.launch {
-            Log.d(TAG, "Fetching data")
+            Timber.d("Fetching data")
 
             // Fetch the 10 base tracks
             val job = fetchPlaylistTracks(playlist_id)
             job.join()  // wait for it to be finished
-            Log.d(TAG, "Initial tracks fetched")
+            Timber.d("Initial tracks fetched")
 
             if (initialItems.isEmpty()) return@launch
 
@@ -167,7 +169,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
                 val correctAlbum = initialItems[i].track.album
 
                 // get other albums
-                Log.d(TAG, "Correct: $correctAlbumName")
+                Timber.d("Correct: $correctAlbumName")
                 val job2 = getArtistAlbums(artistId)
                 job2.join()
 
@@ -221,7 +223,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
                 initialItems = getRandomSubset(localItems)
 
             } catch (e: Exception) {
-                Log.e(TAG, "fetchPlaylistTracks $e")
+                Timber.e( "fetchPlaylistTracks $e")
                 _status.value = SpotifyApiStatus.ERROR
             }
         }
@@ -254,19 +256,19 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
                 artistAlbums =
                     apiClient.getApiService(getApplication()).getArtistAlbums(artist_id).items
 
-                artistAlbums.forEach { Log.d(TAG, "preDistinct ${it.name}") }
+                artistAlbums.forEach { Timber.d("preDistinct ${it.name}") }
                 val subList =
                     artistAlbums.slice(0..min(20, artistAlbums.size - 1)).distinctBy {
 //                        regexedString(it.name.toLowerCase(Locale.ROOT), Constants.ALPHANUM_REGEX)
                         cleanedString(it.name.toLowerCase(Locale.ROOT))
                     }.toList()
-                subList.forEach { Log.d(TAG, "postDistinct ${it.name}") }
+                subList.forEach { Timber.d("postDistinct ${it.name}") }
                 _numAlbumsLoaded.value = _numAlbumsLoaded.value?.plus(1)
 
                 artistIdToOtherAlbums[artist_id] = subList.toMutableList()
 
             } catch (e: Exception) {
-                Log.e(TAG, e.toString())
+                Timber.e( e.toString())
                 _status.value = SpotifyApiStatus.ERROR
             }
         }

@@ -1,25 +1,16 @@
 package com.tom.spotifygamev3.beat_the_intro_game
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.media.AudioAttributes
-import android.media.MediaPlayer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.lifecycle.LiveData
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.tom.spotifygamev3.LoginActivity
 import com.tom.spotifygamev3.R
@@ -27,11 +18,8 @@ import com.tom.spotifygamev3.databinding.BeatTheIntroFragmentBinding
 import com.tom.spotifygamev3.models.BeatIntroQuestion
 import com.tom.spotifygamev3.utils.Constants
 import com.tom.spotifygamev3.utils.CustomMediaPlayer
-import com.tom.spotifygamev3.utils.Utils.doAlphaAnimation
-import com.tom.spotifygamev3.utils.Utils.glidePreloadImage
-import com.tom.spotifygamev3.utils.Utils.glideShowImage
 import com.tom.spotifygamev3.utils.Utils.glideShowImagePaletteBtI
-import kotlin.Exception
+import timber.log.Timber
 
 class BeatTheIntroFragment : Fragment() {
 
@@ -77,13 +65,13 @@ class BeatTheIntroFragment : Fragment() {
 
         _currentQReady.observe(viewLifecycleOwner, Observer { player ->
             if (player != null) {
-                Log.d(TAG, "currentQReady")
-                Log.d(TAG, player.toString())
+                Timber.d("currentQReady")
+                Timber.d(player.toString())
                 _currentQReady.value = null
                 stopProgressThread()
-                Log.d(TAG, "question index $questionIndex")
+                Timber.d("question index $questionIndex")
                 setupProgressBar(binding, mps[questionIndex % mps.size])
-                Log.d(TAG, "starting")
+                Timber.d("starting")
                 binding.loadingProgressCl.visibility = View.GONE
                 binding.beatIntroGameCl.visibility = View.VISIBLE
                 player.start()
@@ -97,18 +85,18 @@ class BeatTheIntroFragment : Fragment() {
 
             val mp = mps[nextQIndex % mps.size]
             nextQIndex++
-            Log.d(TAG, "next q index $nextQIndex")
+            Timber.d("next q index $nextQIndex")
             if (nextQ == null) {
-                Log.d(TAG, "next null")
+                Timber.d("next null")
                 stopReleasePlayer(mp)
                 mps.remove(mp)
             } else {
                 if (currentQuestionUrl == "") currentQuestionUrl = nextQ.previewUrl
-                Log.d(TAG, "next Q")
+                Timber.d("next Q")
                 trackPrepStatus[nextQ.previewUrl] = false
                 mp.reset()
                 mp.setDataSource(nextQ.previewUrl)
-                Log.d(TAG, "preparing async")
+                Timber.d("preparing async")
                 mp.prepareAsync()
             }
         })
@@ -120,9 +108,9 @@ class BeatTheIntroFragment : Fragment() {
             binding.loadingProgressCl.visibility = View.VISIBLE
             currentQuestionUrl = question.previewUrl
             val prepped = trackPrepStatus[currentQuestionUrl]
-            Log.d(TAG, "prepped $prepped")
+            Timber.d("prepped $prepped")
             if (prepped == true) {
-                Log.d(TAG, "current q index " + (questionIndex % mps.size).toString())
+                Timber.d("current q index " + (questionIndex % mps.size).toString())
                 _currentQReady.value = mps[questionIndex % mps.size]
             }
             showQuestion(binding, question)
@@ -130,7 +118,7 @@ class BeatTheIntroFragment : Fragment() {
 
 
         viewModel.numTracksLoaded.observe(viewLifecycleOwner, Observer { numLoaded ->
-            Log.d(TAG, numLoaded.toString())
+            Timber.d(numLoaded.toString())
             binding.beatIntroLoadingMessage.text = getString(
                 R.string.loading_prog_message,
                 numLoaded,
@@ -144,7 +132,7 @@ class BeatTheIntroFragment : Fragment() {
 
         viewModel.showModal.observe(viewLifecycleOwner, Observer { question ->
             if (question != null) {
-                Log.d(TAG, "q index showmodal $questionIndex")
+                Timber.d("q index showmodal $questionIndex")
                 // stop previous player
                 stopPlayer(mps[(questionIndex - 1) % mps.size])
                 showModal(binding, question)
@@ -203,14 +191,14 @@ class BeatTheIntroFragment : Fragment() {
         mps = mutableListOf(customMp, preloadMp)
 
         preloadMp.setOnPreparedListener {
-            Log.d(TAG, "preloadMp prep listener")
+            Timber.d("preloadMp prep listener")
             val url = preloadMp.datasource!!
             trackPrepStatus[url] = true
             if (url == currentQuestionUrl) _currentQReady.value = preloadMp
         }
 
         customMp.setOnPreparedListener {
-            Log.d(TAG, "customMp prep listener")
+            Timber.d("customMp prep listener")
             val url = customMp.datasource!!
             trackPrepStatus[url] = true
             if (url == currentQuestionUrl) _currentQReady.value = customMp
@@ -266,7 +254,7 @@ class BeatTheIntroFragment : Fragment() {
                 try {
                     Thread.sleep(15)
                 } catch (e: Exception) {
-                    Log.e(TAG, e.toString())
+                    Timber.e( e.toString())
                 }
             }
         }.start()

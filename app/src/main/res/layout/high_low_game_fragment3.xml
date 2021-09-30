@@ -135,7 +135,7 @@
                                 android:id="@+id/image_ans1"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:layout_marginVertical="40dp"
+                                android:layout_marginVertical="45dp"
                                 android:layout_marginStart="10dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintDimensionRatio="H,1:1"
@@ -146,7 +146,7 @@
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:layout_marginStart="15dp"
+                                android:layout_marginStart="10dp"
                                 android:layout_marginEnd="15dp"
                                 android:background="@android:color/transparent"
                                 android:orientation="vertical"
@@ -164,8 +164,11 @@
                                     android:layout_weight="4"
                                     android:background="@android:color/transparent"
                                     android:gravity="bottom"
-                                    app:autoSizeMaxTextSize="30sp"
-                                    android:breakStrategy="simple"
+                                    android:breakStrategy="balanced"
+                                    android:ellipsize="end"
+                                    android:maxLines="3"
+                                    app:autoSizeMaxTextSize="40sp"
+                                    app:autoSizeMinTextSize="20sp"
                                     app:autoSizeTextType="uniform"
                                     tools:text="Song" />
 
@@ -179,13 +182,13 @@
                                     android:id="@+id/artist_ans1"
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
-                                    android:layout_weight="3"
+                                    android:layout_weight="3.5"
                                     android:layout_marginTop="5dp"
                                     android:background="@android:color/transparent"
                                     android:textColor="@color/spotify_grey"
                                     app:autoSizeTextType="uniform"
-                                    app:autoSizeMaxTextSize="20sp"
-                                    android:maxLines="3"
+                                    app:autoSizeMaxTextSize="30sp"
+                                    android:maxLines="2"
                                     android:ellipsize="end"
                                     tools:text="Artist" />
 
@@ -202,13 +205,14 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:text="Which one has more streams?"
+                            android:text="Which has more streams?"
                             android:textColor="?android:attr/textColor"
                             android:textSize="30sp"
+                            android:layout_marginHorizontal="30dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -236,7 +240,7 @@
                                 android:id="@+id/image_ans2"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:layout_marginVertical="40dp"
+                                android:layout_marginVertical="45dp"
                                 android:layout_marginEnd="10dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintDimensionRatio="H,1:1"
@@ -247,7 +251,7 @@
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:layout_marginEnd="15dp"
+                                android:layout_marginEnd="10dp"
                                 android:layout_marginStart="15dp"
                                 android:layout_marginVertical="20dp"
                                 android:background="@android:color/transparent"
@@ -264,8 +268,12 @@
                                     android:layout_weight="4"
                                     android:background="@android:color/transparent"
                                     android:gravity="bottom|end"
+                                    android:breakStrategy="balanced"
+                                    android:ellipsize="end"
+                                    android:maxLines="3"
+                                    app:autoSizeMaxTextSize="40sp"
+                                    app:autoSizeMinTextSize="20sp"
                                     app:autoSizeTextType="uniform"
-                                    app:autoSizeMaxTextSize="30sp"
                                     tools:text="Song" />
 
                                 <View
@@ -278,13 +286,13 @@
                                     android:id="@+id/artist_ans2"
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
-                                    android:layout_weight="3"
+                                    android:layout_weight="3.5"
                                     android:background="@android:color/transparent"
                                     android:gravity="end"
                                     android:textColor="@color/spotify_grey"
                                     app:autoSizeTextType="uniform"
-                                    app:autoSizeMaxTextSize="20sp"
-                                    android:maxLines="3"
+                                    app:autoSizeMaxTextSize="30sp"
+                                    android:maxLines="2"
                                     android:ellipsize="end"
                                     tools:text="Artist" />
 
