@@ -11,6 +11,8 @@ import com.tom.spotifygamev3.repository.PlaylistRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
+
 import java.io.IOException
 
 class PlaylistPickerViewModel(application: Application, gameType: Int) :
@@ -57,7 +59,7 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
     private lateinit var commonObserver: Observer<List<SimplePlaylist>>
 
     init {
-        Log.d(TAG, "here first")
+        Timber.d("here first")
         _status.value = SpotifyApiStatus.LOADING
         commonPlaylistFetchStatus = false
         _showUserPlaylists.value = true
@@ -84,7 +86,7 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
 
     private fun setUpUserObserver() {
         userObserver = Observer {
-            Log.d(TAG, "userplaylistobserver")
+            Timber.d("userplaylistobserver")
             if (userRepoPlaylists.value != null) {
                 _userPlaylists.value = userRepoPlaylists.value
                 setUpCommonObserver()
@@ -95,16 +97,16 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
 
     private fun setUpCommonObserver() {
         commonObserver = Observer {
-            Log.d(TAG, "common observer")
+            Timber.d("common observer")
             if (it.size == Constants.COMMON_PLAYLISTS.size) {
-                Log.d(TAG, "have all common playlists")
+                Timber.d("have all common playlists")
                 _commonPlaylists.value = commonRepoPlaylists.value
                 finishObserving()
                 finishDataFetching()
             } else if (!commonPlaylistFetchStatus) {
                 // nothing in cache so fetch all the usual way
                 commonPlaylistFetchStatus = true
-                Log.d(TAG, "getting in here")
+                Timber.d("getting in here")
                 viewModelScope.launch {
                     for (playlistId in Constants.COMMON_PLAYLISTS) {
                         playlistRepository.addCommonPlaylist(playlistId)
@@ -121,7 +123,7 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
 
     private fun fetchUserPlaylists() {
         viewModelScope.launch {
-            Log.d(TAG, "fetching user playlists")
+            Timber.d("fetching user playlists")
             fetchUserPlaylistsRepo()
         }
     }
@@ -134,9 +136,9 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
                 if (userRepoPlaylists.value.isNullOrEmpty()) playlistRepository.refreshUserPlaylists()
             } catch (networkError: IOException) {
                 if (userRepoPlaylists.value.isNullOrEmpty()) {
-                    Log.e(TAG, "err here")
+                    Timber.e( "err here")
                 }
-                Log.e(TAG, "fetch user playlist $networkError")
+                Timber.e( "fetch user playlist $networkError")
                 _status.value = SpotifyApiStatus.ERROR
             }
         }

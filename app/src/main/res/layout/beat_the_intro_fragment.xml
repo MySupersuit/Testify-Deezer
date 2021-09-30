@@ -20,7 +20,7 @@
             android:id="@+id/loading_progress_cl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             app:BtIApiStatus="@{viewModel.status}">
 
             <ProgressBar
@@ -67,14 +67,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
             <!--            app:showHighLowQuiz="@{viewModel.status}">-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/beat_intro_progress_cl"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -100,27 +100,33 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/progress_bar">
 
-                    <TextView
-                        android:id="@+id/score_title"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/score_title"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toTopOf="@id/beat_intro_score_counter"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/beat_intro_score_counter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/spotify_white"
-                        android:textSize="50sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="1234" />
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:id="@+id/score_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/score_title"
+                            android:textSize="20sp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/beat_intro_score_counter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/spotify_white"
+                            android:maxLines="1"
+                            android:textSize="60sp"
+                            app:layout_constraintTop_toBottomOf="@id/score_title"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            tools:text="1234" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -138,6 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -211,15 +218,15 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="25dp"
             android:layout_marginVertical="40dp"
-            app:cardElevation="10dp"
+            android:visibility="gone"
             app:cardCornerRadius="30dp"
-            android:visibility="gone">
+            app:cardElevation="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/modal_cl"
                 android:layout_width="match_parent"
-                android:background="@color/spotify_black"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/spotify_black">
 
                 <TextView
                     android:id="@+id/modal_title"
@@ -292,8 +299,8 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:textColor="@color/spotify_white"
                             android:maxLines="2"
+                            android:textColor="@color/spotify_white"
                             android:textSize="25sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             tools:text="Artist" />
@@ -312,8 +319,8 @@
                     android:backgroundTint="@color/spotify_black"
                     android:onClick="@{() -> viewModel.onNextModalClick()}"
                     android:text="@string/next"
-                    android:textSize="20sp"
                     android:textColor="@color/spotify_white"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.games.Games
 import com.tom.spotifygamev3.R
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 class ScoreViewModel(score: String, gameType: Int, application: Application) : AndroidViewModel(
@@ -42,7 +43,7 @@ class ScoreViewModel(score: String, gameType: Int, application: Application) : A
     var submitted : Boolean = false
 
     init {
-        Log.d(TAG, "finalScore: $score")
+        Timber.d("finalScore: $score")
         _score.value = score
         _gameType.value = gameType
     }

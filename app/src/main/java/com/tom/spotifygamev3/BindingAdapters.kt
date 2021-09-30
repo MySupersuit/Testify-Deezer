@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.tom.spotifygamev3.utils.Utils
 import com.tom.spotifygamev3.album_game.SpotifyApiStatus
 import com.tom.spotifygamev3.models.spotify_models.Images
+import timber.log.Timber
 
 const val TAG = "BindingAdapter"
 
@@ -38,7 +39,7 @@ fun bindImageLoadingAnim(imgView: ImageView, images: List<Images>) {
 
 @BindingAdapter("spotifyApiStatus")
 fun bindStatus(statusImageView: ImageView, status: SpotifyApiStatus) {
-    Log.d(TAG, status.name)
+    Timber.d(status.name)
     when (status) {
         SpotifyApiStatus.LOADING -> {
             statusImageView.visibility = View.VISIBLE
@@ -47,7 +48,7 @@ fun bindStatus(statusImageView: ImageView, status: SpotifyApiStatus) {
         SpotifyApiStatus.DONE -> {
             statusImageView.visibility = View.GONE
         }
-        else -> Log.e(TAG, "image view elsied")
+        else -> Timber.e( "image view elsied")
     }
 }
 
@@ -68,7 +69,7 @@ fun bindBtIStatus(statusProgress: ConstraintLayout, status: SpotifyApiStatus) {
 
 @BindingAdapter("spotifyApiProgress")
 fun bindProgress(statusProgress: ConstraintLayout, status: SpotifyApiStatus) {
-    Log.d(TAG, status.name)
+    Timber.d(status.name)
     when (status) {
         SpotifyApiStatus.LOADING -> {
             statusProgress.visibility = View.VISIBLE
@@ -123,7 +124,7 @@ fun showFrameLayout(frameLayout: FrameLayout, status: SpotifyApiStatus) {
 
 @BindingAdapter("showPlaylistPicker")
 fun showPlaylistPicker(constraintLayout: ConstraintLayout, status: SpotifyApiStatus) {
-    Log.d(TAG, "showPlaylistPicker pls $status")
+    Timber.d("showPlaylistPicker pls $status")
     when (status) {
         SpotifyApiStatus.LOADING -> {
             constraintLayout.visibility = View.GONE

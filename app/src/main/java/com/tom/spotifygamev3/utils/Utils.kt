@@ -4,7 +4,6 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -14,12 +13,10 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.blue
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
@@ -33,11 +30,11 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.google.android.material.card.MaterialCardView
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.databinding.AlbumGameFragmentBinding
 import com.tom.spotifygamev3.databinding.HighLowGameFragment3Binding
 import com.tom.spotifygamev3.models.spotify_models.Images
+import timber.log.Timber
 import java.text.Normalizer
 import java.util.*
 
@@ -132,14 +129,14 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.e(TAG, "single fail HL", e)
+                    Timber.e( "single fail HL", e)
 
                     if (e != null) {
                         for (t in e.rootCauses) {
-                            Log.e(TAG, "Caused by", t)
+                            Timber.e( "Caused by", t)
                         }
                     }
-                    Log.d(TAG, "posting runnable to main")
+                    Timber.d("posting runnable to main")
                     imgView.post {
                         Runnable {
                             reloadHL(
@@ -244,7 +241,7 @@ object Utils {
         bground: View,
         gdColors: IntArray
     ) {
-        Log.d(TAG, "reload HL")
+        Timber.d("reload HL")
         Glide.with(context).load(uri)
             .apply(
                 RequestOptions()
@@ -259,7 +256,7 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "second fail HL")
+                    Timber.d("second fail HL")
                     return false
                 }
 
@@ -321,7 +318,7 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "BtI load fail 1")
+                    Timber.d("BtI load fail 1")
                     return false
                 }
 
@@ -365,7 +362,7 @@ object Utils {
 //            val lightVibColor = palette?.lightVibrantSwatch?.rgb
             val darkVib = palette?.mutedSwatch?.rgb
             val domTextColor = palette?.dominantSwatch?.bodyTextColor ?: black
-            Log.d(TAG, "to dom color ${domColor.red} ${domColor.green} ${domColor.blue}")
+            Timber.d("to dom color ${domColor.red} ${domColor.green} ${domColor.blue}")
             val animator = ValueAnimator.ofObject(
                 ArgbEvaluator(),
                 fromDomColor,
@@ -408,7 +405,7 @@ object Utils {
         scoreTv: TextView,
         nextBtn: AppCompatButton
     ) {
-        Log.d(TAG, "reloading bti")
+        Timber.d("reloading bti")
         Glide.with(context).load(uri)
             .apply(
                 RequestOptions()
@@ -423,7 +420,7 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "BtI load fail 2")
+                    Timber.d("BtI load fail 2")
                     return false
                 }
 
@@ -455,7 +452,7 @@ object Utils {
         val imgUri = urlToUri(images[0].url)
         val imgUri2 = urlToUri(images[1].url)
         for (i in images) {
-            Log.d(TAG, "image height: ${i.height} width: ${i.width}")
+            Timber.d("image height: ${i.height} width: ${i.width}")
         }
 
         Glide.with(context)
@@ -481,7 +478,7 @@ object Utils {
                             binding
                         )
                     }
-                    Log.d(TAG, "single fail AC")
+                    Timber.d("single fail AC")
                     return false
                 }
 
@@ -543,7 +540,7 @@ object Utils {
         imageView: ImageView,
         binding: AlbumGameFragmentBinding
     ) {
-        Log.d(TAG, "reload")
+        Timber.d("reload")
         Glide.with(context).load(uri)
             .apply(
                 RequestOptions()
@@ -559,7 +556,7 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "second fail")
+                    Timber.d("second fail")
                     return false
                 }
 
@@ -606,7 +603,7 @@ object Utils {
                                 target: Target<Drawable>?,
                                 isFirstResource: Boolean
                             ): Boolean {
-                                Log.d(TAG, "load double failed")
+                                Timber.d("load double failed")
                                 return false
                             }
 
@@ -686,7 +683,7 @@ object Utils {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "preload 1st success of $imgUri")
+                    Timber.d("preload 1st success of $imgUri")
                     return false
                 }
             })
@@ -714,7 +711,7 @@ object Utils {
 //                            dataSource: DataSource?,
 //                            isFirstResource: Boolean
 //                        ): Boolean {
-//                            Log.d(TAG, "Preload 2nd success of $imgUri2")
+//                            Timber.d("Preload 2nd success of $imgUri2")
 //                            return false
 //                        }
 //                    })

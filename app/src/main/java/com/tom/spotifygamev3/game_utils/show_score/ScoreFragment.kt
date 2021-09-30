@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.tom.spotifygamev3.R
 import com.tom.spotifygamev3.databinding.GameScoreFragmentBinding
 import com.tom.spotifygamev3.utils.Constants
+import timber.log.Timber
 
 class ScoreFragment : Fragment() {
 
@@ -85,13 +86,13 @@ class ScoreFragment : Fragment() {
             if (score != null) {
                 val account = GoogleSignIn.getLastSignedInAccount(requireContext())
                 if (account == null) {
-                    Log.d(TAG, "no account")
+                    Timber.d("no account")
                     return@Observer
                 }
 
                 val leaderboardId = getLeaderboardId()
 
-                Log.d(TAG, "submitting ${viewModel.submitted}")
+                Timber.d("submitting ${viewModel.submitted}")
                 if (!viewModel.submitted) {
                     Games.getLeaderboardsClient(requireContext(), account)
                         .submitScore(leaderboardId, score.toLong())
@@ -107,7 +108,7 @@ class ScoreFragment : Fragment() {
             if (show) {
                 val account = GoogleSignIn.getLastSignedInAccount(requireContext())
                 if (account == null) {
-                    Log.d(TAG, "no account")
+                    Timber.d("no account")
                     return@Observer
                 }
                 val leaderboardId = getLeaderboardId()

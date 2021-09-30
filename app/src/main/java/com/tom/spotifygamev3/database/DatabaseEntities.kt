@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.tom.spotifygamev3.models.spotify_models.Images
 import com.tom.spotifygamev3.models.spotify_models.PlaylistOwner
 import com.tom.spotifygamev3.models.spotify_models.SimplePlaylist
+import timber.log.Timber
 
 private val TAG = "DatabaseEntities"
 
@@ -29,7 +30,7 @@ data class DatabaseCommonPlaylist constructor(
 )
 
 fun List<DatabaseUserPlaylist>.asDomainModel(): List<SimplePlaylist> {
-    Log.d(TAG, "getting from database I think")
+    Timber.d("getting from database I think")
     return map {
         SimplePlaylist(
             id = it.id,

@@ -12,6 +12,8 @@ import com.tom.spotifygamev3.models.lastfm_models.LfmTrack
 import com.tom.spotifygamev3.models.spotify_models.Items
 import com.tom.spotifygamev3.network.ApiClient
 import kotlinx.coroutines.*
+import timber.log.Timber
+
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
@@ -154,11 +156,11 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
 
     private suspend fun fetchData(playlistId: String) {
         viewModelScope.launch {
-            Log.d(TAG, "fetching data")
+            Timber.d("fetching data")
 
             val initialJob = fetchTracks(playlistId)
             initialJob.join()
-            Log.d(TAG, "initialTracks fetched")
+            Timber.d("initialTracks fetched")
             if (initialItems.isEmpty()) return@launch
 
             val shuffled = initialItems.shuffled()
@@ -167,17 +169,17 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
             // get 20 tracks' playcounts
             for (i in 0 until Constants.HIGH_LOW_NUM_QUESTIONS * 2) {
                 val track = shuffled[i].track
-                Log.d(TAG, track.name)
+                Timber.d(track.name)
                 jobs.add(fetchTrackPlaycount(track.artists[0].name, track.name))
             }
             jobs.forEach {
                 it.join()
                 _numQsLoaded.value = _numQsLoaded.value?.plus(1)
             }
-            Log.d(TAG, "localTracksPlaycount size: ${localTracksPlaycount.size}")
+            Timber.d("localTracksPlaycount size: ${localTracksPlaycount.size}")
             // TODO Handle stuff that doesn't have last fm tracks
             localTracksPlaycount.forEach {
-                Log.d(TAG, "${it.name} : ${it.playCount}")
+                Timber.d("${it.name} : ${it.playCount}")
             }
 
             // TODO clean up string manipulation shtuff
@@ -222,7 +224,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
             makeQuestions()
             _nextQuestion.value = questions[0]
             numQuestions = questions.size
-            Log.d(TAG, "$numQuestions questions")
+            Timber.d("$numQuestions questions")
             _status.value = SpotifyApiStatus.DONE
             startGame()
 
@@ -238,7 +240,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
                 initialItems = localItems
             } catch (e: Exception) {
                 _status.value = SpotifyApiStatus.ERROR
-                Log.e(TAG, e.toString())
+                Timber.e( e.toString())
             }
         }
         return job
@@ -257,12 +259,12 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
                         artist,
                         trackName
                     ).track
-                Log.d(TAG, "track: ${track.name}")
+                Timber.d("track: ${track.name}")
                 localTracksPlaycount.add(track)
 
             } catch (e: Exception) {
-                Log.e(TAG, "err on $artist - $trackName")
-                Log.e(TAG, e.toString())
+                Timber.e( "err on $artist - $trackName")
+                Timber.e( e.toString())
                 botchedLastFmQs++
                 // TODO Take out offending artist track name
                 // or add to offending tracks dict to ignore later on?

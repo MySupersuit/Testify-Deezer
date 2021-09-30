@@ -18,6 +18,7 @@ import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import com.tom.spotifygamev3.databinding.ActivityLoginBinding
 import com.tom.spotifygamev3.utils.SessionManager
+import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
 
@@ -35,6 +36,9 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sessionManager = SessionManager(this)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.loginButton.setOnClickListener {
@@ -64,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if (account != null) {
             val signedInAccount = account
-            Log.d(TAG, "logged in with ${signedInAccount.displayName ?: signedInAccount.account?.name}")
+            Timber.d("logged in with ${signedInAccount.displayName ?: signedInAccount.account?.name}")
         } else { // not signed in before
             val signInClient = GoogleSignIn.getClient(this, signInOptions)
             signInClient
@@ -80,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginGoogle() {
-        Log.d(TAG, "logingoogle")
+        Timber.d("logingoogle")
         val signInOptions = GoogleSignInOptions.Builder(
             GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN
         )
@@ -117,7 +121,8 @@ class LoginActivity : AppCompatActivity() {
 
             when (response.type) {
                 AuthorizationResponse.Type.TOKEN -> {
-                    Log.d(TAG, "Login Success. Token: ${response.accessToken}")
+//                    Timber.d("Login Success. Token: ${response.accessToken}")
+                    Timber.d("Login Success. Token: ${response.accessToken}")
                     sessionManager.saveAuthToken(response.accessToken)
 
                     val intent = Intent(this, MainActivity::class.java)
@@ -125,16 +130,16 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 }
                 AuthorizationResponse.Type.ERROR -> {
-                    Log.e(TAG, "Auth error: " + response.error)
+                    Timber.e( "Auth error: " + response.error)
                     showErrorSnackbar()
                 }
-                else -> Log.d(TAG, "Auth result: " + response.type)
+                else -> Timber.d("Auth result: " + response.type)
             }
         } else if (requestCode == REQUEST_CODE_GOOGLE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                Log.d(TAG, "auth with google ${account.displayName}")
+                Timber.d("auth with google ${account.displayName}")
             } catch (e: ApiException) {
                 Log.w(TAG, "google sign in failed", e)
             }
