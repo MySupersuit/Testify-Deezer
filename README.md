@@ -15,5 +15,4 @@ Collection of games using Spotify and LastFM APIs to test your knowledge of top 
 <p float = " left">
   <img src="screenshots/tablet/beat_intro10inch.png" height = 400>
   <img src="screenshots/tablet/higher_lower10inch.png" height = 400>
-  <img src="screenshots/tablet/album_game.png" height = 400>
 </p>
