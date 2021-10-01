@@ -1,5 +1,5 @@
 # Testify - for Spotify
-Collection of games using Spotify and LastFM APIs to test your knowledge of top Spotify playlists and your own Spotify library.
+Collection of games using Spotify and LastFM's APIs to test your knowledge on top Spotify playlists and your own Spotify library.
 
 ## Screenshots
 ### Phone
