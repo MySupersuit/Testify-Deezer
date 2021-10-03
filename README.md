@@ -21,7 +21,7 @@ Collection of games using Spotify and LastFM's APIs to test your knowledge on to
 * Android + Kotlin
 * First app trying out MVVM architecture
 * Retrofit - HTTP API calls
-* Room - Local caching
+* Room - Local database for caching
 * [Spotify API](https://developer.spotify.com/discover/) and [LastFM Api](https://www.last.fm/api)
-  * Last Fm was used due to Spotify not providing the number of streams a track has in its API which was weird.
+  * Last FM was used due to Spotify not providing the number of streams a track has in its API which was weird.
 * Google Play Services - Leaderboards and app hosting
