@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
         val signInOptions = GoogleSignInOptions.Builder(
             GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN
         )
-            .requestIdToken("551033295127-scn4e8en6ljug6lp3jiivtiubmp46705.apps.googleusercontent.com")
+            .requestIdToken("551033295127-us4lunebnfgpso16edjor3eiir7571u3.apps.googleusercontent.com")
             .requestEmail()
             .requestProfile()
             .build()
@@ -105,9 +105,10 @@ class LoginActivity : AppCompatActivity() {
         val req = AuthorizationRequest.Builder(
             CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI
         )
-            .setScopes(arrayOf("streaming", "playlist-read-private"))
+            .setScopes(arrayOf("playlist-read-private"))
             .build()
 
+//        AuthorizationClient.openLoginInBrowser(this, req);
         AuthorizationClient.openLoginActivity(this, REQUEST_CODE_SPOTIFY, req)
     }
 
