@@ -1,6 +1,10 @@
 # Testify - for Spotify
 Collection of games using Spotify and LastFM's APIs to test your knowledge on top Spotify playlists and your own Spotify library.
 
+[Play Store link](https://play.google.com/store/apps/details?id=com.tom.spotifygamev3)
+
+N.B. As I finished this app I realised you had to apply to Spotify to increase the user base from a max of 25 people. While going through that process they pointed me to their Developer Policy which said, under 'Some prohibited applications', 'Do not create a game'. Definitely on me for not checking beforehand but if you want to try out the app just email me at bobtom8428gm@gmail.com with your Spotify account login email and I'll add you to be one of the lucky 25. Thanks
+
 ## Screenshots
 ### Phone
 
