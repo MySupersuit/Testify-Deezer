@@ -72,9 +72,9 @@ class BeatTheIntroFragment : Fragment() {
                 Timber.d("question index $questionIndex")
                 setupProgressBar(binding, mps[questionIndex % mps.size])
                 Timber.d("starting")
+                player.start()
                 binding.loadingProgressCl.visibility = View.GONE
                 binding.beatIntroGameCl.visibility = View.VISIBLE
-                player.start()
                 questionIndex++
             }
         })

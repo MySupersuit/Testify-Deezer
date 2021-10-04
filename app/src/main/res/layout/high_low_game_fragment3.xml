@@ -274,7 +274,7 @@
                                     app:autoSizeMaxTextSize="40sp"
                                     app:autoSizeMinTextSize="20sp"
                                     app:autoSizeTextType="uniform"
-                                    tools:text="Song" />
+                                    tools:text="A-Punk" />
 
                                 <View
                                     android:id="@+id/div_ans2"

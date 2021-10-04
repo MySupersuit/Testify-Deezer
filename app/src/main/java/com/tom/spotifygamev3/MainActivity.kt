@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (BuildConfig.DEBUG) {
+            Timber.uprootAll()
             Timber.plant(Timber.DebugTree())
         }
 
