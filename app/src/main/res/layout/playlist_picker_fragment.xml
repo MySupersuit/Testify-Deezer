@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerViewModel" />
+            type="com.tom.deezergame.game_utils.playlist_picker.PlaylistPickerViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

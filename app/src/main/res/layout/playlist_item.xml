@@ -8,11 +8,11 @@
 
         <variable
             name="clickListener"
-            type="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistListener" />
+            type="com.tom.deezergame.game_utils.playlist_picker.PlaylistListener" />
 
         <variable
             name="playlist"
-            type="com.tom.spotifygamev3.models.spotify_models.SimplePlaylist" />
+            type="com.tom.deezergame.models.deezer_models.UserPlaylistData" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -37,7 +37,7 @@
                 app:layout_constraintDimensionRatio="H,1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:showImageLoadingAnim="@{playlist.reversedImages}"
+                app:showImageLoadingAnim="@{playlist.images}"
                 tools:src="@drawable/blackmidi_cruising" />
 
             <ImageView
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLines="1"
-                    android:text="@{playlist.name}"
+                    android:text="@{playlist.title}"
                     android:textColor="@color/spotify_white"
                     android:textSize="16sp"
                     tools:text="Super Mega Class Playlist" />
@@ -77,10 +77,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{playlist.owner.display_name}"
+                    android:text="@{String.valueOf(playlist.fans)}"
                     android:textColor="@color/spotify_grey"
                     android:textSize="15sp"
-                    tools:text="Four tet" />
+                    tools:text="100,000 fans" />
 
             </LinearLayout>
 

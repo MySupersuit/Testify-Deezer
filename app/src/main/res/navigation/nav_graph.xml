@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.tom.spotifygamev3.home.HomeFragment"
+        android:name="com.tom.deezergame.home.HomeFragment"
         tools:layout="@layout/choose_game_fragment"
         android:label="HomeFragment">
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/albumGameFragment"
-        android:name="com.tom.spotifygamev3.album_game.AlbumGameFragment"
+        android:name="com.tom.deezergame.album_game.AlbumGameFragment"
         android:label="album_game_fragment"
         tools:layout="@layout/album_game_fragment">
         <argument
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameScoreFragment"
-        android:name="com.tom.spotifygamev3.game_utils.show_score.ScoreFragment"
+        android:name="com.tom.deezergame.game_utils.show_score.ScoreFragment"
         android:label="game_score_fragment"
         tools:layout="@layout/game_score_fragment">
         <argument
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/playlistPickerFragment"
-        android:name="com.tom.spotifygamev3.game_utils.playlist_picker.PlaylistPickerFragment"
+        android:name="com.tom.deezergame.game_utils.playlist_picker.PlaylistPickerFragment"
         android:label="playlist_picker_fragment"
         tools:layout="@layout/playlist_picker_fragment" >
         <action
@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/beatTheIntroFragment"
-        android:name="com.tom.spotifygamev3.beat_the_intro_game.BeatTheIntroFragment"
+        android:name="com.tom.deezergame.beat_the_intro_game.BeatTheIntroFragment"
         android:label="beat_the_intro_fragment"
         tools:layout="@layout/beat_the_intro_fragment" >
         <action
@@ -88,7 +88,7 @@
     </fragment>
     <fragment
         android:id="@+id/highLowGameFragment"
-        android:name="com.tom.spotifygamev3.higher_lower_game.HighLowGameFragment"
+        android:name="com.tom.deezergame.higher_lower_game.HighLowGameFragment"
         android:label="high_low_game_fragment3"
         tools:layout="@layout/high_low_game_fragment3" >
         <action

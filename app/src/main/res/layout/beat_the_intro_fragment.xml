@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.beat_the_intro_game.BeatTheIntroViewModel" />
+            type="com.tom.deezergame.beat_the_intro_game.BeatTheIntroViewModel" />
     </data>
 
     <!--  TODO have the score shown above buffering - can happen between questions  -->

@@ -1,4 +1,4 @@
-# Testify - for Spotify
+# Deezer Game
 Collection of games using Spotify and LastFM's APIs to test your knowledge on top Spotify playlists and your own Spotify library.
 
 [Play Store link](https://play.google.com/store/apps/details?id=com.tom.spotifygamev3)

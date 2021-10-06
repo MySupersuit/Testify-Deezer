@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.game_utils.show_score.ScoreViewModel" />
+            type="com.tom.deezergame.game_utils.show_score.ScoreViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -18,7 +18,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.tom.spotifygamev3"
+        applicationId "com.tom.deezergame"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 4

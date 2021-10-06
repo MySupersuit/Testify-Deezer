@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="com.tom.spotifygamev3.album_game.AlbumGameViewModel" />
+            type="com.tom.deezergame.album_game.AlbumGameViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.tom.spotifygamev3.MainActivity">
+        tools:context="com.tom.deezergame.MainActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/album_progress_cl"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Testify</string>
+    <string name="app_name">Deezer Game</string>
     <string name="score">%1$d/%2$d</string>
     <string name="loading_prog_message">%1$d/%2$d loaded</string>
     <string name="you_scored">You scored</string>
@@ -24,6 +24,7 @@
     <string name="submit_score">Submit Score</string>
     <string name="go_home">Go Home</string>
     <string name="play_again">Play Again</string>
+    <string name="fans">%1$d fans</string>
 
     <string name="album_leaderboard">CgkIl6KT4YQQEAIQAQ</string>
     <string name="beat_intro_leaderboard">CgkIl6KT4YQQEAIQAg</string>
