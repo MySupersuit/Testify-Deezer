@@ -17,8 +17,6 @@ import java.lang.IllegalArgumentException
 
 class PlaylistPickerFragment : Fragment() {
 
-    private val TAG = "PlaylistPickerFragment"
-
     private val viewModel: PlaylistPickerViewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[PlaylistPickerViewModel::class.java]
     }
@@ -27,9 +25,7 @@ class PlaylistPickerFragment : Fragment() {
 
     private lateinit var binding: PlaylistPickerFragmentBinding
     private lateinit var adapter: PlaylistAdapter
-
-//    val adapter = PlaylistRecyclerAdapter()
-
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,10 +63,10 @@ class PlaylistPickerFragment : Fragment() {
                         PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToHighLowGameFragment(
                             "$playlistId"
                         )
-//                    Constants.BEAT_INTRO_GAME_TYPE ->
-//                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToBeatTheIntroFragment(
-//                            playlistId
-//                        )
+                    Constants.BEAT_INTRO_GAME_TYPE ->
+                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToBeatTheIntroFragment(
+                            "$playlistId"
+                        )
                     else -> throw IllegalArgumentException("Unknown Game Type")
                 }
                 NavHostFragment.findNavController(this).navigate(action)
@@ -80,6 +76,7 @@ class PlaylistPickerFragment : Fragment() {
 
         binding.playlistRv.adapter = adapter
 
+        // TODO General Playlists || Artist Playlists??
         // Load user playlists into rv if showUserPlaylists is true
 //        viewModel.userPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
 //            if (viewModel.showUserPlaylists.value == true) {

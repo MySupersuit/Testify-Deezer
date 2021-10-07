@@ -15,9 +15,7 @@ import com.tom.deezergame.R
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.Utils.glidePreloadImage
 import com.tom.deezergame.databinding.AlbumGameFragmentBinding
-import com.tom.deezergame.models.AlbumQuestion
 import com.tom.deezergame.models.DzAlbumQuestion
-import com.tom.deezergame.models.spotify_models.Images
 import com.tom.deezergame.utils.Utils.doAlphaAnimation
 import com.tom.deezergame.utils.Utils.glideShowImagePaletteV2
 import timber.log.Timber

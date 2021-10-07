@@ -1,6 +1,7 @@
 package com.tom.deezergame.network.deezer
 
 import com.tom.deezergame.models.deezer_models.DeezerArtistAlbums
+import com.tom.deezergame.models.deezer_models.DeezerArtistTopTracks
 import com.tom.deezergame.models.deezer_models.DeezerPlaylistTracks
 import com.tom.deezergame.models.deezer_models.DeezerUserPlaylists
 import com.tom.deezergame.network.NetworkConstants
@@ -22,4 +23,9 @@ interface DeezerApiService {
     suspend fun getArtistAlbums(
         @Path(value = "artist_id") artist_id: String
     ): DeezerArtistAlbums
+
+    @GET("artist/{artist_id}/top?limit=10")
+    suspend fun getArtistTopTracks(
+        @Path(value="artist_id") artist_id: String
+    ): DeezerArtistTopTracks
 }

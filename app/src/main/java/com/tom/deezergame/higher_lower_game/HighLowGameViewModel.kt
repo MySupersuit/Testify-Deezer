@@ -1,31 +1,22 @@
 package com.tom.deezergame.higher_lower_game
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
+import com.tom.deezergame.album_game.SpotifyApiStatus
+import com.tom.deezergame.models.DzHighLowQuestion
+import com.tom.deezergame.models.deezer_models.PlaylistTracksData
+import com.tom.deezergame.models.lastfm_models.LfmTrack
+import com.tom.deezergame.network.ApiClient
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.Utils.regexedString
 import com.tom.deezergame.utils.Utils.unaccent
-import com.tom.deezergame.album_game.SpotifyApiStatus
-import com.tom.deezergame.models.DzHighLowQuestion
-import com.tom.deezergame.models.HighLowQuestion
-import com.tom.deezergame.models.deezer_models.PlaylistTracksData
-import com.tom.deezergame.models.lastfm_models.LfmTrack
-import com.tom.deezergame.models.spotify_models.Items
-import com.tom.deezergame.network.ApiClient
 import kotlinx.coroutines.*
 import timber.log.Timber
-
-import java.lang.Exception
-import java.lang.IllegalArgumentException
 
 class HighLowGameViewModel(application: Application, playlist_id: String) :
     AndroidViewModel(application) {
 
-    private val TAG = "HighLowGameViewModel"
-
     private var apiClient: ApiClient = ApiClient()
-    private var initialItems = listOf<Items>()
     private var dzInitialItems = listOf<PlaylistTracksData>()
 
     private val _status = MutableLiveData<SpotifyApiStatus>()
@@ -61,9 +52,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
         get() = _loginClick
 
     private val localTracksPlaycount = mutableListOf<LfmTrack>()
-    private var localTracks = listOf<Items>()
     private var dzLocalTracks = listOf<PlaylistTracksData>()
-    private val questions: MutableList<HighLowQuestion> = mutableListOf()
     private val dzQuestions: MutableList<DzHighLowQuestion> = mutableListOf()
 
     private var numQuestions = -1
@@ -98,7 +87,6 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     }
 
     fun onAnswerClick(index: Int) {
-
         val chosenAnswer = when (index) {
             1 -> dzQuestions[questionIndex].track1
             2 -> dzQuestions[questionIndex].track2
@@ -221,10 +209,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
 
             dzLocalTracks = shuffled.subList(0, Constants.HIGH_LOW_NUM_QUESTIONS * 2)
             dzLocalTracks.forEach { item ->
-                Log.d(
-                    TAG,
-                    "${item.title_short} by ${item.artist.name} has ${item.playCount} plays"
-                )
+                Timber.d("${item.title_short} by ${item.artist.name} has ${item.playCount} plays")
             }
             makeQuestions()
             _nextQuestion.value = dzQuestions[0]
@@ -236,6 +221,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
         }
     }
 
+    // gets all (or first 100) tracks from playlist
     private fun fetchTracks(playlist_id: String): Job {
         val job = viewModelScope.launch {
             try {
@@ -254,21 +240,8 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
         return job
     }
 
-    // gets all (or first 100) tracks from playlist
-//    private fun fetchTracks(playlist_id: String = Constants.TOP_50_IRL): Job {
-//        val job = viewModelScope.launch {
-//            try {
-//                val localItems =
-//                    apiClient.getApiService(getApplication()).getPlaylistTracks(playlist_id).items
-//                initialItems = localItems
-//            } catch (e: Exception) {
-//                _status.value = SpotifyApiStatus.ERROR
-//                Timber.e( e.toString())
-//            }
-//        }
-//        return job
-//    }
 
+    // Gets tracks' playcounts from LastFM
     private fun fetchTrackPlaycount(
         artist: String = "Billie Eilish",
         trackName: String = "bad guy"

@@ -281,7 +281,7 @@ object Utils {
     }
 
     fun glideShowImagePaletteBtI(
-        images: List<Images>,
+        images: List<String>,
         context: Context,
         imgView: ImageView,
         cl: ConstraintLayout,
@@ -291,12 +291,12 @@ object Utils {
         scoreTv: TextView,
         nextBtn: AppCompatButton
     ) {
-//        if (images[0].isBlank()) {
-//            Glide.with(context).load(R.drawable.music_note_icon).into(imgView)
-//            return
-//        }
-        val imgUri = urlToUri(images[0].url)
-        val imgUri2 = urlToUri(images[1].url)
+        if (images[0].isBlank()) {
+            Glide.with(context).load(R.drawable.music_note_icon).into(imgView)
+            return
+        }
+        val imgUri = urlToUri(images[0])
+        val imgUri2 = urlToUri(images[1])
 
         Glide.with(context).load(imgUri)
             .error(
