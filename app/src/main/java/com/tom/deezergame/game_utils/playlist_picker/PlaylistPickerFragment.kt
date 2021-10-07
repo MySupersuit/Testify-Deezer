@@ -56,13 +56,13 @@ class PlaylistPickerFragment : Fragment() {
         // Once playlist ID is picked navigate to the game
         // Which game we navigate to is passed into the fragment in the bundle
         viewModel.navigateToGame.observe(viewLifecycleOwner, Observer { playlistId ->
-            Timber.d("" + playlistId)
-//            playlistId?.let {
-//                val action = when (viewModel.gameType.value) {
-//                    Constants.ALBUM_GAME_TYPE ->
-//                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToAlbumGameFragment(
-//                            playlistId
-//                        )
+            Timber.d("$playlistId")
+            playlistId?.let {
+                val action = when (viewModel.gameType.value) {
+                    Constants.ALBUM_GAME_TYPE ->
+                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToAlbumGameFragment(
+                            "$playlistId"
+                        )
 //                    Constants.HIGH_LOW_GAME_TYPE ->
 //                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToHighLowGameFragment(
 //                            playlistId
@@ -71,11 +71,11 @@ class PlaylistPickerFragment : Fragment() {
 //                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToBeatTheIntroFragment(
 //                            playlistId
 //                        )
-//                    else -> throw IllegalArgumentException("Unknown Game Type")
-//                }
-//                NavHostFragment.findNavController(this).navigate(action)
-//                viewModel.onNavigationToGame()
-//            }
+                    else -> throw IllegalArgumentException("Unknown Game Type")
+                }
+                NavHostFragment.findNavController(this).navigate(action)
+                viewModel.onNavigationToGame()
+            }
         })
 
         binding.playlistRv.adapter = adapter

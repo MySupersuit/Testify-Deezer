@@ -4,10 +4,14 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.Utils.cleanedString
-import com.tom.deezergame.models.spotify_models.Album
+import com.tom.deezergame.models.deezer_models.Album
 import com.tom.deezergame.models.AlbumQuestion
+import com.tom.deezergame.models.DzAlbumQuestion
+import com.tom.deezergame.models.deezer_models.ArtistAlbumData
+import com.tom.deezergame.models.deezer_models.PlaylistTracksData
 import com.tom.deezergame.models.spotify_models.Items
 import com.tom.deezergame.network.ApiClient
+import com.tom.deezergame.network.NetworkConstants
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -20,18 +24,16 @@ enum class SpotifyApiStatus { LOADING, ERROR, DONE }
 class AlbumGameViewModel(application: Application, playlist_id: String) :
     AndroidViewModel(application) {
 
-    private val TAG = "AlbumGameViewModel"
-
     private val _status = MutableLiveData<SpotifyApiStatus>()
     val status: LiveData<SpotifyApiStatus>
         get() = _status
 
-    private val _currentQuestion = MutableLiveData<AlbumQuestion>()
-    val currentQuestion: LiveData<AlbumQuestion>
+    private val _currentQuestion = MutableLiveData<DzAlbumQuestion>()
+    val currentQuestion: LiveData<DzAlbumQuestion>
         get() = _currentQuestion
 
-    private val _nextQuestion = MutableLiveData<AlbumQuestion>()
-    val nextQuestion: LiveData<AlbumQuestion>
+    private val _nextQuestion = MutableLiveData<DzAlbumQuestion>()
+    val nextQuestion: LiveData<DzAlbumQuestion>
         get() = _nextQuestion
 
     private val _eventGameFinish = MutableLiveData<Boolean>()
@@ -51,19 +53,19 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         get() = _numWrong
 
     private val _loginClick = MutableLiveData<Boolean>()
-    val loginClick : LiveData<Boolean>
+    val loginClick: LiveData<Boolean>
         get() = _loginClick
 
     private var questionIndex = 0
     private var numQuestions = -1
 
-    private var initialItems = listOf<Items>()
-    private val nullQuestion = AlbumQuestion(listOf(), "", listOf())
+    private var dzInitialItems = listOf<PlaylistTracksData>()
+    private val nullQuestion = DzAlbumQuestion(listOf(), "", listOf())
 
-    private var artistAlbums = listOf<Album>()
-    private var artistIdToOtherAlbums: HashMap<String, MutableList<Album>> = HashMap()
+    private var dzArtistAlbums = listOf<ArtistAlbumData>()
+    private var dzArtistIdToOtherAlbums: HashMap<String, MutableList<ArtistAlbumData>> = HashMap()
     private var answerOptions: MutableList<List<String>> = mutableListOf()
-    private var questions: MutableList<AlbumQuestion> = mutableListOf()
+    private var questions: MutableList<DzAlbumQuestion> = mutableListOf()
 
     private var apiClient: ApiClient = ApiClient()
 
@@ -77,7 +79,6 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     }
 
     private fun startQuiz() {
-//        preloadAlbumArt()
         questionIndex = 0
         setQuestion()
     }
@@ -129,23 +130,23 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     private fun removeIfPresent(
         album_name: String,
         artist_id: String,
-        albums: MutableList<Album>?
+        albums: MutableList<ArtistAlbumData>?
     ) {
         if (albums == null) {
-            Timber.e( "No albums for $artist_id")
+            Timber.e("No albums for $artist_id")
             return
         }
 
         // remove direct duplicate album names
         albums.removeAll {
-            it.name == album_name
+            it.title == album_name
         }
 
         // TODO find a better way to remove duplicate album releases
 
         val toAdd = albums.shuffled().slice(0..min(2, albums.size - 1)).toMutableList()
-        toAdd.forEach { Timber.d("toAdd ${it.name}") }
-        artistIdToOtherAlbums[artist_id] = toAdd
+        toAdd.forEach { Timber.d("toAdd ${it.title}") }
+        dzArtistIdToOtherAlbums[artist_id] = toAdd
         Timber.d("=================")
     }
 
@@ -155,91 +156,99 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
             Timber.d("Fetching data")
 
             // Fetch the 10 base tracks
-            val job = fetchPlaylistTracks(playlist_id)
+//            val job = fetchPlaylistTracks(playlist_id)
+            val job = fetchDzPlaylistTracks(playlist_id)
             job.join()  // wait for it to be finished
             Timber.d("Initial tracks fetched")
 
-            if (initialItems.isEmpty()) return@launch
+            // in dzInitialItemsNow
+            if (dzInitialItems.isEmpty()) return@launch
 
-            for (i in initialItems.indices) {
+            for (i in dzInitialItems.indices) {
                 // Get three different albums from that artist for the other answers
-                val artistId = initialItems[i].track.artists[0].id
-                val correctAlbumName = initialItems[i].track.album.name
-                val correctAlbum = initialItems[i].track.album
+
+                val artistId = dzInitialItems[i].artist.id.toString()
+                val correctAlbumName = dzInitialItems[i].album.title
+                val correctAlbum = dzInitialItems[i].album
 
                 // get other albums
                 Timber.d("Correct: $correctAlbumName")
-                val job2 = getArtistAlbums(artistId)
+                val job2 = getDzArtistAlbums(artistId)
                 job2.join()
-
-                removeIfPresent(correctAlbumName, artistId, artistIdToOtherAlbums[artistId])
-                val albums = artistIdToOtherAlbums[artistId]
+                removeIfPresent(correctAlbumName, artistId, dzArtistIdToOtherAlbums[artistId])
+                val albums = dzArtistIdToOtherAlbums[artistId]
 
                 // TODO avoid repeat questions in some way etc
                 // TODO prioritise album names rather than singles/eps?
 
-                makeAnswerOptionsV2(correctAlbum, albums)
+                makeAnswerOptionsV3(correctAlbum, albums)
             }
             if (questions.size == 0) _status.value = SpotifyApiStatus.ERROR
             else {
                 _nextQuestion.value = questions[0]
-                numQuestions = initialItems.size
+                numQuestions = dzInitialItems.size
                 _status.value = SpotifyApiStatus.DONE
                 startQuiz()
             }
         }
     }
 
-    private fun makeAnswerOptionsV2(correctAlbum: Album, otherAlbums: MutableList<Album>?) {
-        val correctAlbumName = correctAlbum.name
+    private fun makeAnswerOptionsV3(
+        correctAlbum: Album,
+        otherAlbums: MutableList<ArtistAlbumData>?
+    ) {
+        val correctAlbumTitle = correctAlbum.title
         if (otherAlbums == null) {
             answerOptions.add(
                 listOf(
-                    correctAlbumName,
-                    correctAlbumName,
-                    correctAlbumName,
-                    correctAlbumName
+                    correctAlbumTitle,
+                    correctAlbumTitle,
+                    correctAlbumTitle,
+                    correctAlbumTitle
                 )
             )
             return
         }
 
         val incorrectAnswers = otherAlbums.map { album ->
-            album.name
+            album.title
         }
 
-        val question = AlbumQuestion(correctAlbum.images, correctAlbumName, incorrectAnswers)
+        val question = DzAlbumQuestion(correctAlbum.getImages(), correctAlbumTitle, incorrectAnswers)
         questions.add(question)
     }
 
     // add offset parameter to get random songs from given playlist each time
     // based on playlist length and so on
-    private fun fetchPlaylistTracks(playlist_id: String = Constants.TEST_PLAYLIST_URI): Job {
+
+    private fun fetchDzPlaylistTracks(playlist_id: String = NetworkConstants.DZ_POP_ALLSTARS): Job {
         val job = viewModelScope.launch {
             try {
-                val localItems =
-                    apiClient.getApiService(getApplication()).getPlaylistTracks(playlist_id).items
-                initialItems = getRandomSubset(localItems)
-
+                // still have next + total fields if needed
+                val localItems = apiClient.getDeezerApiService(getApplication())
+                    .getPlaylistTracks(playlist_id).data
+                dzInitialItems = getRandomSubset(localItems)
+                for (item in dzInitialItems) {
+                    Timber.d("${item.artist.name}: ${item.album.title}")
+                }
             } catch (e: Exception) {
-                Timber.e( "fetchPlaylistTracks $e")
+                Timber.e(e)
                 _status.value = SpotifyApiStatus.ERROR
             }
         }
         return job
     }
 
-    // Maybe change to if already seen album rather than artist
-    private fun getRandomSubset(items: List<Items>): List<Items> {
+    private fun getRandomSubset(items: List<PlaylistTracksData>): List<PlaylistTracksData> {
         val shuffled = items.shuffled()
-        val subset = mutableListOf<Items>()
-        val artistsSeen = mutableListOf<String>()
+        val subset = mutableListOf<PlaylistTracksData>()
+        val artistsSeen = mutableListOf<Int>()
         for (item in shuffled) {
-            val artistId = item.track.artists[0].id
+            val artistId = item.artist.id
 
             if (!artistsSeen.contains(artistId)) {
                 subset.add(item)
-                artistsSeen.add(item.track.artists[0].name)
+                artistsSeen.add(artistId)
             }
 
             if (subset.size == Constants.ALBUM_GAME_NUM_QUESTIONS) {
@@ -249,25 +258,23 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         return subset
     }
 
-    private fun getArtistAlbums(artist_id: String = Constants.BICEP_URI): Job {
+    private fun getDzArtistAlbums(artist_id: String = NetworkConstants.DZ_RADIOHEAD): Job {
         val job = viewModelScope.launch {
             try {
-                artistAlbums =
-                    apiClient.getApiService(getApplication()).getArtistAlbums(artist_id).items
+                dzArtistAlbums =
+                    apiClient.getDeezerApiService(getApplication()).getArtistAlbums(artist_id).data
 
-                artistAlbums.forEach { Timber.d("preDistinct ${it.name}") }
+                dzArtistAlbums.forEach { Timber.d("preDistinct ${it.title}") }
                 val subList =
-                    artistAlbums.slice(0..min(20, artistAlbums.size - 1)).distinctBy {
-//                        regexedString(it.name.toLowerCase(Locale.ROOT), Constants.ALPHANUM_REGEX)
-                        cleanedString(it.name.toLowerCase(Locale.ROOT))
+                    dzArtistAlbums.slice(0..min(20, dzArtistAlbums.size - 1)).distinctBy {
+                        cleanedString(it.title.toLowerCase(Locale.ROOT))
                     }.toList()
-                subList.forEach { Timber.d("postDistinct ${it.name}") }
+                subList.forEach { Timber.d("postDistinct ${it.title}") }
                 _numAlbumsLoaded.value = _numAlbumsLoaded.value?.plus(1)
 
-                artistIdToOtherAlbums[artist_id] = subList.toMutableList()
-
+                dzArtistIdToOtherAlbums[artist_id] = subList.toMutableList()
             } catch (e: Exception) {
-                Timber.e( e.toString())
+                Timber.e(e)
                 _status.value = SpotifyApiStatus.ERROR
             }
         }
