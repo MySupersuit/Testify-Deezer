@@ -443,16 +443,17 @@ object Utils {
     }
 
     fun glideShowImagePaletteV2(
-        images: List<Images>,
+//        images: List<Images>,
+        images: List<String>,
         context: Context,
         imgView: ImageView,
         binding: AlbumGameFragmentBinding
     ) {
-        val imgUri = urlToUri(images[0].url)
-        val imgUri2 = urlToUri(images[1].url)
-        for (i in images) {
-            Timber.d("image height: ${i.height} width: ${i.width}")
-        }
+        val imgUri = urlToUri(images[0])
+        val imgUri2 = urlToUri(images[1])
+//        for (i in images) {
+//            Timber.d("image height: ${i.height} width: ${i.width}")
+//        }
 
         Glide.with(context)
             .load(imgUri)
@@ -655,9 +656,9 @@ object Utils {
         glide.into(imageView)
     }
 
-    fun glidePreloadImage(images: List<Images>, context: Context) {
-        val imgUri = urlToUri(images[0].url)
-        val imgUri2 = urlToUri(images[1].url)
+    // Handle preload error?
+    fun glidePreloadImage(images: List<String>, context: Context) {
+        val imgUri = urlToUri(images[0])
 
         Glide.with(context)
             .load(imgUri)
@@ -672,6 +673,7 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
+                    Timber.e("preload error")
                     return false
                 }
 

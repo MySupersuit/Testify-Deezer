@@ -38,27 +38,3 @@ fun List<UserPlaylistData>.asDatabaseModel(): List<DzDatabaseUserPlaylist> {
         )
     }
 }
-
-//@SerializedName("id") val id: Long,
-//@SerializedName("title") val title: String,
-//@SerializedName("duration") val duration: Int,
-//@Transient val public: Boolean,
-//@Transient val is_loved_track: Boolean,
-//@Transient val collaborative: Boolean,
-//@SerializedName("nb_tracks") val nb_tracks: Int,
-//@SerializedName("fans") val fans: Int,
-//@SerializedName("link") val link: String,
-//@SerializedName("picture") val picture: String,
-//@SerializedName("picture_small") val picture_small: String,
-//@SerializedName("picture_medium") val picture_medium: String,
-//@SerializedName("picture_big") val picture_big: String,
-//@SerializedName("picture_xl") val picture_xl: String,
-//@Transient val checksum: String,
-//@SerializedName("tracklist") val tracklist: String,
-//@Transient val creation_date: String,
-//@Transient val md5_image: String,
-//@Transient val picture_type: String,
-//@Transient val time_add: Int,
-//@Transient val time_mod: Int,
-//@Transient val creator: Creator,
-//@Transient val type: String

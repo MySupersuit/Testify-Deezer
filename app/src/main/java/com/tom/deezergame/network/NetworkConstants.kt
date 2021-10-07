@@ -8,5 +8,7 @@ object NetworkConstants {
 
     const val DZ_POP_ALLSTARS = "1282483245"
     const val DZ_USER = "4611918582"
-    const val DZ_PARAMS = "limit=100&index=1" // gets rid of empty loved tracks playlist
+    const val DZ_PARAMS_REMOVE_FIRST = "limit=100&index=1" // gets rid of empty loved tracks playlist
+    const val DZ_PARAMS = "limit=100"
+    const val DZ_RADIOHEAD = "399"
 }

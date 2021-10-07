@@ -16,6 +16,7 @@ import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.Utils.glidePreloadImage
 import com.tom.deezergame.databinding.AlbumGameFragmentBinding
 import com.tom.deezergame.models.AlbumQuestion
+import com.tom.deezergame.models.DzAlbumQuestion
 import com.tom.deezergame.models.spotify_models.Images
 import com.tom.deezergame.utils.Utils.doAlphaAnimation
 import com.tom.deezergame.utils.Utils.glideShowImagePaletteV2
@@ -110,13 +111,12 @@ class AlbumGameFragment : Fragment() {
         viewModel.onGameFinishComplete()
     }
 
-    private fun preloadImage(images: List<Images>) {
+    private fun preloadImage(images: List<String>) {
         glidePreloadImage(images, requireContext())
     }
 
-    private fun showQuestion(binding: AlbumGameFragmentBinding, albumQ: AlbumQuestion) {
+    private fun showQuestion(binding: AlbumGameFragmentBinding, albumQ: DzAlbumQuestion) {
         // includes transition
-//        glideShowImagePalette(albumQ.images, requireContext(), binding.albumCoverImage, binding)
         glideShowImagePaletteV2(albumQ.images, requireContext(), binding.albumCoverImage, binding)
 
         // Work around for artists with not enough albums

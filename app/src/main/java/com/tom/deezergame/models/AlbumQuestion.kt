@@ -8,6 +8,4 @@ data class AlbumQuestion(
     val incorrectAnswers: List<String>
 ) {
     val allAnswers :List<String> = (incorrectAnswers + correctAnswer).shuffled()
-
-
 }

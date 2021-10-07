@@ -11,13 +11,7 @@ data class PlaylistTracksData(
     @SerializedName("link") val link : String,
     @SerializedName("duration") val duration : Int,
     @SerializedName("rank") val rank : Int,
-    @SerializedName("explicit_lyrics") val explicit_lyrics : Boolean,
-    @SerializedName("explicit_content_lyrics") val explicit_content_lyrics : Int,
-    @SerializedName("explicit_content_cover") val explicit_content_cover : Int,
     @SerializedName("preview") val preview : String,
-    @SerializedName("md5_image") val md5_image : String,
-    @SerializedName("time_add") val time_add : Int,
     @SerializedName("artist") val artist : Artist,
     @SerializedName("album") val album : Album,
-    @SerializedName("type") val type : String
 )

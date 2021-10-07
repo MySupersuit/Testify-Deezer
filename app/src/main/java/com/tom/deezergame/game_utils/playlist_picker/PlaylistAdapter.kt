@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PlaylistAdapter(val clickListener: PlaylistListener) :
-//    ListAdapter<SimplePlaylist, RecyclerView.ViewHolder>(PlaylistDiffCallback()) {
     ListAdapter<UserPlaylistData, RecyclerView.ViewHolder>(PlaylistDiffCallback()) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -30,13 +29,6 @@ class PlaylistAdapter(val clickListener: PlaylistListener) :
         return ViewHolder.from(parent)
     }
 
-    //    fun submitPlaylist(list : List<SimplePlaylist>) {
-//        adapterScope.launch {
-//            withContext(Dispatchers.Main) {
-//                submitList(list)
-//            }
-//        }
-//    }
     fun submitPlaylist(list: List<UserPlaylistData>) {
         adapterScope.launch {
             withContext(Dispatchers.Main) {
@@ -44,8 +36,6 @@ class PlaylistAdapter(val clickListener: PlaylistListener) :
             }
         }
     }
-
-
 
     class ViewHolder private constructor(val binding: PlaylistItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
