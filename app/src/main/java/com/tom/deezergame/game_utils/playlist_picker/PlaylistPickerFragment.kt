@@ -63,10 +63,10 @@ class PlaylistPickerFragment : Fragment() {
                         PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToAlbumGameFragment(
                             "$playlistId"
                         )
-//                    Constants.HIGH_LOW_GAME_TYPE ->
-//                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToHighLowGameFragment(
-//                            playlistId
-//                        )
+                    Constants.HIGH_LOW_GAME_TYPE ->
+                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToHighLowGameFragment(
+                            "$playlistId"
+                        )
 //                    Constants.BEAT_INTRO_GAME_TYPE ->
 //                        PlaylistPickerFragmentDirections.actionPlaylistPickerFragmentToBeatTheIntroFragment(
 //                            playlistId

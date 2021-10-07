@@ -11,8 +11,4 @@ data class Album(
     @SerializedName("cover_big") val cover_big : String,
     @SerializedName("cover_xl") val cover_xl : String,
     @SerializedName("tracklist") val tracklist : String,
-) {
-    fun getImages(): List<String> {
-        return listOf(cover_big, cover_medium, cover_xl, cover_small)
-    }
-}
+)

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.tom.deezergame.LoginActivity
 import com.tom.deezergame.R
 import com.tom.deezergame.databinding.HighLowGameFragment3Binding
+import com.tom.deezergame.models.DzHighLowQuestion
 import com.tom.deezergame.models.HighLowQuestion
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.Utils.glidePreloadImage
@@ -63,8 +64,8 @@ class HighLowGameFragment : Fragment() {
         // TODO try cache all images when loading??
         viewModel.nextQuestion.observe(viewLifecycleOwner, Observer { nextQuestion ->
             if (nextQuestion != null) {
-//                glidePreloadImage(nextQuestion.track1.track.album.images, requireContext())
-//                glidePreloadImage(nextQuestion.track2.track.album.images, requireContext())
+                glidePreloadImage(nextQuestion.track1.getImages(), requireContext())
+                glidePreloadImage(nextQuestion.track2.getImages(), requireContext())
             }
         })
 
@@ -118,7 +119,7 @@ class HighLowGameFragment : Fragment() {
         viewModel.onGameFinishComplete()
     }
 
-    private fun showModal(binding: HighLowGameFragment3Binding, question: HighLowQuestion) {
+    private fun showModal(binding: HighLowGameFragment3Binding, question: DzHighLowQuestion) {
         disableAnswerButtons(binding)
         binding.modalTitle.text = if (question.correct == true) "Correct :)" else "Wrong :("
 
@@ -127,11 +128,11 @@ class HighLowGameFragment : Fragment() {
         val wrongTrack =
             if (question.track1.playCount > question.track2.playCount) question.track2 else question.track1
 
-        glideShowImage(correctTrack.track.album.images, requireContext(), binding.modalCorrectImage)
+        glideShowImage(correctTrack.getImages(), requireContext(), binding.modalCorrectImage)
         binding.modalCorrectText.text =
             getString(R.string.num_streams, String.format("%,d", correctTrack.playCount))
 
-        glideShowImage(wrongTrack.track.album.images, requireContext(), binding.modalWrongImage)
+        glideShowImage(wrongTrack.getImages(), requireContext(), binding.modalWrongImage)
         binding.modalWrongText.text =
             getString(R.string.num_streams, String.format("%,d", wrongTrack.playCount))
 
@@ -143,19 +144,20 @@ class HighLowGameFragment : Fragment() {
         binding.modalCl.visibility = View.GONE
     }
 
-    private fun showQuestion(binding: HighLowGameFragment3Binding, question: HighLowQuestion) {
-        val track1 = question.track1.track
-        val track2 = question.track2.track
+    private fun showQuestion(binding: HighLowGameFragment3Binding, question: DzHighLowQuestion) {
+        val track1 = question.track1
+        val track2 = question.track2
 
 //        glideShowImageLoadAnim(track1.album.images, requireContext(), binding.imageAns1)
-        hlShowImage1(track1.album.images, requireContext(), binding)
-        binding.artistAns1.text = track1.artists[0].name
-        binding.songAns1.text = track1.name
+//        hlShowImage1(track1.album.images, requireContext(), binding)
+        hlShowImage1(track1.getImages(), requireContext(), binding)
+        binding.artistAns1.text = track1.artist.name
+        binding.songAns1.text = track1.title_short
 
 //        glideShowImageLoadAnim(track2.album.images, requireContext(), binding.imageAns2)
-        hlShowImage2(track2.album.images, requireContext(), binding)
-        binding.artistAns2.text = track2.artists[0].name
-        binding.songAns2.text = track2.name
+        hlShowImage2(track2.getImages(), requireContext(), binding)
+        binding.artistAns2.text = track2.artist.name
+        binding.songAns2.text = track2.title_short
     }
 
     private fun disableAnswerButtons(binding: HighLowGameFragment3Binding) {
