@@ -2,22 +2,19 @@ package com.tom.deezergame.album_game
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.tom.deezergame.utils.Constants
-import com.tom.deezergame.utils.Utils.cleanedString
-import com.tom.deezergame.models.deezer_models.Album
-import com.tom.deezergame.models.AlbumQuestion
 import com.tom.deezergame.models.DzAlbumQuestion
+import com.tom.deezergame.models.deezer_models.Album
 import com.tom.deezergame.models.deezer_models.ArtistAlbumData
 import com.tom.deezergame.models.deezer_models.PlaylistTracksData
-import com.tom.deezergame.models.spotify_models.Items
 import com.tom.deezergame.network.ApiClient
 import com.tom.deezergame.network.NetworkConstants
+import com.tom.deezergame.utils.Constants
+import com.tom.deezergame.utils.Utils.cleanedString
 import kotlinx.coroutines.*
 import timber.log.Timber
-
-import kotlin.math.min
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.math.min
 
 enum class SpotifyApiStatus { LOADING, ERROR, DONE }
 
@@ -169,7 +166,8 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
 
                 val artistId = dzInitialItems[i].artist.id.toString()
                 val correctAlbumName = dzInitialItems[i].album.title
-                val correctAlbum = dzInitialItems[i].album
+//                val correctAlbum = dzInitialItems[i].album
+                val correctTrack = dzInitialItems[i]
 
                 // get other albums
                 Timber.d("Correct: $correctAlbumName")
@@ -181,7 +179,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
                 // TODO avoid repeat questions in some way etc
                 // TODO prioritise album names rather than singles/eps?
 
-                makeAnswerOptionsV3(correctAlbum, albums)
+                makeAnswerOptionsV3(correctTrack, albums)
             }
             if (questions.size == 0) _status.value = SpotifyApiStatus.ERROR
             else {
@@ -194,10 +192,10 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     }
 
     private fun makeAnswerOptionsV3(
-        correctAlbum: Album,
+        correctAlbumTrack: PlaylistTracksData,
         otherAlbums: MutableList<ArtistAlbumData>?
     ) {
-        val correctAlbumTitle = correctAlbum.title
+        val correctAlbumTitle = correctAlbumTrack.album.title
         if (otherAlbums == null) {
             answerOptions.add(
                 listOf(
@@ -213,8 +211,9 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         val incorrectAnswers = otherAlbums.map { album ->
             album.title
         }
-
-        val question = DzAlbumQuestion(correctAlbum.getImages(), correctAlbumTitle, incorrectAnswers)
+        val imagesUrls = correctAlbumTrack.getImages()
+        for (url in imagesUrls) Timber.d("url: $url")
+        val question = DzAlbumQuestion(correctAlbumTrack.getImages(), correctAlbumTitle, incorrectAnswers)
         questions.add(question)
     }
 

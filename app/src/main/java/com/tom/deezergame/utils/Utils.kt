@@ -40,8 +40,8 @@ import java.util.*
 object Utils {
     val TAG = "Utils"
 
-    fun <T> List<T>.safeSubList(fromIndex: Int, toIndex: Int): List<T> =
-        this.subList(fromIndex, toIndex.coerceAtMost(this.size))
+//    fun <T> List<T>.safeSubList(fromIndex: Int, toIndex: Int): List<T> =
+//        this.subList(fromIndex, toIndex.coerceAtMost(this.size))
 
     fun regexedString(string: String, regex: Regex): String {
         return regex.replace(string, "")
@@ -70,7 +70,7 @@ object Utils {
     }
 
     //    fun hlShowImage1(images: List<Images>, context: Context, imgView: ImageView, binding: HighLowGameFragment3Binding) {
-    fun hlShowImage1(images: List<Images>, context: Context, binding: HighLowGameFragment3Binding) {
+    fun hlShowImage1(images: List<String>, context: Context, binding: HighLowGameFragment3Binding) {
         glideShowImagePaletteHL(
             images,
             context,
@@ -85,7 +85,7 @@ object Utils {
         )
     }
 
-    fun hlShowImage2(images: List<Images>, context: Context, binding: HighLowGameFragment3Binding) {
+    fun hlShowImage2(images: List<String>, context: Context, binding: HighLowGameFragment3Binding) {
         glideShowImagePaletteHL(
             images,
             context,
@@ -101,7 +101,7 @@ object Utils {
     }
 
     private fun glideShowImagePaletteHL(
-        images: List<Images>,
+        images: List<String>,
         context: Context,
         imgView: ImageView,
         cl: ConstraintLayout,
@@ -111,8 +111,12 @@ object Utils {
         bground: View,
         gdColors: IntArray
     ) {
-        val imgUri = urlToUri(images[0].url)
-        val imgUri2 = urlToUri(images[1].url)
+        if (images[0].isBlank()) {
+            Glide.with(context).load(R.drawable.music_note_icon).into(imgView)
+            return
+        }
+        val imgUri = urlToUri(images[0])
+        val imgUri2 = urlToUri(images[1])
 
         Glide.with(context)
             .load(imgUri)
@@ -287,6 +291,10 @@ object Utils {
         scoreTv: TextView,
         nextBtn: AppCompatButton
     ) {
+//        if (images[0].isBlank()) {
+//            Glide.with(context).load(R.drawable.music_note_icon).into(imgView)
+//            return
+//        }
         val imgUri = urlToUri(images[0].url)
         val imgUri2 = urlToUri(images[1].url)
 
@@ -578,12 +586,16 @@ object Utils {
     }
 
     fun glideShowImage(
-        images: List<Images>,
+        images: List<String>,
         context: Context,
         imageView: ImageView,
     ) {
-        val imgUri = urlToUri(images[0].url)
-        val imgUri2 = urlToUri(images[1].url)
+        if (images[0].isBlank()) {
+            Glide.with(context).load(R.drawable.music_note_icon).into(imageView)
+            return
+        }
+        val imgUri = urlToUri(images[0])
+        val imgUri2 = urlToUri(images[1])
 
         Glide.with(context)
             .load(imgUri)
@@ -640,6 +652,10 @@ object Utils {
     }
 
     fun glideShowImageLoadAnim(images: List<String>, context: Context, imageView: ImageView) {
+        if (images[0].isBlank()) {
+            Glide.with(context).load(R.drawable.music_note_icon).into(imageView)
+            return
+        }
         val imgUri = urlToUri(images[0])
 
         val glide = Glide.with(context)
@@ -658,6 +674,9 @@ object Utils {
 
     // Handle preload error?
     fun glidePreloadImage(images: List<String>, context: Context) {
+        if (images[0].isBlank()) {
+            return
+        }
         val imgUri = urlToUri(images[0])
 
         Glide.with(context)

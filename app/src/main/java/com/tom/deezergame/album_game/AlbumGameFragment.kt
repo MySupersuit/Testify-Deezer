@@ -20,6 +20,7 @@ import com.tom.deezergame.models.DzAlbumQuestion
 import com.tom.deezergame.models.spotify_models.Images
 import com.tom.deezergame.utils.Utils.doAlphaAnimation
 import com.tom.deezergame.utils.Utils.glideShowImagePaletteV2
+import timber.log.Timber
 
 class AlbumGameFragment : Fragment() {
 
@@ -57,6 +58,7 @@ class AlbumGameFragment : Fragment() {
 
         viewModel.nextQuestion.observe(viewLifecycleOwner, Observer { nextQuestion ->
             if (nextQuestion.correctAnswer != "" ) {
+                Timber.d("preloading ${nextQuestion.correctAnswer}")
                 preloadImage(nextQuestion.images)
             }
         })
