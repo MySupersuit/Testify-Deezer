@@ -1,12 +1,12 @@
 package com.tom.deezergame.models
 
-import com.tom.deezergame.models.spotify_models.Track
+import com.tom.deezergame.models.deezer_models.PlaylistTracksData
 
-data class BeatIntroQuestion(
+data class DzBeatIntroQuestion(
     val correctAnswer: String,
     val incorrectAnswers: List<String>,
     val previewUrl: String,
-    val correctTrack: Track,
+    val correctTrack: PlaylistTracksData,
     var questionScore: Int = 0
 ) {
     val allAnswers: List<String> = (incorrectAnswers + correctAnswer).shuffled()

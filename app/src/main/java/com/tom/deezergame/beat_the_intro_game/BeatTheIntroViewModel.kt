@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.album_game.SpotifyApiStatus
-import com.tom.deezergame.models.BeatIntroQuestion
-import com.tom.deezergame.models.spotify_models.Items
-import com.tom.deezergame.models.spotify_models.Track
+import com.tom.deezergame.models.DzBeatIntroQuestion
+import com.tom.deezergame.models.deezer_models.ArtistTopTracksData
+import com.tom.deezergame.models.deezer_models.PlaylistTracksData
 import com.tom.deezergame.network.ApiClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -19,12 +19,12 @@ enum class MediaPlayerStatus { PREPARING, DONE, ERROR }
 
 class BeatTheIntroViewModel(application: Application, playlistId: String) :
     AndroidViewModel(application) {
-    private val TAG = "BeatTheIntroViewModel"
 
     private var apiClient: ApiClient = ApiClient()
-    private var initialPlaylistItems = listOf<Items>()
-    private var artistIdToTopTracks: HashMap<String, List<Track>> = HashMap()
-    private var questions = mutableListOf<BeatIntroQuestion>()
+    private var dzInitialItems = listOf<PlaylistTracksData>()
+
+    private var artistIdToTopTracks: HashMap<String, List<ArtistTopTracksData>> = HashMap()
+    private var questions = mutableListOf<DzBeatIntroQuestion>()
 
     var playerPosition = 0;
     var playerDuration = 0;
@@ -34,10 +34,6 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     private val _status = MutableLiveData<SpotifyApiStatus>()
     val status: LiveData<SpotifyApiStatus>
         get() = _status
-
-    val _mpStatus = MutableLiveData<MediaPlayerStatus>()
-    val mpStatus: LiveData<MediaPlayerStatus>
-        get() = _mpStatus
 
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
@@ -51,20 +47,20 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     val numTracksLoaded: LiveData<Int>
         get() = _numTracksLoaded
 
-    private val _currentQuestion = MutableLiveData<BeatIntroQuestion>()
-    val currentQuestion: LiveData<BeatIntroQuestion>
+    private val _currentQuestion = MutableLiveData<DzBeatIntroQuestion>()
+    val currentQuestion: LiveData<DzBeatIntroQuestion>
         get() = _currentQuestion
 
-    private val _nextQuestion = MutableLiveData<BeatIntroQuestion>()
-    val nextQuestion: LiveData<BeatIntroQuestion>
+    private val _nextQuestion = MutableLiveData<DzBeatIntroQuestion>()
+    val nextQuestion: LiveData<DzBeatIntroQuestion>
         get() = _nextQuestion
 
     private val _eventGameFinish = MutableLiveData<Boolean>()
     val eventGameFinish: LiveData<Boolean>
         get() = _eventGameFinish
 
-    private val _showModal = MutableLiveData<BeatIntroQuestion>()
-    val showModal: LiveData<BeatIntroQuestion>
+    private val _showModal = MutableLiveData<DzBeatIntroQuestion>()
+    val showModal: LiveData<DzBeatIntroQuestion>
         get() = _showModal
 
     private val _loginClick = MutableLiveData<Boolean>()
@@ -87,30 +83,35 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
             // Fetch base 10 tracks
             val initialJob = fetchPlaylistTracks(playlistId)
             initialJob.join()
-            Timber.d("initial fetched. size: ${initialPlaylistItems.size}")
-            if (initialPlaylistItems.isEmpty()) return@launch
+            Timber.d("initial fetched. size: ${dzInitialItems.size}")
+            if (dzInitialItems.isEmpty()) return@launch
 
-            for (item in initialPlaylistItems) {
-                val track = item.track
+            for (item in dzInitialItems) {
+                val track = item
                 // Get three other top tracks for that artist
-                val artistId = track.artists[0].id
+                val artistId = "${track.artist.id}"
                 Timber.d("artistId $artistId")
 
                 val job2 = fetchTopTracks(artistId)
                 job2.join()
 
                 // just need three other top tracks
-                val incorrectAnswers = mutableListOf<Track>()
+                val incorrectAnswers = mutableListOf<ArtistTopTracksData>()
                 val otherTopTracks = artistIdToTopTracks[artistId]?.shuffled()
                 for (otherTrack in otherTopTracks!!) {
                     if (incorrectAnswers.size == 3) break
 
-                    if (otherTrack.name != track.name) {
+                    if (otherTrack.title_short != track.title_short) {
                         incorrectAnswers.add(otherTrack)
                     } else {
-                        Timber.d("same ${otherTrack.name} == ${track.name}")
+                        Timber.d("same ${otherTrack.title_short} == ${track.title_short}")
                     }
                 }
+                Timber.d("correct track: ${track.title_short}")
+                for (incorrect in incorrectAnswers) {
+                    Timber.d("incorrect: ${incorrect.title_short}")
+                }
+
                 // make question
                 makeQuestion(track, incorrectAnswers)
             }
@@ -134,17 +135,17 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
 
     }
 
-    private fun makeQuestion(correctTrack: Track, otherTracks: List<Track>) {
+    private fun makeQuestion(correctTrack: PlaylistTracksData, otherTracks: List<ArtistTopTracksData>) {
         val incorrectAnswers = otherTracks.map {
-            it.name
+            it.title_short
         }
         // Some don't have previews so need to pick 10 tracks that do
-        Timber.d("${correctTrack.name} preview ${correctTrack.preview_url}")
+        Timber.d("${correctTrack.title_short} preview ${correctTrack.preview}")
         questions.add(
-            BeatIntroQuestion(
-                correctAnswer = correctTrack.name,
+            DzBeatIntroQuestion(
+                correctAnswer = correctTrack.title_short,
                 incorrectAnswers = incorrectAnswers,
-                previewUrl = correctTrack.preview_url!!,
+                previewUrl = correctTrack.preview,
                 correctTrack = correctTrack
             )
         )
@@ -155,7 +156,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
         val correctAnswer = questions[questionIndex].correctAnswer
         val remaining = playerDuration - playerPosition
         val questionScore = (remaining.toDouble() / playerDuration * 1000).toInt()
-        Timber.d("score = ${questionScore.toString()}")
+        Timber.d("score = ${questionScore}")
 
         val result = currentQuestion.value
         if (chosenAnswer == correctAnswer) {
@@ -163,9 +164,8 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
             result?.questionScore = questionScore
         } else {
             _score.value = (_score.value)?.minus(questionScore / 2)
-            result?.questionScore = -(questionScore/2)
+            result?.questionScore = -(questionScore / 2)
         }
-
 
         if (result != null) {
             showModal(result)
@@ -185,7 +185,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
         }
     }
 
-    private fun showModal(result: BeatIntroQuestion) {
+    private fun showModal(result: DzBeatIntroQuestion) {
         _showModal.value = result
     }
 
@@ -213,11 +213,11 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
         val job = viewModelScope.launch {
             try {
                 val localItems =
-                    apiClient.getApiService(getApplication()).getPlaylistTracks(playlistId).items
-                initialPlaylistItems = getRandomSubset(localItems)
+                    apiClient.getDeezerApiService(getApplication())
+                        .getPlaylistTracks(playlistId).data
+                dzInitialItems = getRandomSubset(localItems)
             } catch (e: Exception) {
-                _status.value = SpotifyApiStatus.ERROR
-                Timber.e( e.toString())
+                Timber.e(e)
             }
         }
         return job
@@ -226,15 +226,15 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     private fun fetchTopTracks(artistId: String): Job {
         val job = viewModelScope.launch {
             try {
-                val localItems =
-                    apiClient.getApiService(getApplication()).getTopTracks(artistId).tracks
+                val localItems = apiClient.getDeezerApiService(getApplication())
+                    .getArtistTopTracks(artistId).data
                 // clean tracks maybe
 
                 artistIdToTopTracks[artistId] = localItems
                 _numTracksLoaded.value = (_numTracksLoaded.value)?.plus(1)
             } catch (e: Exception) {
                 e.message?.let { Timber.d(it) }
-                Timber.e( e.toString())
+                Timber.e(e.toString())
                 _status.value = SpotifyApiStatus.ERROR
             }
         }
@@ -242,16 +242,17 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     }
 
     // random subset of items if they have a preview url
-    private fun getRandomSubset(items: List<Items>): List<Items> {
+    private fun getRandomSubset(items: List<PlaylistTracksData>): List<PlaylistTracksData> {
         val shuffled = items.shuffled()
-        val subset = mutableListOf<Items>()
-        val artistsSeen = mutableListOf<String>()
+        val subset = mutableListOf<PlaylistTracksData>()
+        val artistsSeen = mutableListOf<Int>()
         for (item in shuffled) {
-            val artistId = item.track.artists[0].id
+            val artistId = item.artist.id
+//            val artistId = item.track.artists[0].id
 
-            if (!artistsSeen.contains(artistId) && item.track.preview_url != null) {
+            if (!artistsSeen.contains(artistId) && item.preview.isNotEmpty()) {
                 subset.add(item)
-                artistsSeen.add(item.track.artists[0].name)
+                artistsSeen.add(artistId)
             }
 
             if (subset.size == Constants.BEAT_INTRO_NUM_QUESTIONS) {

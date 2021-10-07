@@ -15,7 +15,6 @@ import com.tom.deezergame.LoginActivity
 import com.tom.deezergame.R
 import com.tom.deezergame.databinding.HighLowGameFragment3Binding
 import com.tom.deezergame.models.DzHighLowQuestion
-import com.tom.deezergame.models.HighLowQuestion
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.Utils.glidePreloadImage
 import com.tom.deezergame.utils.Utils.glideShowImage

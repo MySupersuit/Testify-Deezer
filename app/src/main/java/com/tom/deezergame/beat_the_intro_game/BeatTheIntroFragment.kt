@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.tom.deezergame.LoginActivity
 import com.tom.deezergame.R
 import com.tom.deezergame.databinding.BeatTheIntroFragmentBinding
-import com.tom.deezergame.models.BeatIntroQuestion
+import com.tom.deezergame.models.DzBeatIntroQuestion
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.CustomMediaPlayer
 import com.tom.deezergame.utils.Utils.glideShowImagePaletteBtI
@@ -117,7 +117,7 @@ class BeatTheIntroFragment : Fragment() {
 
 
         viewModel.numTracksLoaded.observe(viewLifecycleOwner, Observer { numLoaded ->
-            Timber.d(numLoaded.toString())
+            Timber.d("$numLoaded loaded")
             binding.beatIntroLoadingMessage.text = getString(
                 R.string.loading_prog_message,
                 numLoaded,
@@ -204,7 +204,7 @@ class BeatTheIntroFragment : Fragment() {
         }
     }
 
-    private fun showQuestion(binding: BeatTheIntroFragmentBinding, question: BeatIntroQuestion) {
+    private fun showQuestion(binding: BeatTheIntroFragmentBinding, question: DzBeatIntroQuestion) {
         // Make buttons with no answer not clickable
         val buttons = listOf(
             binding.answer1, binding.answer2,
@@ -281,12 +281,12 @@ class BeatTheIntroFragment : Fragment() {
         }
     }
 
-    private fun showModal(binding: BeatTheIntroFragmentBinding, question: BeatIntroQuestion) {
+    private fun showModal(binding: BeatTheIntroFragmentBinding, question: DzBeatIntroQuestion) {
         disableAnswerButtons(binding)
 
         // glide show image palette BtI
         glideShowImagePaletteBtI(
-            question.correctTrack.album.images,
+            question.correctTrack.getImages(),
             requireContext(),
             binding.modalImage,
             binding.modalCl,
@@ -303,8 +303,8 @@ class BeatTheIntroFragment : Fragment() {
             binding.modalTitle.text = getString(R.string.wrong_frowny)
             binding.modalScoreUpdate.text = question.questionScore.toString()
         }
-        binding.modalArtist.text = question.correctTrack.artists[0].name
-        binding.modalSong.text = question.correctTrack.name
+        binding.modalArtist.text = question.correctTrack.artist.name
+        binding.modalSong.text = question.correctTrack.title_short
 
         binding.modalCv.visibility = View.VISIBLE
     }
