@@ -23,6 +23,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val logOut: LiveData<Boolean>
         get() = _logOut
 
+    private val _infoClick = MutableLiveData<Boolean>()
+    val infoClick: LiveData<Boolean>
+        get() = _infoClick
+
     fun onLogOut() {
         _logOut.value = true
     }
@@ -53,6 +57,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onNavigateToBeatIntro() {
         _navigateToBeatIntro.value = false
+    }
+
+    fun onInfoClick() {
+        _infoClick.value = true
+    }
+
+    fun onInfoEndClick() {
+        _infoClick.value = false
     }
 
 

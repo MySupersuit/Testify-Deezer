@@ -1,10 +1,15 @@
 package com.tom.deezergame.home
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
@@ -82,6 +87,21 @@ class HomeFragment : Fragment() {
                 }
 
             }
+        })
+
+        viewModel.infoClick.observe(viewLifecycleOwner, { click ->
+            val message = SpannableString(getString(R.string.info_content))
+            Linkify.addLinks(message, Linkify.ALL)
+            if (click) {
+                val d = AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
+                    .setTitle("Info")
+                    .setMessage(message)
+                    .setIcon(R.mipmap.testify_deezer)
+                    .show()
+                d.findViewById<TextView>(android.R.id.message).movementMethod = LinkMovementMethod.getInstance()
+                viewModel.onInfoEndClick()
+            }
+
         })
 
         return binding.root

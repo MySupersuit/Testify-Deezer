@@ -64,6 +64,8 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
     private var apiClient: ApiClient = ApiClient()
 
     init {
+        // TODO - reset search view on back button press from game
+        Timber.d("INIT")
         _searchStatus.value = DeezerApiStatus.DONE
         _status.value = SpotifyApiStatus.LOADING
         commonPlaylistFetchStatus = false

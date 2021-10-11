@@ -102,7 +102,8 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
                     if (incorrectAnswers.size == 3) break
 
                     if (otherTrack.title_short != track.title_short &&
-                            !incorrectAnswers.contains(otherTrack)) {
+                        !incorrectAnswers.contains(otherTrack)
+                    ) {
                         incorrectAnswers.add(otherTrack)
                     } else {
                         Timber.d("${otherTrack.title_short} already in or same as answer")
@@ -136,7 +137,10 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
 
     }
 
-    private fun makeQuestion(correctTrack: PlaylistTracksData, otherTracks: List<ArtistTopTracksData>) {
+    private fun makeQuestion(
+        correctTrack: PlaylistTracksData,
+        otherTracks: List<ArtistTopTracksData>
+    ) {
         val incorrectAnswers = otherTracks.map {
             it.title_short
         }
@@ -246,14 +250,13 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     private fun getRandomSubset(items: List<PlaylistTracksData>): List<PlaylistTracksData> {
         val shuffled = items.shuffled()
         val subset = mutableListOf<PlaylistTracksData>()
-        val artistsSeen = mutableListOf<Int>()
+        val songsSeen = mutableListOf<Int>()
         for (item in shuffled) {
-            val artistId = item.artist.id
-//            val artistId = item.track.artists[0].id
+            val songId = item.id
 
-            if (!artistsSeen.contains(artistId) && item.preview.isNotEmpty()) {
+            if (!songsSeen.contains(songId) && item.preview.isNotEmpty()) {
                 subset.add(item)
-                artistsSeen.add(artistId)
+                songsSeen.add(songId)
             }
 
             if (subset.size == Constants.BEAT_INTRO_NUM_QUESTIONS) {

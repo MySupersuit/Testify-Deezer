@@ -3,7 +3,6 @@ package com.tom.deezergame.album_game
 import android.app.Application
 import androidx.lifecycle.*
 import com.tom.deezergame.models.DzAlbumQuestion
-import com.tom.deezergame.models.deezer_models.Album
 import com.tom.deezergame.models.deezer_models.ArtistAlbumData
 import com.tom.deezergame.models.deezer_models.PlaylistTracksData
 import com.tom.deezergame.network.ApiClient
@@ -50,9 +49,13 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     val numWrong: LiveData<Int>
         get() = _numWrong
 
-    private val _loginClick = MutableLiveData<Boolean>()
-    val loginClick: LiveData<Boolean>
-        get() = _loginClick
+    private val _pickAgainClick = MutableLiveData<Boolean>()
+    val pickAgainClick: LiveData<Boolean>
+        get() = _pickAgainClick
+
+    private val _enoughQuestions = MutableLiveData<Boolean>()
+    val enoughQuestions: LiveData<Boolean>
+        get() = _enoughQuestions
 
     private var questionIndex = 0
     private var numQuestions = -1
@@ -68,6 +71,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     private var apiClient: ApiClient = ApiClient()
 
     init {
+        _enoughQuestions.value = true
         _score.value = 0
         _numAlbumsLoaded.value = 0
         runBlocking {
@@ -117,12 +121,12 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         _eventGameFinish.value = false
     }
 
-    fun onLoginClick() {
-        _loginClick.value = true
+    fun onPickAgainClick() {
+        _pickAgainClick.value = true
     }
 
-    fun onLoginClickFinish() {
-        _loginClick.value = false
+    fun onPickAgainFinish() {
+        _pickAgainClick.value = false
     }
 
     private fun removeIfPresent(
@@ -160,7 +164,13 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
             Timber.d("Initial tracks fetched")
 
             // in dzInitialItemsNow
-            if (dzInitialItems.isEmpty()) return@launch
+            if (dzInitialItems.isEmpty()) {
+                return@launch
+            } else if (_enoughQuestions.value == false) {
+                _status.value = SpotifyApiStatus.ERROR
+                _enoughQuestions.value = true
+                return@launch
+            }
 
             for (i in dzInitialItems.indices) {
                 // Get three different albums from that artist for the other answers
@@ -221,7 +231,6 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
 
     // add offset parameter to get random songs from given playlist each time
     // based on playlist length and so on
-
     private fun fetchDzPlaylistTracks(playlist_id: String = NetworkConstants.DZ_POP_ALLSTARS): Job {
         val job = viewModelScope.launch {
             try {
@@ -231,6 +240,9 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
                 dzInitialItems = getRandomSubset(localItems)
                 for (item in dzInitialItems) {
                     Timber.d("${item.artist.name}: ${item.album.title}")
+                }
+                if (dzInitialItems.size != Constants.ALBUM_GAME_NUM_QUESTIONS) {
+                    _enoughQuestions.value = false
                 }
             } catch (e: Exception) {
                 Timber.e(e)
@@ -243,13 +255,15 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     private fun getRandomSubset(items: List<PlaylistTracksData>): List<PlaylistTracksData> {
         val shuffled = items.shuffled()
         val subset = mutableListOf<PlaylistTracksData>()
-        val artistsSeen = mutableListOf<Int>()
+        val albumsSeen = mutableListOf<Int>()
+        // messes up with single artist
+        // redo for seen album?
         for (item in shuffled) {
-            val artistId = item.artist.id
-
-            if (!artistsSeen.contains(artistId)) {
+//            val artistId = item.artist.id
+            val albumId = item.album.id
+            if (!albumsSeen.contains(albumId)) {
                 subset.add(item)
-                artistsSeen.add(artistId)
+                albumsSeen.add(albumId)
             }
 
             if (subset.size == Constants.ALBUM_GAME_NUM_QUESTIONS) {
@@ -280,5 +294,9 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
             }
         }
         return job
+    }
+
+    fun enoughQsHandled() {
+        _enoughQuestions.value = true
     }
 }

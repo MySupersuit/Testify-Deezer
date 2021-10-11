@@ -2,6 +2,8 @@ package com.tom.deezergame.game_utils.playlist_picker
 
 import android.animation.LayoutTransition
 import android.app.Activity
+import android.content.Context
+import android.graphics.Typeface
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,7 +14,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.tom.deezergame.R
@@ -149,6 +153,11 @@ class PlaylistPickerFragment : Fragment() {
 
     private fun setupSearchView() {
         binding.searchView.maxWidth = Integer.MAX_VALUE
+        val searchText = binding.searchView.findViewById<TextView>(R.id.search_src_text)
+        searchText.setTextColor(ContextCompat.getColor(requireContext(), R.color.dz_black))
+//        searchText.typeface = Typeface.createFromAsset(requireContext().assets, "fonts/mabry_deezer_bold.otf")
+        searchText.typeface = ResourcesCompat.getFont(requireContext(), R.font.mabry_deezer_regular)
+
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -167,10 +176,8 @@ class PlaylistPickerFragment : Fragment() {
             }
         })
 
-//        binding.searchView.layoutTransition = LayoutTransition()
-//            .enableTransitionType(LayoutTransition.APPEARING)
 
-        binding.searchView.setOnQueryTextFocusChangeListener { view, b ->
+        binding.searchView.setOnQueryTextFocusChangeListener{ view, b ->
             Timber.d("$b ONQUERYTEXTFOCUSCHANGELISTENER")
             if (!b && binding.searchView.query.isEmpty()) {
                 binding.searchView.isIconified = true
@@ -178,28 +185,13 @@ class PlaylistPickerFragment : Fragment() {
         }
 
         viewModel.showSearchResults.observe(viewLifecycleOwner, { show ->
-            if (show) {
-                viewModel.searchResults.value?.let { adapter.submitPlaylist(it) }
-            } else {
-                viewModel.dzPlaylists.value?.let { adapter.submitPlaylist(it) }
-            }
-        })
+                if (show) {
+                    viewModel.searchResults.value?.let { adapter.submitPlaylist(it) }
+                } else {
+                    viewModel.dzPlaylists.value?.let { adapter.submitPlaylist(it) }
+                }
+            })
 
-
-
-//        viewModel.searchResults.observe(viewLifecycleOwner, { playlists ->
-//            adapter.submitPlaylist(playlists)
-//            binding.playlistTitle.text = "Search Results"
-//        })
-
-//        val searchView = binding.searchView
-//        val searchSrcText : AutoCompleteTextView = searchView.findViewById(R.id.search_src_text)
-//        searchSrcText.setOnFocusChangeListener { view, hasFocus ->
-//            if (!hasFocus) {
-//                val inputMethodManager = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-//                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-//            }
-//        }
     }
 
 }
