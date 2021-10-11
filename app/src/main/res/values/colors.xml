@@ -17,9 +17,11 @@
     <color name="spotify_dark_grey">#282828</color>
 
     <color name="dz_black">#202122</color>
+    <color name="dz_light_black">#23232d</color>
     <color name="dz_white">#FFFFFF</color>
     <color name="dz_red">#ef4f4f</color>
     <color name="dz_dark_blue">#3769c8</color>
     <color name="dz_light_blue">#11a8cc</color>
+    <color name="dz_subtle_grey">#8b8b95</color>
 
 </resources>

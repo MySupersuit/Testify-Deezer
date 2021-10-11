@@ -70,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
+            android:layout_marginHorizontal="10dp"
             app:showPlaylistPicker="@{viewModel.status}">
 
             <TextView
@@ -86,6 +87,7 @@
                 android:id="@+id/search_view"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:background="@drawable/searchview_bg"
                 android:elevation="1dp"
                 android:gravity="end"
                 app:closeIcon="@drawable/x_black"
@@ -93,10 +95,10 @@
                 app:layout_constraintBottom_toBottomOf="@id/playlist_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/playlist_title"
-                app:queryBackground="@color/dz_red"
-                app:queryHint=""
+                app:queryBackground="@drawable/searchview_bg"
                 app:searchHintIcon="@drawable/search_black"
-                app:searchIcon="@drawable/search_white" />
+                app:searchIcon="@drawable/search_white"
+                app:submitBackground="@drawable/searchview_bg" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/search_loading_cl"
@@ -109,7 +111,7 @@
                     android:id="@+id/swipe_refresh"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="0dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/dz_black"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -154,27 +156,27 @@
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:lineSpacingExtra="10dp"
-                        android:text="Loading results..."
+                        android:text="@string/loading_results"
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/search_progress_bar"
                         tools:text="Loading results..." />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/loading_message_extra"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginHorizontal="30dp"-->
-<!--                        android:layout_marginTop="10dp"-->
-<!--                        android:gravity="center"-->
-<!--                        android:lineSpacingExtra="10dp"-->
-<!--                        android:text="@string/may_take_time"-->
-<!--                        android:textSize="15sp"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/loading_message"-->
-<!--                        tools:text="(This may take a few seconds if it\'s your first time)" />-->
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/loading_message_extra"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginHorizontal="30dp"-->
+                    <!--                        android:layout_marginTop="10dp"-->
+                    <!--                        android:gravity="center"-->
+                    <!--                        android:lineSpacingExtra="10dp"-->
+                    <!--                        android:text="@string/may_take_time"-->
+                    <!--                        android:textSize="15sp"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@id/loading_message"-->
+                    <!--                        tools:text="(This may take a few seconds if it\'s your first time)" />-->
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

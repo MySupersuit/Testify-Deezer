@@ -32,4 +32,9 @@
     <string name="beat_intro_leaderboard">CgkIsp2L0KYfEAIQAw</string>
     <string name="high_low_leaderboard">CgkIsp2L0KYfEAIQAg</string>
     <string name="leaderboards">Leaderboard</string>
+
+    <string name="info_content">Made with Deezer and LastFM APIs\n\nSource: https://github.com/MySupersuit/DeezerGame</string>
+    <string name="search_hint">Search playlist…</string>
+    <string name="loading_results">Loading results…</string>
+    <string name="pick_again">Pick Again</string>
 </resources>

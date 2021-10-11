@@ -30,6 +30,9 @@
             app:destination="@id/gameScoreFragment"
             app:popUpTo="@id/albumGameFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_albumGameFragment_to_playlistPickerFragment"
+            app:destination="@id/playlistPickerFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameScoreFragment"

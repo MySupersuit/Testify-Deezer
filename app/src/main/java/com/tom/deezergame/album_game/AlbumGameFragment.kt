@@ -1,16 +1,17 @@
 package com.tom.deezergame.album_game
 
-import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.tom.deezergame.LoginActivity
+import com.google.android.material.snackbar.Snackbar
 import com.tom.deezergame.R
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.Utils.glidePreloadImage
@@ -55,7 +56,7 @@ class AlbumGameFragment : Fragment() {
         })
 
         viewModel.nextQuestion.observe(viewLifecycleOwner, Observer { nextQuestion ->
-            if (nextQuestion.correctAnswer != "" ) {
+            if (nextQuestion.correctAnswer != "") {
                 Timber.d("preloading ${nextQuestion.correctAnswer}")
                 preloadImage(nextQuestion.images)
             }
@@ -85,13 +86,24 @@ class AlbumGameFragment : Fragment() {
             )
         })
 
-        viewModel.loginClick.observe(viewLifecycleOwner, Observer { login ->
+        viewModel.pickAgainClick.observe(viewLifecycleOwner, Observer { login ->
             if (login) {
-                val intent = Intent(requireActivity(), LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-                requireActivity().finish()
-                viewModel.onLoginClickFinish()
+//                val intent = Intent(requireActivity(), LoginActivity::class.java)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                startActivity(intent)
+//                requireActivity().finish()
+//                viewModel.onLoginClickFinish()
+                NavHostFragment.findNavController(this).navigate(
+                    AlbumGameFragmentDirections.actionAlbumGameFragmentToPlaylistPickerFragment(
+                        gameType = Constants.ALBUM_GAME_TYPE
+                    )
+                )
+            }
+        })
+
+        viewModel.enoughQuestions.observe(viewLifecycleOwner, { enoughQs ->
+            if (!enoughQs) {
+                showErrorSnackbar(binding)
             }
         })
 
@@ -134,5 +146,21 @@ class AlbumGameFragment : Fragment() {
         }
     }
 
+    private fun showErrorSnackbar(binding: AlbumGameFragmentBinding) {
+        val red = ContextCompat.getColor(requireContext(), R.color.dz_red)
+        val white = ContextCompat.getColor(requireContext(), R.color.spotify_white)
+        val snackbar = Snackbar.make(
+            binding.albumMain,
+            "Not enough distinct albums in playlist",
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction("OK") {
+        }
+        snackbar.setActionTextColor(white)
+        for (view in snackbar.view.allViews) {
+            view.setBackgroundColor(red)
+        }
+        snackbar.show()
+    }
 
 }

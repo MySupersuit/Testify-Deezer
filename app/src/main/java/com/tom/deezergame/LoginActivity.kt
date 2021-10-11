@@ -2,7 +2,6 @@ package com.tom.deezergame
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -45,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
             signInSilently()
         }
 
-//        toMainScreen()
+        toMainScreen()
     }
 
     override fun onStart() {
@@ -161,7 +160,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showErrorSnackbar() {
-        val green = ContextCompat.getColor(applicationContext, R.color.spotify_green)
+        val red = ContextCompat.getColor(applicationContext, R.color.dz_red)
         val white = ContextCompat.getColor(applicationContext, R.color.spotify_white)
         val snackbar = Snackbar.make(
             binding.coordinatorLayout,
@@ -172,7 +171,7 @@ class LoginActivity : AppCompatActivity() {
         }
         snackbar.setActionTextColor(white)
         for (view in snackbar.view.allViews) {
-            view.setBackgroundColor(green)
+            view.setBackgroundColor(red)
         }
         snackbar.show()
     }
