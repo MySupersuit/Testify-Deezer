@@ -35,21 +35,17 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         sessionManager = SessionManager(this)
         if (BuildConfig.DEBUG) {
+            Timber.uprootAll()
             Timber.plant(Timber.DebugTree())
         }
-
-
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.loginButton.setOnClickListener {
             showLoadingCircle(binding)
             signInSilently()
-            loginSpotify()
         }
 
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+//        toMainScreen()
     }
 
     override fun onStart() {
@@ -73,6 +69,7 @@ class LoginActivity : AppCompatActivity() {
         if (account != null) {
             val signedInAccount = account
             Timber.d("logged in with ${signedInAccount.displayName ?: signedInAccount.account?.name}")
+            toMainScreen()
         } else { // not signed in before
             val signInClient = GoogleSignIn.getClient(this, signInOptions)
             signInClient
@@ -80,6 +77,8 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val signedInAccount = task.result
+                        Timber.d("silently signed in with ${signedInAccount.displayName ?: signedInAccount.account?.name}")
+                        toMainScreen()
                     } else {
                         loginGoogle()
                     }
@@ -92,7 +91,11 @@ class LoginActivity : AppCompatActivity() {
         val signInOptions = GoogleSignInOptions.Builder(
             GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN
         )
-            .requestIdToken("551033295127-us4lunebnfgpso16edjor3eiir7571u3.apps.googleusercontent.com")
+                // DONT NEED ANY REQUEST ID TOKEN (WITH GOOGLE APP SIGNING?)
+//            .requestIdToken("551033295127-us4lunebnfgpso16edjor3eiir7571u3.apps.googleusercontent.com")
+//            .requestIdToken("1075520392882-5p2c66j7elqgep7ajh6mfrbr8229gl2t.apps.googleusercontent.com") // Release
+//            .requestIdToken("1075520392882-c50fvhl5b7u3afksq91o9plpc9vvk2eh.apps.googleusercontent.com") // Debug
+//            .requestIdToken("1075520392882-2be97iuqtsvn094cqfac7de4emtrv7ie.apps.googleusercontent.com") // Play signing
             .requestEmail()
             .requestProfile()
             .build()
@@ -130,12 +133,10 @@ class LoginActivity : AppCompatActivity() {
                     Timber.d("Login Success. Token: ${response.accessToken}")
                     sessionManager.saveAuthToken(response.accessToken)
 
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    toMainScreen()
                 }
                 AuthorizationResponse.Type.ERROR -> {
-                    Timber.e( "Auth error: " + response.error)
+                    Timber.e("Auth error: " + response.error)
                     showErrorSnackbar()
                 }
                 else -> Timber.d("Auth result: " + response.type)
@@ -145,10 +146,18 @@ class LoginActivity : AppCompatActivity() {
             try {
                 val account = task.getResult(ApiException::class.java)
                 Timber.d("auth with google ${account.displayName}")
+                toMainScreen()
             } catch (e: ApiException) {
-                Timber.w("google sign in failed", e)
+                Timber.w("google sign in failed")
+                Timber.w(e)
             }
         }
+    }
+
+    private fun toMainScreen() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun showErrorSnackbar() {

@@ -80,7 +80,7 @@ object Utils {
             binding.songAns1,
             binding.divAns1,
             binding.bground1,
-            intArrayOf(-1, ContextCompat.getColor(context, R.color.spotify_black))
+            intArrayOf(-1, ContextCompat.getColor(context, R.color.dz_black))
 
         )
     }
@@ -95,7 +95,7 @@ object Utils {
             binding.songAns2,
             binding.divAns2,
             binding.bground2,
-            intArrayOf(ContextCompat.getColor(context, R.color.spotify_black), -1)
+            intArrayOf(ContextCompat.getColor(context, R.color.dz_black), -1)
 
         )
     }
@@ -186,7 +186,7 @@ object Utils {
     ) {
         val bitmap = resource.toBitmap()
         val builder = Palette.Builder(bitmap)
-        val black = ContextCompat.getColor(context, R.color.spotify_black)
+        val black = ContextCompat.getColor(context, R.color.dz_black)
         val white = ContextCompat.getColor(context, R.color.spotify_white)
         val grey = ContextCompat.getColor(context, R.color.spotify_grey)
         val index = if (gdColors[0] == -1) 0 else 1
@@ -231,6 +231,13 @@ object Utils {
                 palette?.dominantSwatch?.bodyTextColor ?: white
             )
         }
+    }
+    
+    private fun modalAnim(
+        resource: Drawable
+    ) {
+        // TODO
+
     }
 
     private fun reloadHL(
@@ -360,7 +367,7 @@ object Utils {
     ) {
         val bitmap = resource.toBitmap()
         val builder = Palette.Builder(bitmap)
-        val black = ContextCompat.getColor(context, R.color.spotify_black)
+        val black = ContextCompat.getColor(context, R.color.dz_black)
         val white = ContextCompat.getColor(context, R.color.spotify_white)
         val green = ContextCompat.getColor(context, R.color.spotify_green)
         builder.generate { palette ->
@@ -514,7 +521,7 @@ object Utils {
     ) {
         val bitmap = resource.toBitmap()
         val builder = Palette.Builder(bitmap)
-        val black = ContextCompat.getColor(context, R.color.spotify_black)
+        val black = ContextCompat.getColor(context, R.color.dz_black)
         val white = ContextCompat.getColor(context, R.color.spotify_white)
         var toColor: Int
         builder.generate { palette ->
@@ -583,6 +590,45 @@ object Utils {
                 }
             })
             .into(imageView)
+    }
+
+    // 
+    fun glideShowCorrectImageModal(
+        images: List<String>,
+        context: Context,
+        binding: HighLowGameFragment3Binding
+    ) {
+        if (images[0].isBlank()) {
+            Glide.with(context).load(R.drawable.music_note_icon).into(binding.modalCorrectImage)
+            return
+        }
+        
+        val imgUri = urlToUri(images[0])
+        Glide.with(context)
+            .load(imgUri)
+            .listener(object: RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                    TODO("Not yet implemented")
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+//                    if (resource != null) modalAnim()
+                    return false
+                }
+            })
+            .into(binding.modalCorrectImage)
     }
 
     fun glideShowImage(

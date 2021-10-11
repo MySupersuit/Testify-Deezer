@@ -27,7 +27,7 @@
                 android:id="@+id/loading_progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminateTint="@color/spotify_green"
+                android:indeterminateTint="@color/dz_red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
                 android:paddingHorizontal="50dp"
                 android:paddingVertical="10dp"
                 android:text="@string/login"
-                android:textColor="@color/spotify_white"
+                android:textColor="@color/dz_white"
                 android:textSize="20sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -86,11 +86,11 @@
                     android:layout_marginTop="30dp"
                     android:max="100"
                     android:progress="0"
-                    app:indicatorColor="@color/spotify_green"
+                    app:indicatorColor="@color/dz_red"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:trackColor="@color/spotify_white"
+                    app:trackColor="@color/dz_white"
                     app:trackCornerRadius="20dp"
                     app:trackThickness="25dp" />
 
@@ -112,7 +112,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/score_title"
-                            android:textSize="20sp"
+                            android:textSize="25sp"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -120,9 +120,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:textColor="@color/spotify_white"
+                            android:textColor="@color/dz_white"
                             android:maxLines="1"
-                            android:textSize="60sp"
+                            android:textSize="70sp"
                             app:layout_constraintTop_toBottomOf="@id/score_title"
                             app:layout_constraintBottom_toBottomOf="parent"
                             tools:text="1234" />
@@ -226,7 +226,7 @@
                 android:id="@+id/modal_cl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/spotify_black">
+                android:background="@color/dz_black">
 
                 <TextView
                     android:id="@+id/modal_title"
@@ -235,7 +235,7 @@
                     android:layout_marginVertical="20dp"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:textColor="@color/spotify_white"
+                    android:textColor="@color/dz_white"
                     android:textSize="50sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -300,7 +300,7 @@
                             android:background="@android:color/transparent"
                             android:gravity="center"
                             android:maxLines="2"
-                            android:textColor="@color/spotify_white"
+                            android:textColor="@color/dz_white"
                             android:textSize="25sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             tools:text="Artist" />
@@ -316,10 +316,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/horizontal_margin"
                     android:layout_marginBottom="15dp"
-                    android:backgroundTint="@color/spotify_black"
+                    android:backgroundTint="@color/dz_black"
                     android:onClick="@{() -> viewModel.onNextModalClick()}"
                     android:text="@string/next"
-                    android:textColor="@color/spotify_white"
+                    android:textColor="@color/dz_white"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

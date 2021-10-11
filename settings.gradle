@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "SpotifyGameV3"
+rootProject.name = "DeezerGame"

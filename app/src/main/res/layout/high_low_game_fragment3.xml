@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:textColor="@color/spotify_white"
-                    android:textSize="25sp"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -129,7 +129,7 @@
                             android:id="@+id/cl_ans1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/spotify_green">
+                            android:background="@color/dz_red">
 
                             <ImageView
                                 android:id="@+id/image_ans1"
@@ -206,18 +206,18 @@
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:background="@android:color/transparent"
                             android:gravity="center"
                             android:text="Which has more streams?"
                             android:textColor="?android:attr/textColor"
-                            android:textSize="30sp"
-                            android:layout_marginHorizontal="30dp"
+                            app:autoSizeTextType="uniform"
+                            android:maxLines="1"
+                            android:layout_marginHorizontal="35dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -234,7 +234,7 @@
                             android:id="@+id/cl_ans2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/spotify_green">
+                            android:background="@color/dz_red">
 
                             <ImageView
                                 android:id="@+id/image_ans2"
@@ -317,11 +317,12 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginVertical="55dp"
             android:background="@drawable/layout_bg"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/modal_title"
                 android:layout_width="0dp"
+                android:background="@android:color/transparent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
                 android:gravity="center"
@@ -337,6 +338,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="vertical"
+                android:background="@color/dz_black"
                 app:layout_constraintBottom_toTopOf="@id/modal_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -407,7 +409,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:text="300234 plays" />
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

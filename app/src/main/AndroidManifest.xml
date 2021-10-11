@@ -11,21 +11,31 @@
         android:roundIcon="@mipmap/ic_testify"
         android:supportsRtl="true"
         android:theme="@style/Theme.DeezerGame">
-        <activity android:name="com.tom.deezergame.LoginActivity">
+<!--        <activity android:name=".SplashScreenActivity"-->
+<!--            android:theme="@style/SplashTheme">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+
+<!--        </activity>-->
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.tom.deezergame.MainActivity">
+        <activity android:name=".MainActivity">
 
         </activity>
 
-        <meta-data android:name="com.google.android.gms.games.APP_ID"
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/app_id" />
-        <meta-data android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
