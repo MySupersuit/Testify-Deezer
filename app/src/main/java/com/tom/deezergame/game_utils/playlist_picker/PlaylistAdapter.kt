@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class PlaylistAdapter(val clickListener: PlaylistListener) :
     ListAdapter<UserPlaylistData, RecyclerView.ViewHolder>(PlaylistDiffCallback()) {
@@ -46,7 +47,14 @@ class PlaylistAdapter(val clickListener: PlaylistListener) :
             binding.playlist = item
             binding.executePendingBindings()
             binding.clickListener = clickListener
-            binding.playlistFans.text = this.itemView.context.getString(R.string.fans, String.format("%,d", item.fans))
+            if (item.fans == 0) {
+                binding.playlistFans.text = this.itemView.context.getString(
+                    R.string.nb_tracks, item.nb_tracks
+                )
+            } else {
+                binding.playlistFans.text = this.itemView.context.getString(R.string.fans, String.format("%,d", item.fans))
+
+            }
         }
 
         companion object {

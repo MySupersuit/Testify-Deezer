@@ -8,6 +8,7 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.tom.deezergame.album_game.DeezerApiStatus
 import com.tom.deezergame.utils.Utils
 import com.tom.deezergame.album_game.SpotifyApiStatus
 import com.tom.deezergame.models.spotify_models.Images
@@ -130,6 +131,23 @@ fun showPlaylistPicker(constraintLayout: ConstraintLayout, status: SpotifyApiSta
         }
         SpotifyApiStatus.DONE -> {
             constraintLayout.visibility = View.VISIBLE
+        }
+    }
+}
+
+@BindingAdapter("deezerSearchProgress")
+fun bindProgress(cl :ConstraintLayout, status: DeezerApiStatus) {
+    when (status) {
+        DeezerApiStatus.LOADING -> {
+            cl.visibility = View.VISIBLE
+        }
+        DeezerApiStatus.DONE -> {
+            cl.visibility = View.GONE
+        }
+        DeezerApiStatus.ERROR -> {
+            cl.visibility = View.VISIBLE
+            cl.findViewById<ProgressBar>(R.id.search_progress_bar).visibility = View.INVISIBLE
+            cl.findViewById<TextView>(R.id.search_loading_message).text = "Error Loading"
         }
     }
 }

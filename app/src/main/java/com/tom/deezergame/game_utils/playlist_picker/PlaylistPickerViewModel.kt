@@ -2,6 +2,7 @@ package com.tom.deezergame.game_utils.playlist_picker
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.tom.deezergame.album_game.DeezerApiStatus
 import com.tom.deezergame.album_game.SpotifyApiStatus
 import com.tom.deezergame.database.getDatabase
 import com.tom.deezergame.database.getDzDatabase
@@ -15,15 +16,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import java.io.IOException
+import java.lang.Exception
 
 class PlaylistPickerViewModel(application: Application, gameType: Int) :
     AndroidViewModel(application) {
 
-    private val TAG = "PlaylistPickerViewModel"
-
     private val _status = MutableLiveData<SpotifyApiStatus>()
     val status: LiveData<SpotifyApiStatus>
         get() = _status
+
+    private val _searchStatus = MutableLiveData<DeezerApiStatus>()
+    val searchStatus: LiveData<DeezerApiStatus>
+        get() = _searchStatus
 
     private var commonPlaylistFetchStatus = false
 
@@ -48,11 +52,19 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
     val finishDataFetch: LiveData<Boolean>
         get() = _finishDataFetch
 
+    private val _searchResults = MutableLiveData<List<UserPlaylistData>>()
+    val searchResults : LiveData<List<UserPlaylistData>>
+        get() = _searchResults
+
+    private val _showSearchResults = MutableLiveData<Boolean>()
+    val showSearchResults: LiveData<Boolean>
+        get() = _showSearchResults
 
     private lateinit var dzObserver: Observer<List<UserPlaylistData>>
     private var apiClient: ApiClient = ApiClient()
 
     init {
+        _searchStatus.value = DeezerApiStatus.DONE
         _status.value = SpotifyApiStatus.LOADING
         commonPlaylistFetchStatus = false
         _gameType.value = gameType
@@ -62,8 +74,11 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
         }
     }
 
+    fun searchTextChange(query : String) {
+        performSearch(query)
+    }
+
     fun forceRefresh() {
-//        _status.value = SpotifyApiStatus.LOADING
         commonPlaylistFetchStatus = false
         runBlocking {
             setUpForeverObservers()
@@ -74,6 +89,10 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
 
     private fun setUpForeverObservers() {
         setUpUserObserver()
+    }
+
+    fun showSearchResults(b : Boolean) {
+        _showSearchResults.value = b
     }
 
     private fun setUpUserObserver() {
@@ -96,6 +115,31 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
 
     private fun fetchData() {
 //        fetchUserPlaylists()
+    }
+
+    private fun performSearch(query: String) {
+        viewModelScope.launch {
+            Timber.d("searching for $query")
+            _searchStatus.value = DeezerApiStatus.LOADING
+            val job = deezerSearch(query)
+            job.join()
+
+            showSearchResults(true)
+            _searchStatus.value = DeezerApiStatus.DONE
+        }
+    }
+
+    private fun deezerSearch(query: String) : Job {
+        val job = viewModelScope.launch {
+            try {
+                val playlists = apiClient.getDeezerApiService(getApplication()).searchPlaylist(query)
+                _searchResults.value = playlists.data
+            } catch (e: Exception) {
+                _searchStatus.value = DeezerApiStatus.ERROR
+                Timber.e("search exception", e)
+            }
+        }
+        return job
     }
 
     private fun fetchUserPlaylists() {

@@ -7,6 +7,7 @@ import com.tom.deezergame.models.deezer_models.DeezerUserPlaylists
 import com.tom.deezergame.network.NetworkConstants
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface DeezerApiService {
     @GET("playlist/{playlist_id}/tracks?${NetworkConstants.DZ_PARAMS}")
@@ -28,4 +29,9 @@ interface DeezerApiService {
     suspend fun getArtistTopTracks(
         @Path(value="artist_id") artist_id: String
     ): DeezerArtistTopTracks
+
+    @GET("search/playlist?limit=25")
+    suspend fun searchPlaylist(
+        @Query(value="q") query: String
+    ): DeezerUserPlaylists
 }
