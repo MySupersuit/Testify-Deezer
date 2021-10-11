@@ -82,41 +82,115 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Your Playlists" />
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh"
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:elevation="1dp"
+                android:gravity="end"
+                app:closeIcon="@drawable/x_black"
+                app:iconifiedByDefault="true"
+                app:layout_constraintBottom_toBottomOf="@id/playlist_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/playlist_title"
+                app:queryBackground="@color/dz_red"
+                app:queryHint=""
+                app:searchHintIcon="@drawable/search_black"
+                app:searchIcon="@drawable/search_white" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/search_loading_cl"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/dz_black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/playlist_title">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/playlist_rv"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_refresh"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/dz_black"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/playlist_item" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/playlist_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/dz_black"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/playlist_item" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:backgroundTint="@color/dz_red"
-                android:onClick="@{() -> viewModel.fabClick()}"
-                android:src="@drawable/ic_baseline_swap_horiz_24"
-                app:borderWidth="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:deezerSearchProgress="@{viewModel.searchStatus}">
+
+                    <ProgressBar
+                        android:id="@+id/search_progress_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:indeterminateTint="@color/dz_red"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/search_loading_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="30dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="10dp"
+                        android:text="Loading results..."
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/search_progress_bar"
+                        tools:text="Loading results..." />
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/loading_message_extra"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="30dp"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:lineSpacingExtra="10dp"-->
+<!--                        android:text="@string/may_take_time"-->
+<!--                        android:textSize="15sp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/loading_message"-->
+<!--                        tools:text="(This may take a few seconds if it\'s your first time)" />-->
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+            <!--                android:id="@+id/fab_switch"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_margin="16dp"-->
+            <!--                android:backgroundTint="@color/dz_red"-->
+            <!--                android:onClick="@{() -> viewModel.fabClick()}"-->
+            <!--                android:src="@drawable/ic_baseline_swap_horiz_24"-->
+            <!--                app:borderWidth="0dp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,7 @@ import kotlin.collections.HashMap
 import kotlin.math.min
 
 enum class SpotifyApiStatus { LOADING, ERROR, DONE }
+enum class DeezerApiStatus { LOADING, ERROR, DONE }
 
 class AlbumGameViewModel(application: Application, playlist_id: String) :
     AndroidViewModel(application) {
@@ -213,7 +214,8 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         }
         val imagesUrls = correctAlbumTrack.getImages()
         for (url in imagesUrls) Timber.d("url: $url")
-        val question = DzAlbumQuestion(correctAlbumTrack.getImages(), correctAlbumTitle, incorrectAnswers)
+        val question =
+            DzAlbumQuestion(correctAlbumTrack.getImages(), correctAlbumTitle, incorrectAnswers)
         questions.add(question)
     }
 

@@ -1,11 +1,17 @@
 package com.tom.deezergame.game_utils.playlist_picker
 
+import android.animation.LayoutTransition
+import android.app.Activity
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.AutoCompleteTextView
+import android.widget.ImageView
+import android.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
@@ -25,7 +31,7 @@ class PlaylistPickerFragment : Fragment() {
 
     private lateinit var binding: PlaylistPickerFragmentBinding
     private lateinit var adapter: PlaylistAdapter
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +47,8 @@ class PlaylistPickerFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        setupSearchView()
+
 
         adapter = PlaylistAdapter(PlaylistListener { playlistId ->
             // navigate to game fragment
@@ -126,15 +134,72 @@ class PlaylistPickerFragment : Fragment() {
     private fun setupSwipeRefresh(binding: PlaylistPickerFragmentBinding) {
         val swipeContainer = binding.swipeRefresh
         swipeContainer.setOnRefreshListener {
-            viewModel.forceRefresh()
+            // Only refresh when in top playlists mode
+            if (viewModel.showSearchResults.value == false) viewModel.forceRefresh()
+            else swipeContainer.isRefreshing = false
         }
         swipeContainer.setColorSchemeColors(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.spotify_green
+                R.color.dz_red
             )
         )
 
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.maxWidth = Integer.MAX_VALUE
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                if (p0 != null) {
+                    viewModel.searchTextChange(p0)
+                }
+                return false
+            }
+
+            // Show playlists when query is set back to null
+            override fun onQueryTextChange(p0: String?): Boolean {
+                if (p0 != null && p0.isBlank()) {
+                    viewModel.showSearchResults(false)
+                }
+                return false
+            }
+        })
+
+//        binding.searchView.layoutTransition = LayoutTransition()
+//            .enableTransitionType(LayoutTransition.APPEARING)
+
+        binding.searchView.setOnQueryTextFocusChangeListener { view, b ->
+            Timber.d("$b ONQUERYTEXTFOCUSCHANGELISTENER")
+            if (!b && binding.searchView.query.isEmpty()) {
+                binding.searchView.isIconified = true
+            }
+        }
+
+        viewModel.showSearchResults.observe(viewLifecycleOwner, { show ->
+            if (show) {
+                viewModel.searchResults.value?.let { adapter.submitPlaylist(it) }
+            } else {
+                viewModel.dzPlaylists.value?.let { adapter.submitPlaylist(it) }
+            }
+        })
+
+
+
+//        viewModel.searchResults.observe(viewLifecycleOwner, { playlists ->
+//            adapter.submitPlaylist(playlists)
+//            binding.playlistTitle.text = "Search Results"
+//        })
+
+//        val searchView = binding.searchView
+//        val searchSrcText : AutoCompleteTextView = searchView.findViewById(R.id.search_src_text)
+//        searchSrcText.setOnFocusChangeListener { view, hasFocus ->
+//            if (!hasFocus) {
+//                val inputMethodManager = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+//                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+//            }
+//        }
     }
 
 }
