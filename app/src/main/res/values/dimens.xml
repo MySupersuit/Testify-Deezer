@@ -2,6 +2,6 @@
 <resources>
     <dimen name="horizontal_margin">30dp</dimen>
     <dimen name="choose_game_button_text_size">20sp</dimen>
-    <dimen name="game_text_size">18sp</dimen>
+    <dimen name="game_text_size">20sp</dimen>
     <dimen name="game_button_margin">20dp</dimen>
 </resources>

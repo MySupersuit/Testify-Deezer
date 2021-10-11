@@ -2,35 +2,35 @@
     <!-- Base application theme. -->
     <style name="Theme.DeezerGame" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/spotify_black</item>
-        <item name="colorPrimaryVariant">@color/spotify_green</item>
+        <item name="colorPrimary">@color/dz_black</item>
+        <item name="colorPrimaryVariant">@color/dz_red</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/spotify_dark_grey</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/dz_black</item>
         <!-- Customize your theme here. -->
-        <item name="android:background">@color/spotify_black</item>
-        <item name="android:textColor">@color/spotify_white</item>
-        <item name="android:textViewStyle">@style/GothamTextViewStyle</item>
+        <item name="android:background">@color/dz_black</item>
+        <item name="android:textColor">@color/dz_white</item>
+        <item name="android:textViewStyle">@style/MabryTextViewStyle</item>
 
-        <item name="buttonStyle">@style/GothamButtonStyle</item>
-
+        <item name="buttonStyle">@style/MabryButtonStyle</item>
     </style>
 
 
-    <style name="GothamTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/gotham_medium</item>
+    <style name="MabryTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/mabry_deezer_bold</item>
     </style>
 
-    <style name="GothamButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:fontFamily">@font/gotham_medium</item>
+    <style name="MabryButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:fontFamily">@font/mabry_deezer_bold</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:background">@drawable/rounded_corners</item>
     </style>
 
-
-    <!--    <style name="MySnackBarTVStyle" parent="Widget.MaterialComponents.Snackbar.TextView">-->
-    <!--        <item name="android:background">@color/spotify_green</item>-->
-    <!--    </style>-->
-
+    <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="colorPrimary">@color/dz_black</item>
+        <item name="colorPrimaryVariant">@color/dz_red</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
 
 </resources>

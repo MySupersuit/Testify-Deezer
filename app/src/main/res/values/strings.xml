@@ -9,7 +9,7 @@
     <string name="num_streams">%1$s plays</string>
     <string name="buffering">Buffering…</string>
     <string name="login">Login</string>
-    <string name="login_message">How well do you know your Spotify?</string>
+    <string name="login_message">How well do you know your music?</string>
     <string name="choose_a_game">Choose a game</string>
     <string name="next">Next</string>
     <string name="score_title">Score:</string>
@@ -19,15 +19,16 @@
     <string name="loading_playlists">Loading playlists…</string>
     <string name="may_take_time">(This may take a few seconds if it\'s your first time)</string>
     <string name="logging_in_message">Logging in…</string>
-    <string name="app_id">551033295127</string>
+    <string name="app_id">1075520392882</string>
     <string name="log_out">Log Out</string>
     <string name="submit_score">Submit Score</string>
     <string name="go_home">Go Home</string>
     <string name="play_again">Play Again</string>
-    <string name="fans">%1$d fans</string>
+    <string name="fans">%1$s fans</string>
 
-    <string name="album_leaderboard">CgkIl6KT4YQQEAIQAQ</string>
-    <string name="beat_intro_leaderboard">CgkIl6KT4YQQEAIQAg</string>
-    <string name="high_low_leaderboard">CgkIl6KT4YQQEAIQAw</string>
+    <!--    <string name="album_leaderboard">CgkIl6KT4YQQEAIQAQ</string>-->
+    <string name="album_leaderboard">CgkIsp2L0KYfEAIQAQ</string>
+    <string name="beat_intro_leaderboard">CgkIsp2L0KYfEAIQAw</string>
+    <string name="high_low_leaderboard">CgkIsp2L0KYfEAIQAg</string>
     <string name="leaderboards">Leaderboard</string>
 </resources>

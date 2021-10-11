@@ -101,10 +101,11 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
                 for (otherTrack in otherTopTracks!!) {
                     if (incorrectAnswers.size == 3) break
 
-                    if (otherTrack.title_short != track.title_short) {
+                    if (otherTrack.title_short != track.title_short &&
+                            !incorrectAnswers.contains(otherTrack)) {
                         incorrectAnswers.add(otherTrack)
                     } else {
-                        Timber.d("same ${otherTrack.title_short} == ${track.title_short}")
+                        Timber.d("${otherTrack.title_short} already in or same as answer")
                     }
                 }
                 Timber.d("correct track: ${track.title_short}")

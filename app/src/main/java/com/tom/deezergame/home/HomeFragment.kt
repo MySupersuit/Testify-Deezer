@@ -81,7 +81,6 @@ class HomeFragment : Fragment() {
                     startActivity(intent)
                 }
 
-                AuthorizationClient.clearCookies(requireActivity())
             }
         })
 

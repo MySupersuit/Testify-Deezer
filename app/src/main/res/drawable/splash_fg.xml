@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:drawable="@drawable/testify_logo"
+    android:gravity="center"
+    android:right="100dp"
+    android:left="100dp"/>
+</layer-list>

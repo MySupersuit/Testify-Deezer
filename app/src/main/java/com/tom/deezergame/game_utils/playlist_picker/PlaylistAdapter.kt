@@ -2,9 +2,11 @@ package com.tom.deezergame.game_utils.playlist_picker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.tom.deezergame.R
 import com.tom.deezergame.databinding.PlaylistItemBinding
 import com.tom.deezergame.models.deezer_models.UserPlaylistData
 import com.tom.deezergame.models.spotify_models.SimplePlaylist
@@ -44,6 +46,7 @@ class PlaylistAdapter(val clickListener: PlaylistListener) :
             binding.playlist = item
             binding.executePendingBindings()
             binding.clickListener = clickListener
+            binding.playlistFans.text = this.itemView.context.getString(R.string.fans, String.format("%,d", item.fans))
         }
 
         companion object {

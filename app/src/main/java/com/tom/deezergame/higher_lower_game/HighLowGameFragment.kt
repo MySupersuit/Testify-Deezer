@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.bumptech.glide.Glide
 import com.tom.deezergame.LoginActivity
 import com.tom.deezergame.R
 import com.tom.deezergame.databinding.HighLowGameFragment3Binding
@@ -20,6 +21,7 @@ import com.tom.deezergame.utils.Utils.glidePreloadImage
 import com.tom.deezergame.utils.Utils.glideShowImage
 import com.tom.deezergame.utils.Utils.hlShowImage1
 import com.tom.deezergame.utils.Utils.hlShowImage2
+import timber.log.Timber
 
 class HighLowGameFragment : Fragment() {
 
@@ -43,6 +45,7 @@ class HighLowGameFragment : Fragment() {
             )
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        binding.modalCl.visibility = View.GONE
 
         val black = ContextCompat.getColor(requireContext(), R.color.spotify_black)
 
@@ -57,12 +60,18 @@ class HighLowGameFragment : Fragment() {
 
         // TODO grab artist images from API call
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer { question ->
+            Timber.d("curr question")
             showQuestion(binding, question)
         })
 
         // TODO try cache all images when loading??
         viewModel.nextQuestion.observe(viewLifecycleOwner, Observer { nextQuestion ->
+            Timber.d("next question")
             if (nextQuestion != null) {
+//                Glide.with(requireContext()).clear(binding.modalCorrectImage)
+//                Glide.with(requireContext()).clear(binding.modalWrongImage)
+//                Glide.with(requireContext()).clear(binding.imageAns1)
+//                Glide.with(requireContext()).clear(binding.imageAns2)
                 glidePreloadImage(nextQuestion.track1.getImages(), requireContext())
                 glidePreloadImage(nextQuestion.track2.getImages(), requireContext())
             }
@@ -120,14 +129,16 @@ class HighLowGameFragment : Fragment() {
 
     private fun showModal(binding: HighLowGameFragment3Binding, question: DzHighLowQuestion) {
         disableAnswerButtons(binding)
-        binding.modalTitle.text = if (question.correct == true) "Correct :)" else "Wrong :("
+        binding.modalTitle.text = if (question.correct == true) "Correct!" else "Wrong!"
 
         val correctTrack =
             if (question.track1.playCount > question.track2.playCount) question.track1 else question.track2
         val wrongTrack =
             if (question.track1.playCount > question.track2.playCount) question.track2 else question.track1
 
+
         glideShowImage(correctTrack.getImages(), requireContext(), binding.modalCorrectImage)
+//        glideShowImageModal(correctTrack.getImages(), requireContext(), binding)
         binding.modalCorrectText.text =
             getString(R.string.num_streams, String.format("%,d", correctTrack.playCount))
 

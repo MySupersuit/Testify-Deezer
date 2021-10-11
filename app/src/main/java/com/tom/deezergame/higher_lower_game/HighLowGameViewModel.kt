@@ -81,9 +81,9 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     }
 
     private fun setQuestion() {
-        _currentQuestion.value = dzQuestions[questionIndex]
         if (questionIndex + 1 < numQuestions) _nextQuestion.value = dzQuestions[questionIndex + 1]
         else _nextQuestion.value = null
+        _currentQuestion.value = dzQuestions[questionIndex]
     }
 
     fun onAnswerClick(index: Int) {

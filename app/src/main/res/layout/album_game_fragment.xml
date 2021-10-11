@@ -26,7 +26,7 @@
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminateTint="@color/spotify_green"
+                android:indeterminateTint="@color/dz_red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
                 android:paddingHorizontal="50dp"
                 android:paddingVertical="10dp"
                 android:text="@string/login"
-                android:textColor="@color/spotify_white"
+                android:textColor="@color/dz_white"
                 android:textSize="20sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -77,35 +77,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
-                    android:background="@color/spotify_black" />
+                    android:background="@color/dz_black" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@color/spotify_black" />
+                    android:background="@color/dz_black" />
 
             </LinearLayout>
-
-            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:background="@android:color/transparent"-->
-            <!--                android:visibility="visible">-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@android:color/transparent">
+                android:background="@android:color/transparent"
+                android:orientation="vertical">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/album_game_cl"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1.3"
                     android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1.3"
                     android:background="@android:color/transparent"
                     app:layout_constraintBottom_toTopOf="@id/album_button_cl"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:textColor="@color/spotify_white"
+                        android:textColor="@color/dz_white"
                         android:textSize="25sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -129,8 +123,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginTop="5dp"
-                        android:background="@android:color/transparent"
                         android:adjustViewBounds="true"
+                        android:background="@android:color/transparent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -192,12 +186,15 @@
                             android:layout_height="0dp"
                             android:layout_marginHorizontal="@dimen/horizontal_margin"
                             android:layout_marginVertical="@dimen/game_button_margin"
+                            android:ellipsize="end"
                             android:maxLines="1"
                             android:onClick="@{() -> viewModel.onAnswerClick(0)}"
+                            android:paddingHorizontal="8dp"
                             app:autoSizeMaxTextSize="@dimen/game_text_size"
+                            app:autoSizeMinTextSize="15sp"
                             app:autoSizeTextType="uniform"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:text="505 (Live at the Royal Albert Hall)" />
+                            tools:text="505 (Live at the Royal Albert Hall) keep going but then" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/album_second_answer_button"
@@ -205,9 +202,12 @@
                             android:layout_height="0dp"
                             android:layout_marginHorizontal="@dimen/horizontal_margin"
                             android:layout_marginVertical="@dimen/game_button_margin"
+                            android:ellipsize="end"
                             android:maxLines="1"
                             android:onClick="@{() -> viewModel.onAnswerClick(1)}"
+                            android:paddingHorizontal="8dp"
                             app:autoSizeMaxTextSize="@dimen/game_text_size"
+                            app:autoSizeMinTextSize="15sp"
                             app:autoSizeTextType="uniform"
                             app:layout_constraintTop_toBottomOf="@id/album_first_answer_button"
                             tools:text="Answer" />
@@ -218,9 +218,12 @@
                             android:layout_height="0dp"
                             android:layout_marginHorizontal="@dimen/horizontal_margin"
                             android:layout_marginVertical="@dimen/game_button_margin"
+                            android:ellipsize="end"
                             android:maxLines="1"
                             android:onClick="@{() -> viewModel.onAnswerClick(2)}"
+                            android:paddingHorizontal="8dp"
                             app:autoSizeMaxTextSize="@dimen/game_text_size"
+                            app:autoSizeMinTextSize="15sp"
                             app:autoSizeTextType="uniform"
                             app:layout_constraintTop_toBottomOf="@id/album_second_answer_button"
                             tools:text="Answer" />
@@ -231,9 +234,12 @@
                             android:layout_height="0dp"
                             android:layout_marginHorizontal="@dimen/horizontal_margin"
                             android:layout_marginVertical="@dimen/game_button_margin"
+                            android:ellipsize="end"
                             android:maxLines="1"
                             android:onClick="@{() -> viewModel.onAnswerClick(3)}"
+                            android:paddingHorizontal="8dp"
                             app:autoSizeMaxTextSize="@dimen/game_text_size"
+                            app:autoSizeMinTextSize="15sp"
                             app:autoSizeTextType="uniform"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -245,7 +251,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
             </LinearLayout>
         </FrameLayout>
 
