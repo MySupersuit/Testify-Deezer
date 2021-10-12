@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Deezer Game</string>
+    <string name="app_name">Testify</string>
     <string name="score">%1$d/%2$d</string>
     <string name="loading_prog_message">%1$d/%2$d loaded</string>
     <string name="you_scored">You scored</string>
@@ -39,4 +39,5 @@
     <string name="pick_again">Pick Again</string>
     <string name="continue_without_login">Continue without Google login</string>
     <string name="google_login">Google Login</string>
+    <string name="info">Info</string>
 </resources>

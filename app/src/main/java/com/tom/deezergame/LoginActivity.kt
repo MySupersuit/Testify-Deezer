@@ -47,6 +47,12 @@ class LoginActivity : AppCompatActivity() {
         binding.noLoginButton.setOnClickListener {
             toMainScreen()
         }
+
+        // Check if already signed in
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account != null) {
+            toMainScreen()
+        }
     }
 
     override fun onStart() {
@@ -65,13 +71,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signInSilently() {
-        val signInOptions = GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if (account != null) {
             val signedInAccount = account
             Timber.d("logged in with ${signedInAccount.displayName ?: signedInAccount.account?.name}")
             toMainScreen()
         } else { // not signed in before
+            val signInOptions = GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN
             val signInClient = GoogleSignIn.getClient(this, signInOptions)
             signInClient
                 .silentSignIn()
