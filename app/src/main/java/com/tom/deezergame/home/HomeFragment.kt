@@ -87,7 +87,6 @@ class HomeFragment : Fragment() {
                     GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN
                 )
                 googleClient.signOut().addOnCompleteListener {
-                    showSignOutSnackbar(binding)
                     val intent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(intent)
                 }

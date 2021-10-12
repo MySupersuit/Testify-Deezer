@@ -78,15 +78,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/login_button"
-                    android:fontFamily="@font/mabry_deezer_bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/login_button"
                     android:layout_width="match_parent"
@@ -104,16 +95,22 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/no_login_button"
-                    android:layout_width="0dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:backgroundTint="@color/dz_black"
                     android:fontFamily="@font/mabry_deezer_bold"
                     android:inputType="text"
                     android:text="@string/continue_without_login"
                     android:textSize="15sp"
+                    app:cornerRadius="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/login_button" />
+                    app:layout_constraintTop_toBottomOf="@id/login_button"
+                    app:strokeColor="@color/dz_subtle_grey"
+                    android:textColor="@color/dz_white"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
