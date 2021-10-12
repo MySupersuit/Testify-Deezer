@@ -41,6 +41,12 @@ class HomeFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        if (!isSignedIn()) {
+            binding.logOutButton.text = getString(R.string.login)
+        } else {
+            binding.logOutButton.text = getString(R.string.log_out)
+        }
+
         viewModel.navigateToAlbumGame.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
                 findNavController().navigate(
@@ -121,6 +127,10 @@ class HomeFragment : Fragment() {
             view.setBackgroundColor(green)
         }
         snackbar.show()
+    }
+
+    private fun isSignedIn() : Boolean {
+        return GoogleSignIn.getLastSignedInAccount(requireContext()) != null
     }
 
 }
