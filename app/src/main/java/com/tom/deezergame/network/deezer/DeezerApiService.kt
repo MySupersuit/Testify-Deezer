@@ -30,7 +30,7 @@ interface DeezerApiService {
         @Path(value="artist_id") artist_id: String
     ): DeezerArtistTopTracks
 
-    @GET("search/playlist?limit=25")
+    @GET("search/playlist?limit=35")
     suspend fun searchPlaylist(
         @Query(value="q") query: String
     ): DeezerUserPlaylists

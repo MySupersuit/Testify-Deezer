@@ -7,13 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.tom.deezergame.LoginActivity
 import com.tom.deezergame.R
+import com.tom.deezergame.album_game.AlbumGameFragmentDirections
+import com.tom.deezergame.databinding.AlbumGameFragmentBinding
 import com.tom.deezergame.databinding.HighLowGameFragment3Binding
 import com.tom.deezergame.models.DzHighLowQuestion
 import com.tom.deezergame.utils.Constants
@@ -102,11 +106,23 @@ class HighLowGameFragment : Fragment() {
 
         viewModel.loginClick.observe(viewLifecycleOwner, Observer { login ->
             if (login) {
-                val intent = Intent(requireActivity(), LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-                requireActivity().finish()
-                viewModel.onLoginClickFinish()
+//                val intent = Intent(requireActivity(), LoginActivity::class.java)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                startActivity(intent)
+//                requireActivity().finish()
+//                viewModel.onLoginClickFinish()
+                NavHostFragment.findNavController(this).navigate(
+                    HighLowGameFragmentDirections.actionHighLowGameFragmentToPlaylistPickerFragment(
+                        gameType = Constants.HIGH_LOW_GAME_TYPE
+                    )
+                )
+            }
+        })
+
+        viewModel.enoughQuestions.observe(viewLifecycleOwner, { enoughQs ->
+            if (!enoughQs) {
+                showErrorSnackbar(binding)
+                viewModel.onEnoughQsHandle()
             }
         })
 
@@ -180,5 +196,21 @@ class HighLowGameFragment : Fragment() {
         binding.cvAns2.isClickable = true
     }
 
+    private fun showErrorSnackbar(binding: HighLowGameFragment3Binding) {
+        val red = ContextCompat.getColor(requireContext(), R.color.dz_red)
+        val white = ContextCompat.getColor(requireContext(), R.color.spotify_white)
+        val snackbar = Snackbar.make(
+            binding.mainCl,
+            "Not enough songs in playlist",
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction("OK") {
+        }
+        snackbar.setActionTextColor(white)
+        for (view in snackbar.view.allViews) {
+            view.setBackgroundColor(red)
+        }
+        snackbar.show()
+    }
 
 }
