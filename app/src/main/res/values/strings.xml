@@ -37,4 +37,6 @@
     <string name="search_hint">Search playlist…</string>
     <string name="loading_results">Loading results…</string>
     <string name="pick_again">Pick Again</string>
+    <string name="continue_without_login">Continue without Google login</string>
+    <string name="google_login">Google Login</string>
 </resources>

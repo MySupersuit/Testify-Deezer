@@ -44,7 +44,9 @@ class LoginActivity : AppCompatActivity() {
             signInSilently()
         }
 
-//        toMainScreen()
+        binding.noLoginButton.setOnClickListener {
+            toMainScreen()
+        }
     }
 
     override fun onStart() {
