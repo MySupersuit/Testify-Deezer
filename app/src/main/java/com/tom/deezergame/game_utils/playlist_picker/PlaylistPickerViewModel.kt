@@ -53,7 +53,7 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
         get() = _finishDataFetch
 
     private val _searchResults = MutableLiveData<List<UserPlaylistData>>()
-    val searchResults : LiveData<List<UserPlaylistData>>
+    val searchResults: LiveData<List<UserPlaylistData>>
         get() = _searchResults
 
     private val _showSearchResults = MutableLiveData<Boolean>()
@@ -76,7 +76,7 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
         }
     }
 
-    fun searchTextChange(query : String) {
+    fun searchTextChange(query: String) {
         performSearch(query)
     }
 
@@ -93,7 +93,7 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
         setUpUserObserver()
     }
 
-    fun showSearchResults(b : Boolean) {
+    fun showSearchResults(b: Boolean) {
         _showSearchResults.value = b
     }
 
@@ -131,11 +131,12 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
         }
     }
 
-    private fun deezerSearch(query: String) : Job {
+    private fun deezerSearch(query: String): Job {
         val job = viewModelScope.launch {
             try {
-                val playlists = apiClient.getDeezerApiService(getApplication()).searchPlaylist(query)
-                _searchResults.value = playlists.data
+                val playlists =
+                    apiClient.getDeezerApiService(getApplication()).searchPlaylist(query)
+                _searchResults.value = playlists.data.filter { it.nb_tracks >= 0 }
             } catch (e: Exception) {
                 _searchStatus.value = DeezerApiStatus.ERROR
                 Timber.e("search exception", e)
@@ -175,10 +176,11 @@ class PlaylistPickerViewModel(application: Application, gameType: Int) :
         return job
     }
 
-    private fun forceRefreshDb() : Job {
+    private fun forceRefreshDb(): Job {
         val job = viewModelScope.launch {
             try {
-                val playlists = apiClient.getDeezerApiService(getApplication()).getUserPlaylists(NetworkConstants.DZ_USER)
+                val playlists = apiClient.getDeezerApiService(getApplication())
+                    .getUserPlaylists(NetworkConstants.DZ_USER)
                 _dzPlaylists.value = playlists.data
                 // TODO
                 // maybe take this one outside the forcerefresh

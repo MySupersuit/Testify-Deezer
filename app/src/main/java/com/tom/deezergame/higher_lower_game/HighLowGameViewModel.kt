@@ -51,6 +51,10 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     val loginClick: LiveData<Boolean>
         get() = _loginClick
 
+    private val _enoughQuestions = MutableLiveData<Boolean>()
+    val enoughQuestions: LiveData<Boolean>
+        get() = _enoughQuestions
+
     private val localTracksPlaycount = mutableListOf<LfmTrack>()
     private var dzLocalTracks = listOf<PlaylistTracksData>()
     private val dzQuestions: MutableList<DzHighLowQuestion> = mutableListOf()
@@ -147,6 +151,10 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
         _loginClick.value = false
     }
 
+    fun onEnoughQsHandle() {
+        _enoughQuestions.value = true
+    }
+
     private suspend fun fetchData(playlistId: String) {
         viewModelScope.launch {
             Timber.d("fetching data")
@@ -155,6 +163,11 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
             initialJob.join()
             Timber.d("initialTracks fetched")
             if (dzInitialItems.isEmpty()) return@launch
+            else if (dzInitialItems.size < 25) {
+                _enoughQuestions.value = false
+                _status.value = SpotifyApiStatus.ERROR
+                return@launch
+            }
 
             val shuffled = dzInitialItems.shuffled()
 

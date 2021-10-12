@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
             signInSilently()
         }
 
-        toMainScreen()
+//        toMainScreen()
     }
 
     override fun onStart() {
