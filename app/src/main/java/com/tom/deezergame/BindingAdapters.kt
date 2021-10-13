@@ -151,3 +151,4 @@ fun bindProgress(cl :ConstraintLayout, status: DeezerApiStatus) {
         }
     }
 }
+

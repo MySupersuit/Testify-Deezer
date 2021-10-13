@@ -80,6 +80,15 @@ class HomeFragment : Fragment() {
             }
         })
 
+        viewModel.spotifiveClick.observe(viewLifecycleOwner, { nav ->
+            if (nav) {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToSpotifiveFragment()
+                )
+                viewModel.onSpotifiveClickEnd()
+            }
+        })
+
         viewModel.logOut.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
                 val googleClient = GoogleSignIn.getClient(

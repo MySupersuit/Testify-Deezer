@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_homeFragment_to_playlistPickerFragment"
             app:destination="@id/playlistPickerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_spotifiveFragment"
+            app:destination="@id/spotifiveFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumGameFragment"
@@ -107,5 +110,15 @@
             android:id="@+id/action_highLowGameFragment_to_playlistPickerFragment"
             app:destination="@id/playlistPickerFragment"
             app:popUpTo="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/spotifiveFragment"
+        android:name="com.tom.deezergame.spotifive.SpotifiveFragment"
+        android:label="spotifive_fragment"
+        tools:layout="@layout/spotifive_fragment" >
+        <argument
+            android:name="artist_id"
+            app:argType="string"
+            android:defaultValue="412" />
     </fragment>
 </navigation>

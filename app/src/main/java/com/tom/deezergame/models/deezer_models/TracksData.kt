@@ -3,7 +3,7 @@ package com.tom.deezergame.models.deezer_models
 import com.google.gson.annotations.SerializedName
 import timber.log.Timber
 
-data class PlaylistTracksData(
+data class TracksData(
     @SerializedName("id") val id: Int,
     @SerializedName("readable") val readable: Boolean,
     @SerializedName("title") val title: String,

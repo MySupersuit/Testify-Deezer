@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.album_game.SpotifyApiStatus
-import com.tom.deezergame.models.DzBeatIntroQuestion
+import com.tom.deezergame.models.questions.DzBeatIntroQuestion
 import com.tom.deezergame.models.deezer_models.ArtistTopTracksData
-import com.tom.deezergame.models.deezer_models.PlaylistTracksData
+import com.tom.deezergame.models.deezer_models.TracksData
 import com.tom.deezergame.network.ApiClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     AndroidViewModel(application) {
 
     private var apiClient: ApiClient = ApiClient()
-    private var dzInitialItems = listOf<PlaylistTracksData>()
+    private var dzInitialItems = listOf<TracksData>()
 
     private var artistIdToTopTracks: HashMap<String, List<ArtistTopTracksData>> = HashMap()
     private var questions = mutableListOf<DzBeatIntroQuestion>()
@@ -138,7 +138,7 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     }
 
     private fun makeQuestion(
-        correctTrack: PlaylistTracksData,
+        correctTrack: TracksData,
         otherTracks: List<ArtistTopTracksData>
     ) {
         val incorrectAnswers = otherTracks.map {
@@ -247,9 +247,9 @@ class BeatTheIntroViewModel(application: Application, playlistId: String) :
     }
 
     // random subset of items if they have a preview url
-    private fun getRandomSubset(items: List<PlaylistTracksData>): List<PlaylistTracksData> {
+    private fun getRandomSubset(items: List<TracksData>): List<TracksData> {
         val shuffled = items.shuffled()
-        val subset = mutableListOf<PlaylistTracksData>()
+        val subset = mutableListOf<TracksData>()
         val songsSeen = mutableListOf<Int>()
         for (item in shuffled) {
             val songId = item.id

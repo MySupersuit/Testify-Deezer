@@ -27,6 +27,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val infoClick: LiveData<Boolean>
         get() = _infoClick
 
+    private val _spotifiveClick = MutableLiveData<Boolean>()
+    val spotifiveClick: LiveData<Boolean>
+        get() = _spotifiveClick
+
     fun onLogOut() {
         _logOut.value = true
     }
@@ -65,6 +69,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onInfoEndClick() {
         _infoClick.value = false
+    }
+
+    fun onSpotifiveClick() {
+        _spotifiveClick.value = true
+    }
+
+    fun onSpotifiveClickEnd() {
+        _spotifiveClick.value = false
     }
 
 

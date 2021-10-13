@@ -2,9 +2,9 @@ package com.tom.deezergame.album_game
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.tom.deezergame.models.DzAlbumQuestion
+import com.tom.deezergame.models.questions.DzAlbumQuestion
 import com.tom.deezergame.models.deezer_models.ArtistAlbumData
-import com.tom.deezergame.models.deezer_models.PlaylistTracksData
+import com.tom.deezergame.models.deezer_models.TracksData
 import com.tom.deezergame.network.ApiClient
 import com.tom.deezergame.network.NetworkConstants
 import com.tom.deezergame.utils.Constants
@@ -60,7 +60,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     private var questionIndex = 0
     private var numQuestions = -1
 
-    private var dzInitialItems = listOf<PlaylistTracksData>()
+    private var dzInitialItems = listOf<TracksData>()
     private val nullQuestion = DzAlbumQuestion(listOf(), "", listOf())
 
     private var dzArtistAlbums = listOf<ArtistAlbumData>()
@@ -203,7 +203,7 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
     }
 
     private fun makeAnswerOptionsV3(
-        correctAlbumTrack: PlaylistTracksData,
+        correctAlbumTrack: TracksData,
         otherAlbums: MutableList<ArtistAlbumData>?
     ) {
         val correctAlbumTitle = correctAlbumTrack.album.title
@@ -252,9 +252,9 @@ class AlbumGameViewModel(application: Application, playlist_id: String) :
         return job
     }
 
-    private fun getRandomSubset(items: List<PlaylistTracksData>): List<PlaylistTracksData> {
+    private fun getRandomSubset(items: List<TracksData>): List<TracksData> {
         val shuffled = items.shuffled()
-        val subset = mutableListOf<PlaylistTracksData>()
+        val subset = mutableListOf<TracksData>()
         val albumsSeen = mutableListOf<Int>()
         // messes up with single artist
         // redo for seen album?

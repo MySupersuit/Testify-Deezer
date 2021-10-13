@@ -1,9 +1,6 @@
 package com.tom.deezergame.network.deezer
 
-import com.tom.deezergame.models.deezer_models.DeezerArtistAlbums
-import com.tom.deezergame.models.deezer_models.DeezerArtistTopTracks
-import com.tom.deezergame.models.deezer_models.DeezerPlaylistTracks
-import com.tom.deezergame.models.deezer_models.DeezerUserPlaylists
+import com.tom.deezergame.models.deezer_models.*
 import com.tom.deezergame.network.NetworkConstants
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,7 +10,7 @@ interface DeezerApiService {
     @GET("playlist/{playlist_id}/tracks?${NetworkConstants.DZ_PARAMS}")
     suspend fun getPlaylistTracks(
         @Path(value = "playlist_id") playlist_id: String
-    ): DeezerPlaylistTracks
+    ): DeezerTracks
 
     @GET("user/{user_id}/playlists?${NetworkConstants.DZ_PARAMS_REMOVE_FIRST}")
     suspend fun getUserPlaylists(
@@ -34,4 +31,10 @@ interface DeezerApiService {
     suspend fun searchPlaylist(
         @Query(value="q") query: String
     ): DeezerUserPlaylists
+
+    @GET("search?limit=5")
+    suspend fun searchTracks(
+        @Query(value="q") query: String
+    ): DeezerTracks
+
 }

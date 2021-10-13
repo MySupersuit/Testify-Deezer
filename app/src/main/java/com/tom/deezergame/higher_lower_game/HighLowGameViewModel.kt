@@ -3,8 +3,8 @@ package com.tom.deezergame.higher_lower_game
 import android.app.Application
 import androidx.lifecycle.*
 import com.tom.deezergame.album_game.SpotifyApiStatus
-import com.tom.deezergame.models.DzHighLowQuestion
-import com.tom.deezergame.models.deezer_models.PlaylistTracksData
+import com.tom.deezergame.models.questions.DzHighLowQuestion
+import com.tom.deezergame.models.deezer_models.TracksData
 import com.tom.deezergame.models.lastfm_models.LfmTrack
 import com.tom.deezergame.network.ApiClient
 import com.tom.deezergame.utils.Constants
@@ -17,7 +17,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
     AndroidViewModel(application) {
 
     private var apiClient: ApiClient = ApiClient()
-    private var dzInitialItems = listOf<PlaylistTracksData>()
+    private var dzInitialItems = listOf<TracksData>()
 
     private val _status = MutableLiveData<SpotifyApiStatus>()
     val status: LiveData<SpotifyApiStatus>
@@ -56,7 +56,7 @@ class HighLowGameViewModel(application: Application, playlist_id: String) :
         get() = _enoughQuestions
 
     private val localTracksPlaycount = mutableListOf<LfmTrack>()
-    private var dzLocalTracks = listOf<PlaylistTracksData>()
+    private var dzLocalTracks = listOf<TracksData>()
     private val dzQuestions: MutableList<DzHighLowQuestion> = mutableListOf()
 
     private var numQuestions = -1

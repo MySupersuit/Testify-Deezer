@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.tom.deezergame.LoginActivity
 import com.tom.deezergame.R
 import com.tom.deezergame.databinding.BeatTheIntroFragmentBinding
-import com.tom.deezergame.models.DzBeatIntroQuestion
+import com.tom.deezergame.models.questions.DzBeatIntroQuestion
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.CustomMediaPlayer
 import com.tom.deezergame.utils.Utils.glideShowImagePaletteBtI

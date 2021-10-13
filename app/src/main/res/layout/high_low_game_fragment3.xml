@@ -318,7 +318,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginVertical="55dp"
             android:background="@drawable/layout_bg"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/modal_title"

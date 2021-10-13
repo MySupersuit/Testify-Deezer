@@ -1,4 +1,4 @@
-package com.tom.deezergame.models
+package com.tom.deezergame.models.questions
 
 data class DzAlbumQuestion(
     val images: List<String>,
