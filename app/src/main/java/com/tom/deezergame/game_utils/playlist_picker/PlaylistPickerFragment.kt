@@ -6,6 +6,8 @@ import android.content.Context
 import android.graphics.Typeface
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -88,42 +90,12 @@ class PlaylistPickerFragment : Fragment() {
 
         binding.playlistRv.adapter = adapter
 
-        // TODO General Playlists || Artist Playlists??
-        // Load user playlists into rv if showUserPlaylists is true
-//        viewModel.userPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
-//            if (viewModel.showUserPlaylists.value == true) {
-//                Timber.d("num_playlists: ${playlists.size}")
-//                adapter.submitPlaylist(playlists)
-//                binding.playlistTitle.text = getString(R.string.your_playlists)
-//            }
-//        })
-
-//        Load common playlists into rv if showUserPlaylists is false
-//        viewModel.commonPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
-//            Timber.d("num_playlists: ${playlists.size}")
-//            if (viewModel.showUserPlaylists.value == false) {
-//                adapter.submitPlaylist(playlists)
-//                binding.playlistTitle.text = getString(R.string.top_playlists)
-//            }
-//        })
         viewModel.dzPlaylists.observe(viewLifecycleOwner, Observer { playlists ->
             Timber.d("num_playlists: ${playlists.size}")
             adapter.submitPlaylist(playlists)
             binding.playlistTitle.text = getString(R.string.top_playlists)
 
         })
-
-        // Clicking the FAB changes which set of playlists the rv shows
-        // - User playlists or Common playlists
-//        viewModel.showUserPlaylists.observe(viewLifecycleOwner, Observer { showUserPlaylists ->
-//            if (showUserPlaylists) {
-//                viewModel.userPlaylists.value?.let { adapter.submitPlaylist(it) }
-//                binding.playlistTitle.text = getString(R.string.your_playlists)
-//            } else {
-//                viewModel.commonPlaylists.value?.let { adapter.submitPlaylist(it) }
-//                binding.playlistTitle.text = getString(R.string.top_playlists)
-//            }
-//        })
 
         viewModel.finishDataFetch.observe(viewLifecycleOwner, Observer { finished ->
             if (finished) {
@@ -155,8 +127,17 @@ class PlaylistPickerFragment : Fragment() {
         binding.searchView.maxWidth = Integer.MAX_VALUE
         val searchText = binding.searchView.findViewById<TextView>(R.id.search_src_text)
         searchText.setTextColor(ContextCompat.getColor(requireContext(), R.color.dz_black))
-//        searchText.typeface = Typeface.createFromAsset(requireContext().assets, "fonts/mabry_deezer_bold.otf")
         searchText.typeface = ResourcesCompat.getFont(requireContext(), R.font.mabry_deezer_regular)
+        val TRIGGER_SEARCH = 100
+        val TRIGGER_DELAY : Long = 1000
+
+        val handler = Handler(Looper.getMainLooper(), Handler.Callback { msg ->
+            if (msg.what == TRIGGER_SEARCH) {
+                val query = binding.searchView.query.toString()
+                if (query.isNotBlank()) viewModel.searchTextChange(query)
+            }
+            true
+        })
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -171,6 +152,9 @@ class PlaylistPickerFragment : Fragment() {
             override fun onQueryTextChange(p0: String?): Boolean {
                 if (p0 != null && p0.isBlank()) {
                     viewModel.showSearchResults(false)
+                } else { // if not blank, search after some time\
+                    handler.removeMessages(TRIGGER_SEARCH)
+                    handler.sendEmptyMessageDelayed(TRIGGER_SEARCH, TRIGGER_DELAY)
                 }
                 return false
             }
