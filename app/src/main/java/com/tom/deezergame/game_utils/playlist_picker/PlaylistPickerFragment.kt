@@ -129,7 +129,7 @@ class PlaylistPickerFragment : Fragment() {
         searchText.setTextColor(ContextCompat.getColor(requireContext(), R.color.dz_black))
         searchText.typeface = ResourcesCompat.getFont(requireContext(), R.font.mabry_deezer_regular)
         val TRIGGER_SEARCH = 100
-        val TRIGGER_DELAY : Long = 1000
+        val TRIGGER_DELAY : Long = 800
 
         val handler = Handler(Looper.getMainLooper(), Handler.Callback { msg ->
             if (msg.what == TRIGGER_SEARCH) {
