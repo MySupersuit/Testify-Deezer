@@ -1,7 +1,7 @@
 # Deezer Game
 Collection of games using Deezer and LastFM's APIs to test your knowledge of any Deezer playlist.
 
-[Play Store link (will be updated when it goes live)](https://play.google.com/apps/testing/com.tom.deezergame)
+[Play Store link (will be updated when it goes live)](https://play.google.com/store/apps/details?id=com.tom.deezergame)
 
 ## Screenshots
 ### Phone
