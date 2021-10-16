@@ -23,6 +23,7 @@ import com.tom.deezergame.models.DzHighLowQuestion
 import com.tom.deezergame.utils.Constants
 import com.tom.deezergame.utils.Utils.glidePreloadImage
 import com.tom.deezergame.utils.Utils.glideShowImage
+import com.tom.deezergame.utils.Utils.glideShowModalHL
 import com.tom.deezergame.utils.Utils.hlShowImage1
 import com.tom.deezergame.utils.Utils.hlShowImage2
 import timber.log.Timber
@@ -49,7 +50,7 @@ class HighLowGameFragment : Fragment() {
             )
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        binding.modalCl.visibility = View.GONE
+        binding.modalCv.visibility = View.GONE
 
         val black = ContextCompat.getColor(requireContext(), R.color.spotify_black)
 
@@ -153,8 +154,9 @@ class HighLowGameFragment : Fragment() {
             if (question.track1.playCount > question.track2.playCount) question.track2 else question.track1
 
 
-        glideShowImage(correctTrack.getImages(), requireContext(), binding.modalCorrectImage)
+//        glideShowImage(correctTrack.getImages(), requireContext(), binding.modalCorrectImage)
 //        glideShowImageModal(correctTrack.getImages(), requireContext(), binding)
+        glideShowModalHL(correctTrack.getImages(), requireContext(), binding)
         binding.modalCorrectText.text =
             getString(R.string.num_streams, String.format("%,d", correctTrack.playCount))
 
@@ -162,12 +164,12 @@ class HighLowGameFragment : Fragment() {
         binding.modalWrongText.text =
             getString(R.string.num_streams, String.format("%,d", wrongTrack.playCount))
 
-        binding.modalCl.visibility = View.VISIBLE
+        binding.modalCv.visibility = View.VISIBLE
     }
 
     private fun hideModal(binding: HighLowGameFragment3Binding) {
         enableAnswerButtons(binding)
-        binding.modalCl.visibility = View.GONE
+        binding.modalCv.visibility = View.GONE
     }
 
     private fun showQuestion(binding: HighLowGameFragment3Binding, question: DzHighLowQuestion) {

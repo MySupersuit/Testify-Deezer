@@ -132,11 +132,11 @@ object Utils {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Timber.e( "single fail HL", e)
+                    Timber.e("single fail HL", e)
 
                     if (e != null) {
                         for (t in e.rootCauses) {
-                            Timber.e( "Caused by", t)
+                            Timber.e("Caused by", t)
                         }
                     }
                     Timber.d("posting runnable to main")
@@ -232,7 +232,7 @@ object Utils {
             )
         }
     }
-    
+
     private fun modalAnim(
         resource: Drawable
     ) {
@@ -285,6 +285,140 @@ object Utils {
             })
             .into(imgView)
 
+    }
+
+    fun reloadHLModal(
+        uri: Uri,
+        context: Context,
+        binding: HighLowGameFragment3Binding
+    ) {
+        Timber.d("reloading Hl modal")
+        Glide.with(context).load(uri)
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.music_note_icon)
+                    .error(R.drawable.ic_connection_error)
+            )
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Timber.d("HL load failed")
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (resource != null) {
+                        setColorsHL(
+                            resource, context, binding
+                        )
+                    }
+                    return false
+                }
+            })
+            .into(binding.modalCorrectImage)
+    }
+
+    fun glideShowModalHL(
+        images: List<String>,
+        context: Context,
+        binding: HighLowGameFragment3Binding
+    ) {
+        if (images[0].isBlank()) {
+            Glide.with(context).load(R.drawable.music_note_icon).into(binding.modalCorrectImage)
+            return
+        }
+        val imgUri = urlToUri(images[0])
+        val imgUri2 = urlToUri(images[1])
+
+        Glide.with(context).load(imgUri)
+            .error(
+                reloadHLModal(imgUri2, context, binding)
+            )
+            .apply(
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.loading_animation)
+            )
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Timber.d("HL load fail 1")
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (resource != null) {
+                        setColorsHL(
+                            resource, context, binding
+                        )
+                    }
+                    return false
+                }
+            })
+            .into(binding.modalCorrectImage)
+    }
+
+    fun setColorsHL(resource: Drawable, context: Context, binding: HighLowGameFragment3Binding) {
+        val bitmap = resource.toBitmap()
+        val builder = Palette.Builder(bitmap)
+        val black = ContextCompat.getColor(context, R.color.dz_black)
+        val white = ContextCompat.getColor(context, R.color.dz_white)
+        val modal_bg = binding.modalCl
+        builder.generate { palette ->
+            val fromDomColor = (modal_bg.background as ColorDrawable).color
+            val domColor = palette?.dominantSwatch?.rgb ?: black
+            val darkVib = palette?.mutedSwatch?.rgb
+            val domTextColor = palette?.dominantSwatch?.bodyTextColor ?: white
+            Timber.d("to dom color ${domColor.red} ${domColor.green} ${domColor.blue}")
+
+            val animator = ValueAnimator.ofObject(
+                ArgbEvaluator(),
+                fromDomColor,
+                domColor
+            )
+            val vibAnimator = ValueAnimator.ofObject(
+                ArgbEvaluator(),
+                black,
+                darkVib ?: black
+            )
+            animator.duration = 400
+            vibAnimator.duration = 400
+            animator.addUpdateListener { anim ->
+                modal_bg.setBackgroundColor(anim.animatedValue as Int)
+            }
+            vibAnimator.addUpdateListener { anim ->
+                binding.modalButton.backgroundTintList =
+                    ColorStateList.valueOf(anim.animatedValue as Int)
+            }
+            animator.start()
+            vibAnimator.start()
+
+            binding.modalWrongText.setTextColor(domTextColor)
+            binding.modalCorrectText.setTextColor(domTextColor)
+            binding.modalTitle.setTextColor(domTextColor)
+        }
     }
 
     fun glideShowImagePaletteBtI(
@@ -368,12 +502,10 @@ object Utils {
         val bitmap = resource.toBitmap()
         val builder = Palette.Builder(bitmap)
         val black = ContextCompat.getColor(context, R.color.dz_black)
-        val white = ContextCompat.getColor(context, R.color.spotify_white)
-        val green = ContextCompat.getColor(context, R.color.spotify_green)
+        val red = ContextCompat.getColor(context, R.color.dz_red)
         builder.generate { palette ->
             val fromDomColor = (cl.background as ColorDrawable).color
-            val domColor = palette?.dominantSwatch?.rgb ?: green
-//            val lightVibColor = palette?.lightVibrantSwatch?.rgb
+            val domColor = palette?.dominantSwatch?.rgb ?: red
             val darkVib = palette?.mutedSwatch?.rgb
             val domTextColor = palette?.dominantSwatch?.bodyTextColor ?: black
             Timber.d("to dom color ${domColor.red} ${domColor.green} ${domColor.blue}")
@@ -602,11 +734,11 @@ object Utils {
             Glide.with(context).load(R.drawable.music_note_icon).into(binding.modalCorrectImage)
             return
         }
-        
+
         val imgUri = urlToUri(images[0])
         Glide.with(context)
             .load(imgUri)
-            .listener(object: RequestListener<Drawable> {
+            .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,

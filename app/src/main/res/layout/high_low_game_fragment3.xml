@@ -112,8 +112,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:orientation="vertical"
                     android:background="@android:color/transparent"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/high_low_score_tv">
 
@@ -147,11 +147,11 @@
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
+                                android:layout_marginVertical="20dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginEnd="15dp"
                                 android:background="@android:color/transparent"
                                 android:orientation="vertical"
-                                android:layout_marginVertical="20dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/image_ans1"
@@ -164,9 +164,9 @@
                                     android:layout_marginBottom="5dp"
                                     android:layout_weight="4"
                                     android:background="@android:color/transparent"
-                                    android:gravity="bottom"
                                     android:breakStrategy="balanced"
                                     android:ellipsize="end"
+                                    android:gravity="bottom"
                                     android:maxLines="3"
                                     app:autoSizeMaxTextSize="40sp"
                                     app:autoSizeMinTextSize="20sp"
@@ -177,20 +177,20 @@
                                     android:id="@+id/div_ans1"
                                     android:layout_width="match_parent"
                                     android:layout_height="1dp"
-                                    android:background="@color/spotify_black"/>
+                                    android:background="@color/spotify_black" />
 
                                 <TextView
                                     android:id="@+id/artist_ans1"
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
-                                    android:layout_weight="3.5"
                                     android:layout_marginTop="5dp"
+                                    android:layout_weight="3.5"
                                     android:background="@android:color/transparent"
-                                    android:textColor="@color/spotify_grey"
-                                    app:autoSizeTextType="uniform"
-                                    app:autoSizeMaxTextSize="30sp"
-                                    android:maxLines="2"
                                     android:ellipsize="end"
+                                    android:maxLines="2"
+                                    android:textColor="@color/spotify_grey"
+                                    app:autoSizeMaxTextSize="30sp"
+                                    app:autoSizeTextType="uniform"
                                     tools:text="Artist" />
 
                             </LinearLayout>
@@ -202,19 +202,19 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:background="@android:color/transparent"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_marginHorizontal="35dp"
                             android:background="@android:color/transparent"
                             android:gravity="center"
+                            android:maxLines="1"
                             android:text="Which has more streams?"
                             android:textColor="?android:attr/textColor"
                             app:autoSizeTextType="uniform"
-                            android:maxLines="1"
-                            android:layout_marginHorizontal="35dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -252,9 +252,9 @@
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginStart="15dp"
                                 android:layout_marginVertical="20dp"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="10dp"
                                 android:background="@android:color/transparent"
                                 android:orientation="vertical"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -268,9 +268,9 @@
                                     android:layout_height="0dp"
                                     android:layout_weight="4"
                                     android:background="@android:color/transparent"
-                                    android:gravity="bottom|end"
                                     android:breakStrategy="balanced"
                                     android:ellipsize="end"
+                                    android:gravity="bottom|end"
                                     android:maxLines="3"
                                     app:autoSizeMaxTextSize="40sp"
                                     app:autoSizeMinTextSize="20sp"
@@ -281,7 +281,7 @@
                                     android:id="@+id/div_ans2"
                                     android:layout_width="match_parent"
                                     android:layout_height="1dp"
-                                    android:layout_marginVertical="5dp"/>
+                                    android:layout_marginVertical="5dp" />
 
                                 <TextView
                                     android:id="@+id/artist_ans2"
@@ -289,12 +289,12 @@
                                     android:layout_height="0dp"
                                     android:layout_weight="3.5"
                                     android:background="@android:color/transparent"
-                                    android:gravity="end"
-                                    android:textColor="@color/spotify_grey"
-                                    app:autoSizeTextType="uniform"
-                                    app:autoSizeMaxTextSize="30sp"
-                                    android:maxLines="2"
                                     android:ellipsize="end"
+                                    android:gravity="end"
+                                    android:maxLines="2"
+                                    android:textColor="@color/spotify_grey"
+                                    app:autoSizeMaxTextSize="30sp"
+                                    app:autoSizeTextType="uniform"
                                     tools:text="Artist" />
 
                             </LinearLayout>
@@ -311,126 +311,137 @@
 
         </FrameLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/modal_cl"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/modal_cv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginVertical="55dp"
-            android:background="@drawable/layout_bg"
-            android:visibility="visible">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            android:layout_marginVertical="55dp">
 
-            <TextView
-                android:id="@+id/modal_title"
-                android:layout_width="0dp"
-                android:background="@android:color/transparent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:gravity="center"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toTopOf="@id/modal_ll"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Correct!" />
-
-            <LinearLayout
-                android:id="@+id/modal_ll"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/modal_cl"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                android:background="@color/dz_black"
-                app:layout_constraintBottom_toTopOf="@id/modal_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/modal_title">
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/modal_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:textSize="50sp"
+                    app:layout_constraintBottom_toTopOf="@id/modal_ll"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Correct!" />
+
+                <LinearLayout
+                    android:id="@+id/modal_ll"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1">
+                    android:background="@android:color/transparent"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@id/modal_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/modal_title">
 
-                    <ImageView
-                        android:id="@+id/modal_correct_image"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/modal_correct_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@drawable/blackmidi_cruising" />
-
-                    <TextView
-                        android:id="@+id/modal_correct_text"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/spotify_white"
-                        android:textSize="20sp"
-                        android:layout_marginTop="5dp"
-                        app:layout_constraintTop_toBottomOf="@id/modal_correct_image"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:text="300234 plays" />
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent">
+
+                        <ImageView
+                            android:id="@+id/modal_correct_image"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/modal_correct_text"
+                            app:layout_constraintDimensionRatio="H,1:1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:src="@drawable/blackmidi_cruising" />
+
+                        <TextView
+                            android:id="@+id/modal_correct_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textColor="@color/spotify_white"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/modal_correct_image"
+                            tools:text="300234 plays" />
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent">
+
+                        <ImageView
+                            android:id="@+id/modal_wrong_image"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:alpha="0.5"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/modal_wrong_text"
+                            app:layout_constraintDimensionRatio="H,1:1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:src="@drawable/blackmidi_cruising" />
+
+                        <TextView
+                            android:id="@+id/modal_wrong_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textColor="@color/spotify_white"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/modal_wrong_image"
+                            tools:text="300234 plays" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/modal_button"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:alpha="0.5">
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/horizontal_margin"
+                    android:layout_marginBottom="20dp"
+                    android:onClick="@{() -> viewModel.onNextModalClick()}"
+                    android:text="@string/next"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/modal_ll" />
 
-                    <ImageView
-                        android:id="@+id/modal_wrong_image"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/modal_wrong_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@drawable/blackmidi_cruising" />
-
-                    <TextView
-                        android:id="@+id/modal_wrong_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/spotify_white"
-                        android:textSize="20sp"
-                        android:layout_marginTop="5dp"
-                        app:layout_constraintTop_toBottomOf="@id/modal_wrong_image"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:text="300234 plays" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/modal_button"
-                android:layout_width="match_parent"
-                android:layout_marginHorizontal="@dimen/horizontal_margin"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:onClick="@{() -> viewModel.onNextModalClick()}"
-                android:text="@string/next"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/modal_ll" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
