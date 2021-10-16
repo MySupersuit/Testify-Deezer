@@ -1,6 +1,10 @@
 # Deezer Game
 Collection of games using Deezer and LastFM's APIs to test your knowledge of any Deezer playlist.
 
+- Name the album from album cover
+- Guess which of two songs has more streams
+- Identity the song from the preview audio - faster answers give more points
+
 [Play Store link](https://play.google.com/store/apps/details?id=com.tom.deezergame)
 
 ## Screenshots
