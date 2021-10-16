@@ -7,6 +7,8 @@ Collection of games using Deezer and LastFM's APIs to test your knowledge of any
 
 [Play Store link](https://play.google.com/store/apps/details?id=com.tom.deezergame)
 
+[Original Spotify attempt](https://github.com/MySupersuit/Testify)
+
 ## Screenshots
 ### Phone
 
